@@ -1,5 +1,5 @@
 Language: Cpp
-BasedOnStyle: Chromium
+BasedOnStyle: WebKit
 AccessModifierOffset: '-2'
 AlignAfterOpenBracket: Align
 AllowAllArgumentsOnNextLine: 'false'
@@ -22,7 +22,6 @@ BraceWrapping:
   AfterFunction: true
   AfterEnum: true
   AfterExternBlock: true
-  AfterStruct: true
   AfterUnion: true
   BeforeCatch: true
   BeforeElse: true
@@ -31,8 +30,8 @@ BraceWrapping:
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
 BreakBeforeTernaryOperators: 'true'
-BreakConstructorInitializers: BeforeColon
-BreakInheritanceList: BeforeColon
+BreakConstructorInitializers: 'BeforeComma'
+BreakInheritanceList: 'BeforeColon'
 ColumnLimit: '0'
 CompactNamespaces: 'false'
 Cpp11BracedListStyle: 'false'
@@ -55,7 +54,6 @@ SpaceBeforeAssignmentOperators: 'true'
 SpaceBeforeCpp11BracedList: 'true'
 SpaceBeforeCtorInitializerColon: 'true'
 SpaceBeforeInheritanceColon: 'true'
-#SpaceBeforeParens: NonEmptyParentheses
 SpaceBeforeRangeBasedForLoopColon: 'true'
 SpaceInEmptyParentheses: 'false'
 SpacesBeforeTrailingComments: '3'
