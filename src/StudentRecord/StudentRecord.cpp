@@ -2,9 +2,12 @@
 
 namespace university::student_record {
 
-StudentRecord::StudentRecord(std::string firstName, std::string lastName)
+StudentRecord::StudentRecord(std::string firstName,
+                             std::string lastName,
+                             std::string address)
     : first_name_(firstName)
     , last_name_(lastName)
+    , address_(address)
 {
 }
 
