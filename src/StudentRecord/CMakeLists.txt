@@ -1,8 +1,8 @@
-add_library(Student-lib
+add_library(StudentRecord-lib
             STATIC
-            Student.cpp)
+            StudentRecord.cpp)
 
-target_compile_options(Student-lib
+target_compile_options(StudentRecord-lib
                        PRIVATE
                        -Wall
                        -Wextra
@@ -10,6 +10,6 @@ target_compile_options(Student-lib
                        -Wconversion
                        -Werror)
 
-target_compile_features(Student-lib
+target_compile_features(StudentRecord-lib
                        PRIVATE
                        cxx_std_20)

@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(googletest)
 
 
 set(TEST_SRC
-    StudentTests.cpp)
+    StudentRecordTests.cpp)
 
 add_executable(${PROJECT_NAME}
                 ${TEST_SRC})
@@ -23,7 +23,7 @@ target_include_directories(${PROJECT_NAME}
                             ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(${PROJECT_NAME}
-                      Student-lib
+                      StudentRecord-lib
                       gtest_main
                       gmock_main)
 

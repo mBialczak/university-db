@@ -12,7 +12,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -Wconvers
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 # add sub-directories with CMakeLists.txt
-add_subdirectory(src/Student)
+add_subdirectory(src/StudentRecord)
 
 # add directory with test target
 add_subdirectory(tests)
