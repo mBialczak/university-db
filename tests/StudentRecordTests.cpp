@@ -5,9 +5,17 @@ namespace university::student_record::ut {
 
 class StudentRecordTests : public ::testing::Test
 {
+  public:
+    StudentRecordTests();
+
   protected:
-    StudentRecord rec1_ { "John", "Dickens" };
+    StudentRecord rec1_;
 };
+
+StudentRecordTests::StudentRecordTests()
+    : rec1_("John", "Dickens")
+{
+}
 
 TEST_F(StudentRecordTests, FirstNameShouldReturnStudentsFirstName)
 {
