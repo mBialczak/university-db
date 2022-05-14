@@ -3,5 +3,5 @@
 
 TEST(StudentRecordTests, ShouldBeAbleToCreateStudentRecordObjects)
 {
-    StudentRecord empty_student;
+    StudentRecord named_student{"John", "Dick"};
 }
