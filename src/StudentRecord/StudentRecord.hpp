@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+
+namespace university::student_record {
 class StudentRecord
 {
   public:
@@ -12,3 +14,5 @@ class StudentRecord
     std::string first_name_;
     std::string last_name_;
 };
+
+}   // namespace university::student_record
