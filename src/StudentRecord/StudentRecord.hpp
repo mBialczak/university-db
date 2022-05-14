@@ -9,6 +9,7 @@ class StudentRecord
     StudentRecord(std::string firstName, std::string lastName);
     // getters
     std::string firstName() const;
+    std::string lastName() const;
 
   private:
     std::string first_name_;

@@ -13,4 +13,9 @@ std::string StudentRecord::firstName() const
     return first_name_;
 }
 
+std::string StudentRecord::lastName() const
+{
+    return last_name_;
+}
+
 }   // namespace university::student_record
