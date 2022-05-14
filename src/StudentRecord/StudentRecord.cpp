@@ -5,3 +5,8 @@ StudentRecord::StudentRecord(std::string firstName, std::string lastName)
     , last_name_(lastName)
 {
 }
+
+std::string StudentRecord::firstName() const
+{
+    return first_name_;
+}
