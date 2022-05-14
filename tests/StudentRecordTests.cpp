@@ -13,7 +13,9 @@ class StudentRecordTests : public ::testing::Test
 };
 
 StudentRecordTests::StudentRecordTests()
-    : rec1_("John", "Dickens")
+    : rec1_("John",
+            "Dickens",
+            "England, London, Puddle of Mudd st. 37")
 {
 }
 
