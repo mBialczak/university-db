@@ -1,7 +1,14 @@
 #include "StudentRecord/StudentRecord.hpp"
+
 #include "gtest/gtest.h"
 
-TEST(StudentRecordTests, ShouldBeAbleToCreateStudentRecordObjects)
+class StudentRecordTests : public ::testing::Test
 {
-    StudentRecord named_student{"John", "Dick"};
+  protected:
+    StudentRecord record_1_ { "John", "Dickens" };
+};
+
+TEST_F(StudentRecordTests, FirstNameShouldReturnStudentsFirstName)
+{
+    EXPECT_EQ(record_1_.firstName(), "John");
 }
