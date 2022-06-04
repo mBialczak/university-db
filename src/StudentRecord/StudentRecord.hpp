@@ -6,6 +6,12 @@ namespace university::student_record {
 
 using IndexNo = unsigned long;
 
+enum class Gender
+{
+    male,
+    female
+};
+
 class StudentRecord
 {
 
@@ -13,18 +19,21 @@ class StudentRecord
     StudentRecord(IndexNo indexNumber,
                   std::string firstName,
                   std::string lastName,
-                  std::string address);
+                  std::string address,
+                  Gender gender);
     // getters
     std::string firstName() const;
     std::string lastName() const;
     std::string address() const;
     IndexNo index() const;
+    Gender gender() const;
 
   private:
     IndexNo index_;
     std::string first_name_;
     std::string last_name_;
     std::string address_;
+    Gender gender_;
 };
 
 }   // namespace university::student_record
