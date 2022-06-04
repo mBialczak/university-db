@@ -24,4 +24,3 @@ target_compile_features(${PROJECT_NAME}
                         cxx_std_20)
 
 gtest_discover_tests(PeselValidator-ut)
-enable_testing()

@@ -17,3 +17,5 @@ add_subdirectory(src/PeselValidator)
 
 # add directory with test target
 add_subdirectory(tests)
+
+enable_testing()

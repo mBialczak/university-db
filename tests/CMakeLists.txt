@@ -18,5 +18,3 @@ include(GoogleTest)
 # subdirectories with tests
 add_subdirectory(PeselValidatorTests)
 add_subdirectory(StudentRecordTests)
-
-enable_testing()
