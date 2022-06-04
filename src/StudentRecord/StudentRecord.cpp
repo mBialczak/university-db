@@ -2,10 +2,12 @@
 
 namespace university::student_record {
 
-StudentRecord::StudentRecord(std::string firstName,
+StudentRecord::StudentRecord(IndexNo indexNumber,
+                             std::string firstName,
                              std::string lastName,
                              std::string address)
-    : first_name_(firstName)
+    : index_(indexNumber)
+    , first_name_(firstName)
     , last_name_(lastName)
     , address_(address)
 {
@@ -24,6 +26,11 @@ std::string StudentRecord::lastName() const
 std::string StudentRecord::address() const
 {
     return address_;
+}
+
+IndexNo StudentRecord::index() const
+{
+    return index_;
 }
 
 }   // namespace university::student_record
