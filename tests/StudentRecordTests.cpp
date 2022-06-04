@@ -29,4 +29,8 @@ TEST_F(StudentRecordTests, LastNameShouldReturnSutdentsLastName)
     EXPECT_EQ(rec1_.lastName(), "Dickens");
 }
 
+TEST_F(StudentRecordTests, AddressShouldReturnStudentsAddres)
+{
+    EXPECT_EQ(rec1_.address(), "England, London, Puddle of Mudd st. 37");
+}
 }   // namespace university::student_record::ut
