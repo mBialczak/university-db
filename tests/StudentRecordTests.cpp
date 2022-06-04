@@ -16,7 +16,8 @@ StudentRecordTests::StudentRecordTests()
     : rec1_(1ul,
             "John",
             "Dickens",
-            "England, London, Puddle of Mudd st. 37")
+            "England, London, Puddle of Mudd st. 37",
+            Gender::male)
 {
 }
 
@@ -38,5 +39,10 @@ TEST_F(StudentRecordTests, AddressShouldReturnStudentsAddres)
 TEST_F(StudentRecordTests, IndexShouldReturnIndexNumber)
 {
     EXPECT_EQ(rec1_.index(), 1u);
+}
+
+TEST_F(StudentRecordTests, GenderShouldReturnStudentsGender)
+{
+    EXPECT_EQ(rec1_.gender(), Gender::male);
 }
 }   // namespace university::student_record::ut
