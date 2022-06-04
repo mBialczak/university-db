@@ -19,7 +19,7 @@ add_executable(${PROJECT_NAME}
                 ${TEST_SRC})
 
 target_include_directories(${PROJECT_NAME}
-                            PUBLIC
+                            PRIVATE
                             ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(${PROJECT_NAME}
