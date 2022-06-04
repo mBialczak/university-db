@@ -13,17 +13,19 @@ FetchContent_MakeAvailable(googletest)
 
 
 set(TEST_SRC
-    StudentRecordTests.cpp)
+    StudentRecordTests.cpp
+    PeselValidatorTests.cpp)
 
 add_executable(${PROJECT_NAME}
-                ${TEST_SRC})
+               ${TEST_SRC})
 
 target_include_directories(${PROJECT_NAME}
-                            PRIVATE
-                            ${CMAKE_SOURCE_DIR}/src)
+                           PRIVATE
+                           ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(${PROJECT_NAME}
                       StudentRecord-lib
+                      PeselValidator-lib
                       gtest_main
                       gmock_main)
 
