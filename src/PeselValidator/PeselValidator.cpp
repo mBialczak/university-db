@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <numeric>
 
 namespace pesel_validator {
 
@@ -11,6 +12,8 @@ bool PeselValidator::validatePesel(const std::string& pesel)
         return false;
     }
     reset(pesel);
+
+    return checkControlDigit();
 }
 
 bool PeselValidator::isValidString(const std::string& pesel) const
@@ -27,15 +30,21 @@ void PeselValidator::reset(const std::string& pesel)
 {
     std::transform(
         pesel.begin(),
-        pesel.end() - 2,   // we don't want last(control) digit here
+        pesel.end(),   // we don't want last(control) digit here
         digits_.begin(),
         [](const auto ch) {
             return atoi(&ch);
         });
 }
 
-int PeselValidator::calcDesiredControlDigit() const
+int PeselValidator::checkControlDigit() const
 {
+    auto sum = std::inner_product(digits_.begin(),
+                                  digits_.end(),
+                                  weights.begin(),
+                                  0);
+
+    return (sum % 10) == 0;
 }
 
 }   // end of namespace pesel_validator
