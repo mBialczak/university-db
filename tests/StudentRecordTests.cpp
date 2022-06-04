@@ -13,7 +13,8 @@ class StudentRecordTests : public ::testing::Test
 };
 
 StudentRecordTests::StudentRecordTests()
-    : rec1_("John",
+    : rec1_(1ul,
+            "John",
             "Dickens",
             "England, London, Puddle of Mudd st. 37")
 {
@@ -32,5 +33,10 @@ TEST_F(StudentRecordTests, LastNameShouldReturnSutdentsLastName)
 TEST_F(StudentRecordTests, AddressShouldReturnStudentsAddres)
 {
     EXPECT_EQ(rec1_.address(), "England, London, Puddle of Mudd st. 37");
+}
+
+TEST_F(StudentRecordTests, IndexShouldReturnIndexNumber)
+{
+    EXPECT_EQ(rec1_.index(), 1u);
 }
 }   // namespace university::student_record::ut
