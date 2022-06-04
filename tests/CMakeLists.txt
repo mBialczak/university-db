@@ -14,8 +14,9 @@ FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 # gtest_discover_tests(PeselValidator-ut
 #                     PeselValidator-ut)
-enable_testing()
 
 # subdirectories with tests
 add_subdirectory(PeselValidatorTests)
 add_subdirectory(StudentRecordTests)
+
+enable_testing()

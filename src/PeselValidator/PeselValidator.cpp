@@ -18,7 +18,7 @@ bool PeselValidator::validatePesel(const std::string& pesel)
 
 bool PeselValidator::isValidString(const std::string& pesel) const
 {
-    return pesel.length() == pesel_length_constant && hasOnlyDigits(pesel);
+    return pesel.length() == pesel_length && hasOnlyDigits(pesel);
 }
 
 bool PeselValidator::hasOnlyDigits(const std::string& pesel) const

@@ -6,6 +6,8 @@
 
 namespace pesel_validator {
 
+constexpr size_t pesel_length = { 11 };
+
 class PeselValidator : public I_PeselValidator
 {
   public:
@@ -20,11 +22,11 @@ class PeselValidator : public I_PeselValidator
     int checkControlDigit() const;
 
     // pesel length is constant
-    static constexpr size_t pesel_length_constant = { 11 };
+    static constexpr size_t pesel_length = { 11 };
     // control digits weights used for checking control sum
-    static constexpr std::array<int, 11> weights = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3, 1 };
+    static constexpr std::array<int, pesel_length> weights = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3, 1 };
     // variable first ten digits of PESEL number
-    std::array<int, 11> digits_ = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    std::array<int, pesel_length> digits_ = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     // control digit
     int control_dig_ = 0;
 };
