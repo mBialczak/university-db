@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-namespace pesel_validator {
+namespace university::pesel_validator {
 
 class I_PeselValidator
 {
@@ -14,4 +14,4 @@ class I_PeselValidator
     }
 };
 
-}   // end of namespace pesel_validator
+}   // end of namespace university::pesel_validator

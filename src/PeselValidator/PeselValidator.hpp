@@ -4,7 +4,7 @@
 
 #include <array>
 
-namespace pesel_validator {
+namespace university::pesel_validator {
 
 constexpr size_t pesel_length = { 11 };
 
@@ -31,4 +31,4 @@ class PeselValidator : public I_PeselValidator
     int control_dig_ = 0;
 };
 
-}   // end of namespace pesel_validator
+}   // end of namespace university::pesel_validator

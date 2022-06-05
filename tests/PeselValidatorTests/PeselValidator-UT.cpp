@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-namespace pesel_validator::ut {
+namespace university::pesel_validator::ut {
 
 using PeselWithVerification = std::pair<std::string, bool>;
 
@@ -49,4 +49,4 @@ TEST_P(PeselValidatorTest, OperatorShouldCorrectlyVerifyPesels)
     EXPECT_EQ(result, expected_result);
 }
 
-}   // namespace pesel_validator::ut
+}   // namespace university::pesel_validator::ut

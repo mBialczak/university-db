@@ -4,7 +4,7 @@
 #include <cctype>
 #include <numeric>
 
-namespace pesel_validator {
+namespace university::pesel_validator {
 
 bool PeselValidator::validatePesel(const std::string& pesel)
 {
@@ -47,4 +47,4 @@ int PeselValidator::checkControlDigit() const
     return (sum % 10) == 0;
 }
 
-}   // end of namespace pesel_validator
+}   // end of namespace university::pesel_validator
