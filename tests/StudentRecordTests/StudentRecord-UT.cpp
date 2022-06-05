@@ -17,11 +17,13 @@ StudentRecordTests::StudentRecordTests()
     : john(1ul,
            "John",
            "Dickens",
+           "90090515836",
            "England, London, Puddle of Mudd st. 37",
            Gender::male)
     , sally(5ul,
             "Sally",
             "Smith",
+            "81100216357",
             "Australia, Sydney, Long Shore st. 22",
             Gender::female)
 {
@@ -56,4 +58,11 @@ TEST_F(StudentRecordTests, GenderShouldReturnStudentsGender)
     EXPECT_EQ(john.gender(), Gender::male);
     EXPECT_EQ(sally.gender(), Gender::female);
 }
+
+TEST_F(StudentRecordTests, PeselShouldReturnStudentsPesel)
+{
+    EXPECT_EQ(john.pesel(), "90090515836");
+    EXPECT_EQ(sally.pesel(), "81100216357");
+}
+
 }   // namespace university::student_record::ut
