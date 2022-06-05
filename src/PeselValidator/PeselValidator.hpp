@@ -14,7 +14,6 @@ class PeselValidator : public I_PeselValidator
     ~PeselValidator() override = default;
 
     bool validatePesel(const std::string& pesel) override;
-    virtual bool operator()(const std::string& pesel);
 
   private:
     bool isValidString(const std::string& pesel) const;

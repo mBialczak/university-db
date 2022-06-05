@@ -16,11 +16,6 @@ bool PeselValidator::validatePesel(const std::string& pesel)
     return checkControlDigit();
 }
 
-bool PeselValidator::operator()(const std::string& pesel)
-{
-    return validatePesel(pesel);
-}
-
 bool PeselValidator::isValidString(const std::string& pesel) const
 {
     return pesel.length() == pesel_length && hasOnlyDigits(pesel);
