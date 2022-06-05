@@ -14,6 +14,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 # sub-directories with project components
 add_subdirectory(src/StudentRecord)
 add_subdirectory(src/PeselValidator)
+add_subdirectory(src/UniversityDB)
 
 # add directory with test target
 add_subdirectory(tests)
