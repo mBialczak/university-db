@@ -41,4 +41,12 @@ TEST_P(PeselValidatorTest, ValidatePeselShouldCorrectlyVerifyPesels)
     bool result = validator.validatePesel(pesel);
     EXPECT_EQ(result, expected_result);
 }
+
+TEST_P(PeselValidatorTest, OperatorShouldCorrectlyVerifyPesels)
+{
+    auto [pesel, expected_result] = GetParam();
+    bool result = validator(pesel);
+    EXPECT_EQ(result, expected_result);
+}
+
 }   // namespace pesel_validator::ut
