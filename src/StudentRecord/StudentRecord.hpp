@@ -19,11 +19,13 @@ class StudentRecord
     StudentRecord(IndexNo indexNumber,
                   const std::string& firstName,
                   const std::string& lastName,
+                  const std::string& pesel,
                   const std::string& address,
                   Gender gender);
     // getters
     std::string firstName() const;
     std::string lastName() const;
+    std::string pesel() const;
     std::string address() const;
     IndexNo index() const;
     Gender gender() const;
@@ -32,6 +34,7 @@ class StudentRecord
     IndexNo index_;
     std::string first_name_;
     std::string last_name_;
+    std::string pesel_;
     std::string address_;
     Gender gender_;
 };
