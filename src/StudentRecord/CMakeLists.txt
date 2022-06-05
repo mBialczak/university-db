@@ -13,6 +13,6 @@ target_compile_options(${PROJECT_NAME}-lib
                        -Wconversion
                        -Werror)
 
-target_compile_features(StudentRecord-lib
+target_compile_features(${PROJECT_NAME}-lib
                        PRIVATE
                        cxx_std_20)
