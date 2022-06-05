@@ -3,9 +3,9 @@
 namespace university::student_record {
 
 StudentRecord::StudentRecord(IndexNo indexNumber,
-                             std::string firstName,
-                             std::string lastName,
-                             std::string address,
+                             const std::string& firstName,
+                             const std::string& lastName,
+                             const std::string& address,
                              Gender gender)
     : index_(indexNumber)
     , first_name_(firstName)

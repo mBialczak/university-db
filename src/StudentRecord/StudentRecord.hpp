@@ -17,9 +17,9 @@ class StudentRecord
 
   public:
     StudentRecord(IndexNo indexNumber,
-                  std::string firstName,
-                  std::string lastName,
-                  std::string address,
+                  const std::string& firstName,
+                  const std::string& lastName,
+                  const std::string& address,
                   Gender gender);
     // getters
     std::string firstName() const;
