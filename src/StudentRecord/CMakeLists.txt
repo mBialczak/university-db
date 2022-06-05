@@ -1,8 +1,11 @@
-add_library(StudentRecord-lib
+project(StudentRecord
+        LANGUAGES CXX)
+
+add_library(${PROJECT_NAME}-lib
             STATIC
             StudentRecord.cpp)
 
-target_compile_options(StudentRecord-lib
+target_compile_options(${PROJECT_NAME}-lib
                        PRIVATE
                        -Wall
                        -Wextra
