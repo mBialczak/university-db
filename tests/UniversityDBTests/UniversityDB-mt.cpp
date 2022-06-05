@@ -1,3 +1,4 @@
+#include "StudentRecord/StudentRecord.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 #include "gtest/gtest.h"
