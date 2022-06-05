@@ -1,5 +1,5 @@
-# project(university-db-ut
-#         LANGUAGES CXX)
+project(university-db-ut
+        LANGUAGES CXX)
 
 # prepare Google Test
 include(FetchContent)

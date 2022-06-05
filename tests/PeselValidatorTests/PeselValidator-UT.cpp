@@ -35,7 +35,7 @@ INSTANTIATE_TEST_SUITE_P(PeselSet,
                          PeselValidatorTest,
                          ::testing::ValuesIn(pesels_verified));
 
-TEST_P(PeselValidatorTest, PeselValidatorShouldCorrectlyVerifyPesels)
+TEST_P(PeselValidatorTest, ValidatePeselShouldCorrectlyVerifyPesels)
 {
     auto [pesel, expected_result] = GetParam();
     bool result = validator.validatePesel(pesel);
