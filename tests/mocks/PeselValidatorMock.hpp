@@ -21,39 +21,41 @@ class PeselValidatorMock : public I_PeselValidator
         return validatePesel(pesel);
     }
 
-  protected:
-    //  correct pesel constants
-    static const std::string ok_pesel_1;
-    static const std::string ok_pesel_2;
-    static const std::string ok_pesel_3;
-    static const std::string ok_pesel_4;
-    static const std::string ok_pesel_5;
-    static const std::string ok_pesel_6;
-    static const std::string ok_pesel_7;
-    static const std::string ok_pesel_8;
+    static const std::vector<std::string> ok_pesels;
+    static const std::vector<std::string> wrong_pesels;
 };
 
-const std::string PeselValidatorMock::ok_pesel_1 { "90090515836" };
-const std::string PeselValidatorMock::ok_pesel_2 { "92071314764" };
-const std::string PeselValidatorMock::ok_pesel_3 { "81100216357" };
-const std::string PeselValidatorMock::ok_pesel_4 { "80072909146" };
-const std::string PeselValidatorMock::ok_pesel_5 { "90080517455" };
-const std::string PeselValidatorMock::ok_pesel_6 { "90060804786" };
-const std::string PeselValidatorMock::ok_pesel_7 { "65071209862" };
-const std::string PeselValidatorMock::ok_pesel_8 { "67040500538" };
+const std::vector<std::string> PeselValidatorMock::ok_pesels { "90090515836",
+                                                               "92071314764",
+                                                               "81100216357",
+                                                               "80072909146",
+                                                               "90080517455",
+                                                               "90060804786",
+                                                               "65071209862",
+                                                               "67040500538" };
+
+const std::vector<std::string> PeselValidatorMock::wrong_pesels { "0",
+                                                                  "425",
+                                                                  "5325",
+                                                                  "2535325",
+                                                                  "35292569",
+                                                                  "notNumbers",
+                                                                  "99012723456",
+                                                                  "02271409862",
+                                                                  "74110101745",
+                                                                  "801105124678" };
 
 PeselValidatorMock::PeselValidatorMock()
 {
-    ON_CALL(*this, validatePesel("90090515836")).WillByDefault(Return(true));
+    // default action for all example correct pesels
+    for (const auto& pesel : ok_pesels) {
+        ON_CALL(*this, validatePesel(pesel)).WillByDefault(Return(true));
+    }
+
+    // default action for all example wrong pesels
+    for (const auto& pesel : wrong_pesels) {
+        ON_CALL(*this, validatePesel(pesel)).WillByDefault(Return(false));
+    }
 }
 
 }   // namespace university::mocks
-
-// "90090515836", true },
-//                                                      { "", true },
-//                                                      { "", true },
-//                                                      { "", true },
-//                                                      { "", true },
-//                                                      { "", true },
-//                                                      { "", true },
-//                                                      { "67040500538", true },
