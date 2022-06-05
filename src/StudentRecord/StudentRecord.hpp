@@ -14,7 +14,6 @@ enum class Gender
 
 class StudentRecord
 {
-
   public:
     StudentRecord(IndexNo indexNumber,
                   const std::string& firstName,
