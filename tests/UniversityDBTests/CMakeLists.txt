@@ -1,8 +1,8 @@
-project(UniversityDB-mt
+project(UniversityDB-ut
         LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-              UniversityDB-mt.cpp)
+              UniversityDB-ut.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE
