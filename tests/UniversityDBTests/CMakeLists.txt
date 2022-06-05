@@ -24,4 +24,4 @@ target_compile_features(${PROJECT_NAME}
                         PRIVATE
                         cxx_std_20)
 
-gtest_discover_tests(UniversityDB-mt)
+gtest_discover_tests(${PROJECT_NAME})

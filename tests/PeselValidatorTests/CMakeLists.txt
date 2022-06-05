@@ -23,4 +23,4 @@ target_compile_features(${PROJECT_NAME}
                         PRIVATE
                         cxx_std_20)
 
-gtest_discover_tests(PeselValidator-ut)
+gtest_discover_tests(${PROJECT_NAME})
