@@ -1,8 +1,18 @@
 #pragma once
 
+// #include "StudentRecord/StudentRecord.hpp"
+
+#include <cstddef>
+#include <vector>
+
 namespace university {
 
-class StudentRecord;
+namespace student_record {
+    class StudentRecord;
+}
+
+using student_record::StudentRecord;
+
 class UniversityDB
 {
   public:

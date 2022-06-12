@@ -1,4 +1,4 @@
-project(university-db-ut
+project(university-project-tests
         LANGUAGES CXX)
 
 # prepare Google Test
