@@ -1,22 +1,26 @@
 #include "UniversityDB.hpp"
 
-#include "StudentRecord/StudentRecord.hpp"
-
 namespace university {
 
-bool UniversityDB::addStudent(const std::string& firstName,
+bool UniversityDB::addStudent(student_record::IndexNo index,
+                              const std::string& firstName,
                               const std::string& lastName,
                               const std::string& pesel,
                               const std::string& address,
                               const student_record::Gender gender)
 {
-    student_record::StudentRecord added { student_record::IndexNo(1),
-                                          firstName,
-                                          lastName,
-                                          pesel,
-                                          address,
-                                          gender };
-    students_.emplace_back(added);
+    if (pesel_validator_(pesel)) {
+        student_record::StudentRecord added { index,
+                                              firstName,
+                                              lastName,
+                                              pesel,
+                                              address,
+                                              gender };
+        students_.emplace_back(added);
+        return true;
+    }
+
+    return false;
 }
 
 std::size_t UniversityDB::size() const

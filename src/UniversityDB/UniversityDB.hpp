@@ -1,23 +1,18 @@
 #pragma once
 
+#include "PeselValidator/PeselValidator.hpp"
+#include "StudentRecord/StudentRecord.hpp"
+
 #include <cstddef>
 #include <string>
 #include <vector>
 namespace university {
 
-namespace student_record {
-    class StudentRecord;
-    enum class Gender;
-}   // namespace student_record
-
-namespace pesel_validator {
-    class PeselValidator;
-}
-
 class UniversityDB
 {
   public:
-    bool addStudent(const std::string& firstName,
+    bool addStudent(student_record::IndexNo index,
+                    const std::string& firstName,
                     const std::string& lastName,
                     const std::string& pesel,
                     const std::string& address,
