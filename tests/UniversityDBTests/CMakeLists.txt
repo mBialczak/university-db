@@ -1,14 +1,16 @@
-project(PeselValidator-ut
+project(UniversityDB-ut
         LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-              PeselValidator-UT.cpp)
+              UniversityDB-UT.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE
-                           ${CMAKE_SOURCE_DIR}/src)
+                           ${CMAKE_SOURCE_DIR}/src
+                           ${CMAKE_SOURCE_DIR}/tests/mocks)
 
 target_link_libraries(${PROJECT_NAME}
+                      StudentRecord-lib
                       PeselValidator-lib
                       gtest_main
                       gmock_main)
