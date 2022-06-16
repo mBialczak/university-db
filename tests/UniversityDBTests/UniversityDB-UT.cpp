@@ -54,7 +54,7 @@ UniversityDBTest::UniversityDBTest()
 
 { }
 
-TEST_F(UniversityDBTest, ShouldBeAbleToAddNewFromCompositeStudentWithCorrectPeselAndChangeSize)
+TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPeselFromCompositeData)
 {
     IndexNo johns_index { 4ul };
     std::string johns_first { "John" };
@@ -74,7 +74,7 @@ TEST_F(UniversityDBTest, ShouldBeAbleToAddNewFromCompositeStudentWithCorrectPese
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
-TEST_F(UniversityDBTest, ShouldNotAddNewStudentFromCompositeDataWithInvalidPesel)
+TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPeselFromCompositeData)
 {
     IndexNo joans_index { 12ul };
     std::string joans_first { "Joahne" };
@@ -93,6 +93,14 @@ TEST_F(UniversityDBTest, ShouldNotAddNewStudentFromCompositeDataWithInvalidPesel
     auto size_after = sut.size();
     EXPECT_FALSE(was_student_added);
     EXPECT_EQ(size_before, size_after);
+}
+
+TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPeselAndChangeSize)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+
+    EXPECT_EQ(sut.size(), 2);
 }
 
 }   // end of namespace university::ut
