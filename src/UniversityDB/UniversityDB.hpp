@@ -20,7 +20,10 @@ class UniversityDB
                     const std::string& address,
                     const student_record::Gender gender);
 
-    std::size_t size() const;
+    StudentRecord findByPesel(const std::string& pesel) const;
+
+    std::size_t
+        size() const;
 
   private:
     pesel_validator::PeselValidator pesel_validator_;

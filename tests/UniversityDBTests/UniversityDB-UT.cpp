@@ -124,4 +124,13 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
+TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPesel)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    auto retrievedStudent = sut.findByPesel(valid_rec_1.pesel());
+
+    EXPECT_EQ(retrievedStudent, valid_rec_1);
+}
+
 }   // end of namespace university::ut

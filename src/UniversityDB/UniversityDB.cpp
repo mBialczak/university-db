@@ -48,4 +48,9 @@ std::size_t UniversityDB::size() const
     return students_.size();
 }
 
+std::optional<StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+{
+    auto
+}
+
 }   // namespace university
