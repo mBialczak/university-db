@@ -128,11 +128,11 @@ TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
-    std::optional<StudentRecord> retrieved_student = sut.findByPesel(valid_rec_2.pesel());
-    std::optional<StudentRecord> should_not_be_found = sut.findByPesel("65071209862");
+    auto retrieved_student = sut.findByPesel(valid_rec_2.pesel());
+    auto should_not_be_found = sut.findByPesel("65071209862");
 
     EXPECT_EQ(*retrieved_student, valid_rec_2);
-    EXPECT_EQ(should_not_be_found, std::nullopt);
+    EXPECT_EQ(should_not_be_found, nullptr);
 }
 
 TEST_F(UniversityDBTest, ShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)

@@ -50,7 +50,7 @@ std::size_t UniversityDB::size() const
     return students_.size();
 }
 
-std::optional<student_record::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+std::shared_ptr<const student_record::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
 {
     auto result_iter = std::find_if(students_.begin(),
                                     students_.end(),
@@ -58,10 +58,10 @@ std::optional<student_record::StudentRecord> UniversityDB::findByPesel(const std
                                         return record.pesel() == pesel;
                                     });
     if (result_iter != students_.end()) {
-        return *result_iter;
+        return std::make_shared<const student_record::StudentRecord>(*result_iter);
     }
 
-    return std::nullopt;
+    return nullptr;
 }
 
 std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const

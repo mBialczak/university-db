@@ -4,7 +4,7 @@
 #include "StudentRecord/StudentRecord.hpp"
 
 #include <cstddef>
-#include <optional>
+#include <memory>
 #include <string>
 #include <vector>
 namespace university {
@@ -21,7 +21,7 @@ class UniversityDB
                     const std::string& address,
                     const student_record::Gender gender);
 
-    std::optional<student_record::StudentRecord> findByPesel(const std::string& pesel) const;
+    std::shared_ptr<const student_record::StudentRecord> findByPesel(const std::string& pesel) const;
     std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
 
     std::size_t size() const;
