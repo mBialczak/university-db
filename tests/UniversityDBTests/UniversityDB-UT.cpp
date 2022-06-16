@@ -124,13 +124,15 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
-TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPesel)
+TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
-    auto retrievedStudent = sut.findByPesel(valid_rec_1.pesel());
+    std::optional<StudentRecord> retrieved_student = sut.findByPesel(valid_rec_2.pesel());
+    std::optional<StudentRecord> should_not_be_found = sut.findByPesel("65071209862");
 
-    EXPECT_EQ(retrievedStudent, valid_rec_1);
+    EXPECT_EQ(*retrieved_student, valid_rec_2);
+    EXPECT_EQ(should_not_be_found, std::nullopt);
 }
 
 }   // end of namespace university::ut
