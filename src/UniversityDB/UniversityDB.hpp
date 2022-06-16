@@ -11,6 +11,7 @@ namespace university {
 class UniversityDB
 {
   public:
+    bool addStudent(const student_record::StudentRecord& record);
     bool addStudent(student_record::IndexNo index,
                     const std::string& firstName,
                     const std::string& lastName,

@@ -23,6 +23,16 @@ bool UniversityDB::addStudent(student_record::IndexNo index,
     return false;
 }
 
+bool UniversityDB::addStudent(const student_record::StudentRecord& record)
+{
+    if (pesel_validator_(record.pesel())) {
+        students_.emplace_back(record);
+        return true;
+    }
+
+    return false;
+}
+
 std::size_t UniversityDB::size() const
 {
     return students_.size();
