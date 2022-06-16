@@ -9,7 +9,7 @@ namespace university::ut {
 using student_record::Gender;
 using student_record::IndexNo;
 using student_record::StudentRecord;
-using testing::Test;
+using namespace testing;
 
 class UniversityDBTest : public Test
 {
@@ -133,6 +133,27 @@ TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
 
     EXPECT_EQ(*retrieved_student, valid_rec_2);
     EXPECT_EQ(should_not_be_found, std::nullopt);
+}
+
+TEST_F(UniversityDBTest, ShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    StudentRecord student_with_same_name { 339ul,
+                                           "John",
+                                           valid_rec_1.lastName(),
+                                           "67040500538",
+                                           "Poland, Gdynia, ul. Towarowa 80/74",
+                                           Gender::male };
+    sut.addStudent(student_with_same_name);
+
+    auto retrieved_students = sut.findByLastName(valid_rec_1.lastName());
+    auto should_not_be_found = sut.findByLastName("Psikuta");
+
+    EXPECT_EQ(should_not_be_found.size(), 0);
+    EXPECT_EQ(retrieved_students.size(), 2);
+    EXPECT_EQ(retrieved_students[0].lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
 }
 
 }   // end of namespace university::ut
