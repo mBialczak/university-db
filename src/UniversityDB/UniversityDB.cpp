@@ -1,5 +1,7 @@
 #include "UniversityDB.hpp"
 
+#include <algorithm>
+
 namespace university {
 
 bool UniversityDB::addStudent(student_record::IndexNo index,
@@ -48,9 +50,17 @@ std::size_t UniversityDB::size() const
     return students_.size();
 }
 
-std::optional<StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+std::optional<student_record::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
 {
-    auto
-}
+    auto result_iter = std::find_if(students_.begin(),
+                                    students_.end(),
+                                    [&pesel](const auto& record) {
+                                        return record.pesel() == pesel;
+                                    });
+    if (result_iter != students_.end()) {
+        return *result_iter;
+    }
 
+    return std::nullopt;
+}
 }   // namespace university

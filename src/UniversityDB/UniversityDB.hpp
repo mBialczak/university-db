@@ -4,6 +4,7 @@
 #include "StudentRecord/StudentRecord.hpp"
 
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <vector>
 namespace university {
@@ -20,10 +21,9 @@ class UniversityDB
                     const std::string& address,
                     const student_record::Gender gender);
 
-    StudentRecord findByPesel(const std::string& pesel) const;
+    std::optional<student_record::StudentRecord> findByPesel(const std::string& pesel) const;
 
-    std::size_t
-        size() const;
+    std::size_t size() const;
 
   private:
     pesel_validator::PeselValidator pesel_validator_;
@@ -31,5 +31,3 @@ class UniversityDB
 };   // namespace UniversityDB
 
 }   // namespace university
-
-// TODO: valid index number implementation
