@@ -12,14 +12,14 @@ class UniversityDB
 {
   public:
     bool addStudent(const student_record::StudentRecord& record);
+    bool addStudent(student_record::StudentRecord&& record);
     bool addStudent(student_record::IndexNo index,
                     const std::string& firstName,
                     const std::string& lastName,
                     const std::string& pesel,
                     const std::string& address,
                     const student_record::Gender gender);
-    // TODO:: add this
-    //  void addStudent(const StudentRecord&);
+
     std::size_t size() const;
 
   private:
