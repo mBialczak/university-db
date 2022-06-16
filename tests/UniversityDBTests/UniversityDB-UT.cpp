@@ -111,4 +111,17 @@ TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPesel)
     EXPECT_EQ(sut.size(), 0);
 }
 
+TEST_F(UniversityDBTest, ShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
+{
+    auto size_before = sut.size();
+    sut.addStudent(StudentRecord(4ul,
+                                 "John",
+                                 "Dickens",
+                                 "90090515836",
+                                 "England, London, Puddle of Mudd st. 37",
+                                 Gender::male));
+
+    EXPECT_EQ(sut.size(), size_before + 1);
+}
+
 }   // end of namespace university::ut
