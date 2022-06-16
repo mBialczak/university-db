@@ -22,6 +22,7 @@ class UniversityDB
                     const student_record::Gender gender);
 
     std::optional<student_record::StudentRecord> findByPesel(const std::string& pesel) const;
+    std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
 
     std::size_t size() const;
 

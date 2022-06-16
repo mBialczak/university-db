@@ -63,4 +63,17 @@ std::optional<student_record::StudentRecord> UniversityDB::findByPesel(const std
 
     return std::nullopt;
 }
+
+std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const
+{
+    std::vector<student_record::StudentRecord> found_students;
+    std::copy_if(students_.begin(),
+                 students_.end(),
+                 std::back_inserter(found_students),
+                 [&lastName](const auto& record) {
+                     return record.lastName() == lastName;
+                 });
+
+    return found_students;
+}
 }   // namespace university
