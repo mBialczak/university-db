@@ -95,12 +95,20 @@ TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPeselFromCompositeData
     EXPECT_EQ(size_before, size_after);
 }
 
-TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPeselAndChangeSize)
+TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPesel)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
 
     EXPECT_EQ(sut.size(), 2);
+}
+
+TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPesel)
+{
+    sut.addStudent(invalid_rec_1);
+    sut.addStudent(invalid_rec_2);
+
+    EXPECT_EQ(sut.size(), 0);
 }
 
 }   // end of namespace university::ut
