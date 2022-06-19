@@ -110,4 +110,12 @@ const std::vector<student_record::StudentRecord>& UniversityDB::data() const
     return students_;
 }
 
+void UniversityDB::sortByPesel()
+{
+    std::sort(students_.begin(),
+              students_.end(),
+              [](const auto& lhs, const auto& rhs) {
+                  return lhs.pesel() < rhs.pesel();
+              });
+}
 }   // namespace university
