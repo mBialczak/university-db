@@ -205,4 +205,17 @@ TEST_F(UniversityDBTest, RemoveStudentShouldDoNothingIfThereIsNoStudentWithGiven
     EXPECT_FALSE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal);
 }
+
+TEST_F(UniversityDBTest, SortByLastNameShouldCorrectlyRearangeDataBaseRecords)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
+
+    sut.sortByLastName();
+
+    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
+}
+
 }   // end of namespace university::ut
