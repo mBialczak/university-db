@@ -9,6 +9,10 @@ target_link_libraries(${PROJECT_NAME}-lib
                       StudentRecord-lib
                       PeselValidator-lib)
 
+target_include_directories(${PROJECT_NAME}-lib
+                          PRIVATE
+                          ${CMAKE_SOURCE_DIR}/src)
+
 target_compile_options(${PROJECT_NAME}-lib
                        PRIVATE
                        -Wall

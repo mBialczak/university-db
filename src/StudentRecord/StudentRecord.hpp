@@ -29,6 +29,8 @@ class StudentRecord
     IndexNo index() const;
     Gender gender() const;
 
+    bool operator==(const StudentRecord&) const = default;
+
   private:
     IndexNo index_;
     std::string first_name_;

@@ -11,7 +11,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
                       StudentRecord-lib
-                      PeselValidator-lib
+                      UniversityDB-lib
                       gtest_main
                       gmock_main)
 
