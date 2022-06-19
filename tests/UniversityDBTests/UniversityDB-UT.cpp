@@ -21,6 +21,8 @@ class UniversityDBTest : public Test
     // student records with valid PESEL numbers
     StudentRecord valid_rec_1;
     StudentRecord valid_rec_2;
+    StudentRecord valid_rec_3;
+    StudentRecord valid_rec_4;
     // student records with invalid PESEL numbers;
     StudentRecord invalid_rec_1;
     StudentRecord invalid_rec_2;
@@ -38,6 +40,18 @@ UniversityDBTest::UniversityDBTest()
                     "Kowalski",
                     "90080517455",
                     "Poland, Laskowice, ul. Niedzielna 304A",
+                    Gender::male })
+    , valid_rec_3({ IndexNo { 333ul },
+                    "Anna",
+                    "Zielinska",
+                    "90090515836",
+                    "Poland, Opole, ul. Sobotnia 15A",
+                    Gender::female })
+    , valid_rec_4({ IndexNo { 144ul },
+                    "Peter",
+                    "Pikiel",
+                    "67040500538",
+                    "Poland, Zabrze, ul. Nieznana 1C/44",
                     Gender::male })
     , invalid_rec_1({ IndexNo { 200ul },
                       "Harold",
@@ -99,8 +113,10 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPesel)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
 
-    EXPECT_EQ(sut.size(), 2);
+    EXPECT_EQ(sut.size(), 4);
 }
 
 TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPesel)
@@ -128,6 +144,8 @@ TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
     auto retrieved_student = sut.findByPesel(valid_rec_2.pesel());
     auto should_not_be_found = sut.findByPesel("65071209862");
 
@@ -160,6 +178,8 @@ TEST_F(UniversityDBTest, RemoveStudentShouldFindAndRemoveStudentRecordGivenIndex
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
     auto size_before_removal = sut.size();
 
     bool has_removed = sut.removeStudent(valid_rec_1.index());
@@ -172,12 +192,16 @@ TEST_F(UniversityDBTest, RemoveStudentShouldDoNothingIfThereIsNoStudentWithGiven
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
     auto size_before_removal = sut.size();
     IndexNo non_existing_index = valid_rec_1.index() + 5ul;
 
     bool has_removed = sut.removeStudent(non_existing_index);
 
     ASSERT_NE(valid_rec_2.index(), non_existing_index);
+    ASSERT_NE(valid_rec_3.index(), non_existing_index);
+    ASSERT_NE(valid_rec_4.index(), non_existing_index);
     EXPECT_FALSE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal);
 }
