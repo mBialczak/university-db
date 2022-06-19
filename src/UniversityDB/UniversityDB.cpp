@@ -96,4 +96,18 @@ UniversityDB::StudentIterator UniversityDB::findByIndex(student_record::IndexNo 
                         });
 }
 
+void UniversityDB::sortByLastName()
+{
+    std::sort(students_.begin(),
+              students_.end(),
+              [](const auto& lhs, const auto& rhs) {
+                  return lhs.lastName() < rhs.lastName();
+              });
+}
+
+const std::vector<student_record::StudentRecord>& UniversityDB::data() const
+{
+    return students_;
+}
+
 }   // namespace university

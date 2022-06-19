@@ -23,6 +23,8 @@ class UniversityDB
                     const std::string& address,
                     const student_record::Gender gender);
     bool removeStudent(student_record::IndexNo indexNo);
+    void sortByLastName();
+    const std::vector<student_record::StudentRecord>& data() const;
 
     std::shared_ptr<const student_record::StudentRecord> findByPesel(const std::string& pesel) const;
     std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
