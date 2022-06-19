@@ -156,4 +156,29 @@ TEST_F(UniversityDBTest, ShouldFindAllStudentsWithSameLastNameIfAnyExistInDataba
     EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
 }
 
+TEST_F(UniversityDBTest, RemoveStudentShouldFindAndRemoveStudentRecordGivenIndexNo)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    auto size_before_removal = sut.size();
+
+    bool has_removed = sut.removeStudent(valid_rec_1.index());
+
+    EXPECT_TRUE(has_removed);
+    EXPECT_EQ(sut.size(), size_before_removal - 1ul);
+}
+
+TEST_F(UniversityDBTest, RemoveStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    auto size_before_removal = sut.size();
+    IndexNo non_existing_index = valid_rec_1.index() + 5ul;
+
+    bool has_removed = sut.removeStudent(non_existing_index);
+
+    ASSERT_NE(valid_rec_2.index(), non_existing_index);
+    EXPECT_FALSE(has_removed);
+    EXPECT_EQ(sut.size(), size_before_removal);
+}
 }   // end of namespace university::ut
