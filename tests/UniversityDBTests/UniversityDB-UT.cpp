@@ -218,4 +218,16 @@ TEST_F(UniversityDBTest, SortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
 }
 
+TEST_F(UniversityDBTest, SortByPeselShouldCorrectlyRearangeDataBaseRecords)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
+
+    sut.sortByPesel();
+
+    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
+}
+
 }   // end of namespace university::ut
