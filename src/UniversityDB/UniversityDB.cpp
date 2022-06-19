@@ -3,7 +3,6 @@
 #include <algorithm>
 
 namespace university {
-
 bool UniversityDB::addStudent(student_record::IndexNo index,
                               const std::string& firstName,
                               const std::string& lastName,
@@ -76,4 +75,25 @@ std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const st
 
     return found_students;
 }
+
+bool UniversityDB::removeStudent(student_record::IndexNo index)
+{
+    auto to_be_removed = findByIndex(index);
+    if (to_be_removed != students_.end()) {
+        students_.erase(to_be_removed);
+        return true;
+    }
+
+    return false;
+}
+
+UniversityDB::StudentIterator UniversityDB::findByIndex(student_record::IndexNo index)
+{
+    return std::find_if(students_.begin(),
+                        students_.end(),
+                        [&index](const auto& record) {
+                            return record.index() == index;
+                        });
+}
+
 }   // namespace university
