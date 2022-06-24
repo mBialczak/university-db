@@ -230,4 +230,23 @@ TEST_F(UniversityDBTest, SortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
 }
 
+void addStudentToOstream(std::ostream& stream, const StudentRecord& student)
+{
+    const std::string pattern { "Student record 1\n\
+                                 ------------------\n" };
+    pattern += "First name: " + student.firstName() + "\n";
+    pattern += "Last name: " + student.lastName() + "\n";
+    pattern += "PESEL: " + student.pesel() + "\n";
+    pattern += "Address: " + student.address() + "\n";
+    pattern += "Gender: ";
+    pattern += student.gender() == Gender::male ? "male"
+                                                : "female";
+    pattern += "\n========================================\n";
+    stream << pattern;
+}
+TEST_F(UniversityDBTest, DisplayShouldCorretlyInsertRecordToOuptutStream)
+{
+    std::ostringstream osstream;
+}
+
 }   // end of namespace university::ut
