@@ -1,5 +1,6 @@
 #include "StudentRecord.hpp"
 
+#include <ostream>
 namespace university::student_record {
 
 StudentRecord::StudentRecord(IndexNo indexNumber,
@@ -47,4 +48,17 @@ Gender StudentRecord::gender() const
     return gender_;
 }
 
+std::ostream& operator<<(std::ostream& os, const StudentRecord& student)
+{
+    os << "First name: " + student.firstName() + "\n"
+       << "Last name: " + student.lastName() + "\n"
+       << "PESEL: " + student.pesel() + "\n"
+       << "Address: " + student.address() + "\n"
+       << "Gender: ";
+    std::string gender = (student.gender() == Gender::male) ? "male"
+                                                            : "female";
+    os << gender << std::endl;
+
+    return os;
+}
 }   // namespace university::student_record
