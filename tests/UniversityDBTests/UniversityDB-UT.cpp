@@ -230,23 +230,43 @@ TEST_F(UniversityDBTest, SortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
 }
 
-void addStudentToOstream(std::ostream& stream, const StudentRecord& student)
+void addStudentToPattern(const StudentRecord& student, std::string& pattern)
 {
-    const std::string pattern { "Student record 1\n\
-                                 ------------------\n" };
-    pattern += "First name: " + student.firstName() + "\n";
-    pattern += "Last name: " + student.lastName() + "\n";
-    pattern += "PESEL: " + student.pesel() + "\n";
-    pattern += "Address: " + student.address() + "\n";
-    pattern += "Gender: ";
-    pattern += student.gender() == Gender::male ? "male"
-                                                : "female";
-    pattern += "\n========================================\n";
-    stream << pattern;
+    static int record_counter { 1 };
+
+    pattern += "Student record "
+        + std::to_string(record_counter) + "\n"
+        + " ------------------\n"
+        + "First name: " + student.firstName() + "\n"
+        + "Last name: " + student.lastName() + "\n"
+        + "PESEL: " + student.pesel() + "\n"
+        + "Address: " + student.address() + "\n"
+        + "Gender: ";
+    std::string gender = (student.gender() == Gender::male) ? "male"
+                                                            : "female";
+    pattern += gender + "\n";
+    pattern += "========================================\n";
+    ++record_counter;
 }
+
 TEST_F(UniversityDBTest, DisplayShouldCorretlyInsertRecordToOuptutStream)
 {
+    std::string pattern;
+    addStudentToPattern(valid_rec_1, pattern);
+    addStudentToPattern(valid_rec_2, pattern);
+    addStudentToPattern(valid_rec_3, pattern);
+    addStudentToPattern(valid_rec_4, pattern);
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
+    // ostringstream used as substitution for std::cout
     std::ostringstream osstream;
+
+    sut.Display(osstream);
+    std::string insertion_result = osstream.str();
+
+    EXPECT_EQ(pattern, insertion_result);
 }
 
 }   // end of namespace university::ut
