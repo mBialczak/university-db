@@ -40,4 +40,6 @@ class StudentRecord
     Gender gender_;
 };
 
+std::ostream& operator<<(std::ostream& os, const StudentRecord& student);
+
 }   // namespace university::student_record

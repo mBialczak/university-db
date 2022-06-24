@@ -65,4 +65,34 @@ TEST_F(StudentRecordTests, PeselShouldReturnStudentsPesel)
     EXPECT_EQ(sally.pesel(), "81100216357");
 }
 
+std::string prepPatternString(const StudentRecord& student)
+{
+    std::string pattern;
+    pattern += "First name: " + student.firstName() + "\n";
+    pattern += "Last name: " + student.lastName() + "\n";
+    pattern += "PESEL: " + student.pesel() + "\n";
+    pattern += "Address: " + student.address() + "\n";
+    pattern += "Gender: ";
+    pattern += student.gender() == Gender::male ? "male"
+                                                : "female";
+    pattern += "\n";
+
+    return pattern;
+}
+
+TEST_F(StudentRecordTests, OutputOperatorShouldCorretlyInsertStudentRecordToOuptutStream)
+{
+    std::string pattern1 = prepPatternString(john);
+    std::string pattern2 = prepPatternString(sally);
+    std::ostringstream osstream;
+
+    osstream << john;
+    std::string insertion_result1 = osstream.str();
+    osstream.str("");
+    osstream << sally;
+    std::string insertion_result2 = osstream.str();
+
+    EXPECT_EQ(pattern1, insertion_result1);
+    EXPECT_EQ(pattern2, insertion_result2);
+}
 }   // namespace university::student_record::ut
