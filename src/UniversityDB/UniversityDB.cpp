@@ -131,4 +131,11 @@ void UniversityDB::Display(std::ostream& stream) const
         ++counter;
     }
 }
+
+std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
+{
+    database.Display(os);
+
+    return os;
+}
 }   // namespace university

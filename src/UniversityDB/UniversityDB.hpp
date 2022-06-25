@@ -45,4 +45,5 @@ class UniversityDB
     std::vector<student_record::StudentRecord> students_;
 };   // namespace UniversityDB
 
+std::ostream& operator<<(std::ostream& os, const UniversityDB& database);
 }   // namespace university
