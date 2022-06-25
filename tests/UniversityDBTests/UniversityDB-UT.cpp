@@ -230,32 +230,55 @@ TEST_F(UniversityDBTest, SortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
 }
 
-void addStudentToPattern(const StudentRecord& student, std::string& pattern)
+void addStudentsToPattern(const std::vector<StudentRecord>& students, std::string& pattern)
 {
-    static int record_counter { 1 };
-
-    pattern += "Student record "
-        + std::to_string(record_counter) + "\n"
-        + " ------------------\n"
-        + "First name: " + student.firstName() + "\n"
-        + "Last name: " + student.lastName() + "\n"
-        + "PESEL: " + student.pesel() + "\n"
-        + "Address: " + student.address() + "\n"
-        + "Gender: ";
-    std::string gender = (student.gender() == Gender::male) ? "male"
-                                                            : "female";
-    pattern += gender + "\n";
-    pattern += "========================================\n";
-    ++record_counter;
+    int counter { 1 };
+    for (const auto& student : students) {
+        pattern += "Student record "
+            + std::to_string(counter) + "\n"
+            + " ------------------\n"
+            + "First name: " + student.firstName() + "\n"
+            + "Last name: " + student.lastName() + "\n"
+            + "PESEL: " + student.pesel() + "\n"
+            + "Address: " + student.address() + "\n"
+            + "Gender: ";
+        std::string gender = (student.gender() == Gender::male) ? "male"
+                                                                : "female";
+        pattern += gender + "\n";
+        pattern += "========================================\n";
+        ++counter;
+    }
 }
 
-TEST_F(UniversityDBTest, DisplayShouldCorretlyInsertRecordToOuptutStream)
+TEST_F(UniversityDBTest, DisplayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    addStudentToPattern(valid_rec_1, pattern);
-    addStudentToPattern(valid_rec_2, pattern);
-    addStudentToPattern(valid_rec_3, pattern);
-    addStudentToPattern(valid_rec_4, pattern);
+    std::vector<StudentRecord> students { valid_rec_1,
+                                          valid_rec_2,
+                                          valid_rec_3,
+                                          valid_rec_4 };
+    addStudentsToPattern(students, pattern);
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
+    // ostringstream used as substitution for std::cout and other streams
+    std::ostringstream osstream;
+
+    sut.Display(osstream);
+    std::string display_result = osstream.str();
+
+    EXPECT_EQ(pattern, display_result);
+}
+
+TEST_F(UniversityDBTest, OutputOperatorShouldCorrectlyInsertRecordToOuptutStream)
+{
+    std::string pattern;
+    std::vector<StudentRecord> students { valid_rec_1,
+                                          valid_rec_2,
+                                          valid_rec_3,
+                                          valid_rec_4 };
+    addStudentsToPattern(students, pattern);
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
     sut.addStudent(valid_rec_3);
@@ -263,10 +286,10 @@ TEST_F(UniversityDBTest, DisplayShouldCorretlyInsertRecordToOuptutStream)
     // ostringstream used as substitution for std::cout
     std::ostringstream osstream;
 
-    sut.Display(osstream);
-    std::string insertion_result = osstream.str();
+    osstream << sut;
+    std::string operator_result = osstream.str();
 
-    EXPECT_EQ(pattern, insertion_result);
+    EXPECT_EQ(pattern, operator_result);
 }
 
 }   // end of namespace university::ut
