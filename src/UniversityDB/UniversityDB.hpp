@@ -4,9 +4,11 @@
 #include "StudentRecord/StudentRecord.hpp"
 
 #include <cstddef>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
+
 namespace university {
 
 class UniversityDB
@@ -22,13 +24,18 @@ class UniversityDB
                     const std::string& pesel,
                     const std::string& address,
                     const student_record::Gender gender);
+
     bool removeStudent(student_record::IndexNo indexNo);
+
     void sortByLastName();
     void sortByPesel();
+
     const std::vector<student_record::StudentRecord>& data() const;
 
     std::shared_ptr<const student_record::StudentRecord> findByPesel(const std::string& pesel) const;
     std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
+
+    void Display(std::ostream& stream = std::cout) const;
 
     std::size_t size() const;
 
@@ -38,4 +45,5 @@ class UniversityDB
     std::vector<student_record::StudentRecord> students_;
 };   // namespace UniversityDB
 
+std::ostream& operator<<(std::ostream& os, const UniversityDB& database);
 }   // namespace university

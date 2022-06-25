@@ -118,4 +118,24 @@ void UniversityDB::sortByPesel()
                   return lhs.pesel() < rhs.pesel();
               });
 }
+
+void UniversityDB::Display(std::ostream& stream) const
+{
+    std::size_t counter = 1;
+    for (const auto& student : students_) {
+        stream << "Student record "
+               << std::to_string(counter) + "\n"
+               << " ------------------\n"
+               << student
+               << "========================================\n";
+        ++counter;
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
+{
+    database.Display(os);
+
+    return os;
+}
 }   // namespace university
