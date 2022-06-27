@@ -53,6 +53,7 @@ std::ostream& operator<<(std::ostream& os, const StudentRecord& student)
     os << "First name: " + student.firstName() + "\n"
        << "Last name: " + student.lastName() + "\n"
        << "PESEL: " + student.pesel() + "\n"
+       << "Index number: " + std::to_string(student.index()) + "\n"
        << "Address: " + student.address() + "\n"
        << "Gender: ";
     std::string gender = (student.gender() == Gender::male) ? "male"
