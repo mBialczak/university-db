@@ -293,20 +293,20 @@ TEST_F(UniversityDBTest, OutputOperatorShouldCorrectlyInsertRecordToOuptutStream
     EXPECT_EQ(pattern, operator_result);
 }
 
-// TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
-// {
-//     // prepare second database for comparison
-//     UniversityDB databaseToCompare;
-//     databaseToCompare.addStudent(valid_rec_1);
-//     databaseToCompare.addStudent(valid_rec_2);
-//     databaseToCompare.addStudent(valid_rec_3);
-//     databaseToCompare.addStudent(valid_rec_4);
+TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
+{
+    // prepare second database for comparison
+    UniversityDB databaseToCompare;
+    databaseToCompare.addStudent(valid_rec_1);
+    databaseToCompare.addStudent(valid_rec_2);
+    databaseToCompare.addStudent(valid_rec_3);
+    databaseToCompare.addStudent(valid_rec_4);
 
-//     // read student record from previously prepared template file
-//     sut.readFromFile("File-reading-template");
-//     auto internalStateToCompare = databaseToCompare.data();
-//     auto internalStateReadToSut = sut.data();
+    // read student record from previously prepared template file
+    sut.readFromFile("File-reading-template");
+    auto internalStateToCompare = databaseToCompare.data();
+    auto internalStateReadToSut = sut.data();
 
-//     EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
-// }
+    EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
+}
 }   // end of namespace university::ut
