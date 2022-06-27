@@ -71,6 +71,7 @@ std::string prepPatternString(const StudentRecord& student)
     pattern += "First name: " + student.firstName() + "\n";
     pattern += "Last name: " + student.lastName() + "\n";
     pattern += "PESEL: " + student.pesel() + "\n";
+    pattern += "Index number: " + std::to_string(student.index()) + "\n";
     pattern += "Address: " + student.address() + "\n";
     pattern += "Gender: ";
     pattern += student.gender() == Gender::male ? "male"
