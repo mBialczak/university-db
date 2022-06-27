@@ -1,8 +1,16 @@
 #include "UniversityDB.hpp"
 
 #include <algorithm>
+#include <fstream>
+// TODO: remove INU
+#include <map>
+#include <regex>
+#include <sstream>
 
 namespace university {
+
+const char* fileToread = "../test-resources/File-reading-template.txt";
+
 bool UniversityDB::addStudent(student_record::IndexNo index,
                               const std::string& firstName,
                               const std::string& lastName,
@@ -117,6 +125,89 @@ void UniversityDB::sortByPesel()
               [](const auto& lhs, const auto& rhs) {
                   return lhs.pesel() < rhs.pesel();
               });
+}
+
+bool UniversityDB::readFromFile(const char* fileNameh)
+{
+    std::ifstream stream(fileToread);
+    std::string raw_record_text;
+    while (stream) {
+        raw_record_text = parseRecordFromFile(stream);
+        std::map<std::string, std::string> record_parts;
+        record_parts["first_name"] = readRecordPart(raw_record_text, "First name:");
+        record_parts["last_name"] = readRecordPart(raw_record_text, "Last name:");
+        record_parts["pesel"] = readRecordPart(raw_record_text, "PESEL:");
+        record_parts["address"] = readRecordPart(raw_record_text, "Address:");
+        record_parts["gender"] = readRecordPart(raw_record_text, "Gender:");
+    }
+}
+
+std::string UniversityDB::readRecordPart(const std::string& fullText, const std::string& searched) const
+{
+    std::regex to_find { searched };
+    std::istringstream stream { text };
+    std::string line;
+    // find line with first name
+    while (getline(stream, line) && !std::regex_match(line, exp)) {
+    }
+    auto pos = line.find(": ");
+
+    return line.substr(pos);
+}
+
+std::string UniversityDB::readLastName(const std::string& text) const
+{
+    std::regex searched { "Last name:" };
+    std::istringstream stream { text };
+    std::string line;
+    // find line with first name
+    while (getline(stream, line) && !std::regex_match(line, exp)) {
+    }
+    auto pos = line.find(": ");
+
+    return line.substr(pos);
+}
+
+std::string parseRecordFromFile(const std::ifstream& stream) const
+{
+    std::string line;
+    std::string record_text;
+    std::regex end_line { "*=====*" };
+    while (getline(stream, line) && !std::regex_match(line, exp)) {
+        record_text += line + "\n";
+    }
+
+    return record_text;
+}
+
+// TODO: remove if not use
+bool UniversityDB::readHeaderLines(const std::ifstream& stream, int lines)
+{
+    bool result { true };
+    if (stream) {
+    }
+
+    while (lines >= 0 & stream) {
+        getline(stream);
+    }
+}
+
+bool UniversityDB::tryMakeRecord(const std::map<std::string, std::string>& parts)
+{
+    // we don't want a record if any of field would be incomplete
+    for (const auto [key, value] : parts) {
+        if (value == "") {
+            return false;
+        }
+    }
+
+    return addStudent(, parts["first_name"])
+
+               r = readRecordPart(raw_record_text, "First name:");
+    record_parts["last_name"] = readRecordPart(raw_record_text, "Last name:");
+    record_parts["pesel"] = readRecordPart(raw_record_text, "PESEL:");
+    record_parts["address"] = readRecordPart(raw_record_text, "Address:");
+    record_parts["gender"] = readRecordPart(raw_record_text, "Gender:");
 }
 
 void UniversityDB::Display(std::ostream& stream) const
