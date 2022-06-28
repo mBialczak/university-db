@@ -3,6 +3,7 @@
 #include "UniversityDB/UniversityDB.hpp"
 
 #include "gtest/gtest.h"
+#include <filesystem>
 
 namespace university::ut {
 
@@ -293,8 +294,19 @@ TEST_F(UniversityDBTest, OutputOperatorShouldCorrectlyInsertRecordToOuptutStream
     EXPECT_EQ(pattern, operator_result);
 }
 
+std::string getPathToTemplateFile()
+{
+    std::string current_path = std::filesystem::current_path().string();
+    auto position = current_path.find("build");
+    std::string path_to_template = current_path.substr(0, position);
+    path_to_template += "test-resources/File-reading-template.txt";
+
+    return path_to_template;
+}
+
 TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
 {
+    std::string path_to_template = getPathToTemplateFile();
     // prepare second database for comparison
     UniversityDB databaseToCompare;
     databaseToCompare.addStudent(valid_rec_1);
@@ -302,11 +314,11 @@ TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
     databaseToCompare.addStudent(valid_rec_3);
     databaseToCompare.addStudent(valid_rec_4);
 
-    // read student record from previously prepared template file
-    sut.readFromFile("File-reading-template");
+    int records_read = sut.readFromFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
     auto internalStateReadToSut = sut.data();
 
+    EXPECT_EQ(records_read, 4);
     EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
 }
 }   // end of namespace university::ut
