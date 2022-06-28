@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -30,7 +31,7 @@ class UniversityDB
     void sortByLastName();
     void sortByPesel();
 
-    bool readFromFile(const char* fileName);
+    int readFromFile(const char* fileName);
 
     const std::vector<student_record::StudentRecord>& data() const;
 
@@ -42,11 +43,9 @@ class UniversityDB
     std::size_t size() const;
 
   private:
-    // TODO: remove unnesecery?
-    std::string parseRecordFromFile(const std::ifstream& stream) const;
-    bool readHeaderLines(const std::ifstream& stream, int lines) const;
+    std::string parseRecordFromFile(std::ifstream& stream) const;
     std::string readRecordPart(const std::string& fullText, const std::string& searched) const;
-    std::string readLastName(const std::string& text) const;
+    std::map<std::string, std::string> getRecordAsMap(const std::string& rawRecord) const;
     bool tryMakeRecord(const std::map<std::string, std::string>& parts);
 
     StudentIterator findByIndex(student_record::IndexNo index);

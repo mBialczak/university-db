@@ -2,8 +2,6 @@
 
 #include <algorithm>
 #include <fstream>
-// TODO: remove INU
-#include <map>
 #include <regex>
 #include <sstream>
 
@@ -127,87 +125,93 @@ void UniversityDB::sortByPesel()
               });
 }
 
-bool UniversityDB::readFromFile(const char* fileNameh)
+int UniversityDB::readFromFile(const char* fileName)
 {
-    std::ifstream stream(fileToread);
+    std::ifstream stream(fileName);
+    int records_read { 0 };
+    if (!stream) {
+        std::cerr << "file not found";
+        return records_read;
+    }
     std::string raw_record_text;
     while (stream) {
         raw_record_text = parseRecordFromFile(stream);
-        std::map<std::string, std::string> record_parts;
-        record_parts["first_name"] = readRecordPart(raw_record_text, "First name:");
-        record_parts["last_name"] = readRecordPart(raw_record_text, "Last name:");
-        record_parts["pesel"] = readRecordPart(raw_record_text, "PESEL:");
-        record_parts["address"] = readRecordPart(raw_record_text, "Address:");
-        record_parts["gender"] = readRecordPart(raw_record_text, "Gender:");
+        if (raw_record_text.empty()) {
+            break;
+        }
+        auto record_parts = getRecordAsMap(raw_record_text);
+        if (tryMakeRecord(record_parts)) {
+            ++records_read;
+        }
     }
+
+    return records_read;
+}
+
+std::map<std::string, std::string> UniversityDB::getRecordAsMap(const std::string& rawRecord) const
+{
+    std::map<std::string, std::string> record_parts;
+    record_parts["first_name"] = readRecordPart(rawRecord, "First name:");
+    record_parts["last_name"] = readRecordPart(rawRecord, "Last name:");
+    record_parts["index"] = readRecordPart(rawRecord, "Index number:");
+    record_parts["pesel"] = readRecordPart(rawRecord, "PESEL:");
+    record_parts["address"] = readRecordPart(rawRecord, "Address:");
+    record_parts["gender"] = readRecordPart(rawRecord, "Gender:");
+
+    return record_parts;
 }
 
 std::string UniversityDB::readRecordPart(const std::string& fullText, const std::string& searched) const
 {
-    std::regex to_find { searched };
-    std::istringstream stream { text };
+    const std::regex to_find { searched };
+    std::istringstream stream { fullText };
     std::string line;
-    // find line with first name
-    while (getline(stream, line) && !std::regex_match(line, exp)) {
+    // find line with searched text
+    while (getline(stream, line) && !std::regex_search(line, to_find)) {
     }
     auto pos = line.find(": ");
 
-    return line.substr(pos);
+    return line.substr(pos + 2);
 }
 
-std::string UniversityDB::readLastName(const std::string& text) const
-{
-    std::regex searched { "Last name:" };
-    std::istringstream stream { text };
-    std::string line;
-    // find line with first name
-    while (getline(stream, line) && !std::regex_match(line, exp)) {
-    }
-    auto pos = line.find(": ");
-
-    return line.substr(pos);
-}
-
-std::string parseRecordFromFile(const std::ifstream& stream) const
+std::string UniversityDB::parseRecordFromFile(std::ifstream& stream) const
 {
     std::string line;
     std::string record_text;
-    std::regex end_line { "*=====*" };
-    while (getline(stream, line) && !std::regex_match(line, exp)) {
+    const std::regex end_line { "======" };
+    while (getline(stream, line) && !std::regex_search(line, end_line)) {
         record_text += line + "\n";
     }
 
     return record_text;
 }
 
-// TODO: remove if not use
-bool UniversityDB::readHeaderLines(const std::ifstream& stream, int lines)
-{
-    bool result { true };
-    if (stream) {
-    }
-
-    while (lines >= 0 & stream) {
-        getline(stream);
-    }
-}
-
 bool UniversityDB::tryMakeRecord(const std::map<std::string, std::string>& parts)
 {
-    // we don't want a record if any of field would be incomplete
-    for (const auto [key, value] : parts) {
+    // we don't want a record if any of fields would be incomplete
+    for (const auto& [key, value] : parts) {
         if (value == "") {
             return false;
         }
     }
 
-    return addStudent(, parts["first_name"])
+    student_record::Gender gender;
+    if (parts.at("gender") == "female") {
+        gender = student_record::Gender::female;
+    }
+    else if (parts.at("gender") == "male") {
+        gender = student_record::Gender::male;
+    }
+    else {
+        return false;
+    }
 
-               r = readRecordPart(raw_record_text, "First name:");
-    record_parts["last_name"] = readRecordPart(raw_record_text, "Last name:");
-    record_parts["pesel"] = readRecordPart(raw_record_text, "PESEL:");
-    record_parts["address"] = readRecordPart(raw_record_text, "Address:");
-    record_parts["gender"] = readRecordPart(raw_record_text, "Gender:");
+    return addStudent(std::stoi(parts.at("index")),
+                      parts.at("first_name"),
+                      parts.at("last_name"),
+                      parts.at("pesel"),
+                      parts.at("address"),
+                      gender);
 }
 
 void UniversityDB::Display(std::ostream& stream) const
