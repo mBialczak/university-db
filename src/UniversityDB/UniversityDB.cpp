@@ -125,6 +125,26 @@ void UniversityDB::sortByPesel()
               });
 }
 
+int UniversityDB::writeToFile(const char* fileName) const
+{
+    std::ofstream stream(fileName);
+    if (!stream) {
+        return 0;
+    }
+    int records_written { 0 };
+    for (const auto& student : students_) {
+        stream << "Student record "
+               << std::to_string(records_written + 1) + "\n"
+               << "------------------\n"
+               << student
+               << "========================================"
+               << std::endl;
+        ++records_written;
+    }
+
+    return records_written;
+}
+
 int UniversityDB::readFromFile(const char* fileName)
 {
     std::ifstream stream(fileName);

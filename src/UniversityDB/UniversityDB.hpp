@@ -32,6 +32,7 @@ class UniversityDB
     void sortByPesel();
 
     int readFromFile(const char* fileName);
+    int writeToFile(const char* fileName) const;
 
     const std::vector<student_record::StudentRecord>& data() const;
 
