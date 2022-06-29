@@ -1,5 +1,5 @@
 Student record 1
- ------------------
+------------------
 First name: Sally
 Last name: Smith
 PESEL: 81100216357
@@ -8,7 +8,7 @@ Address: Poland, Opole, ul. Deszczowa 23/m.22
 Gender: female
 ========================================
 Student record 2
- ------------------
+------------------
 First name: Joseph
 Last name: Kowalski
 PESEL: 90080517455
@@ -17,7 +17,7 @@ Address: Poland, Laskowice, ul. Niedzielna 304A
 Gender: male
 ========================================
 Student record 3
- ------------------
+------------------
 First name: Anna
 Last name: Zielinska
 PESEL: 90090515836
@@ -26,7 +26,7 @@ Address: Poland, Opole, ul. Sobotnia 15A
 Gender: female
 ========================================
 Student record 4
- ------------------
+------------------
 First name: Peter
 Last name: Pikiel
 PESEL: 67040500538
