@@ -12,10 +12,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
-# gtest_discover_tests(PeselValidator-ut
-#                     PeselValidator-ut)
 
 # subdirectories with tests
 add_subdirectory(PeselValidatorTests)
 add_subdirectory(StudentRecordTests)
 add_subdirectory(UniversityDBTests)
+add_subdirectory(DBfileManagerTests)
