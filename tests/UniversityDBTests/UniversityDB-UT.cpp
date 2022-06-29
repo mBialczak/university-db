@@ -3,6 +3,7 @@
 #include "UniversityDB/UniversityDB.hpp"
 
 #include "gtest/gtest.h"
+#include <filesystem>
 
 namespace university::ut {
 
@@ -240,6 +241,7 @@ void addStudentsToPattern(const std::vector<StudentRecord>& students, std::strin
             + "First name: " + student.firstName() + "\n"
             + "Last name: " + student.lastName() + "\n"
             + "PESEL: " + student.pesel() + "\n"
+            + "Index number: " + std::to_string(student.index()) + "\n"
             + "Address: " + student.address() + "\n"
             + "Gender: ";
         std::string gender = (student.gender() == Gender::male) ? "male"
@@ -292,4 +294,58 @@ TEST_F(UniversityDBTest, OutputOperatorShouldCorrectlyInsertRecordToOuptutStream
     EXPECT_EQ(pattern, operator_result);
 }
 
+std::string getPathToReadingTemplateFile()
+{
+    std::string current_path = std::filesystem::current_path().string();
+    auto position = current_path.find("build");
+    std::string path_to_template = current_path.substr(0, position);
+    path_to_template += "test-resources/File-reading-template.txt";
+
+    return path_to_template;
+}
+
+std::string getPathToWritingTemplateFile()
+{
+    std::string current_path = std::filesystem::current_path().string();
+    auto position = current_path.find("build");
+    std::string path_to_template = current_path.substr(0, position);
+    path_to_template += "test-resources/File-writing-template.txt";
+
+    return path_to_template;
+}
+
+TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
+{
+    std::string path_to_template = getPathToReadingTemplateFile();
+    // prepare second database for comparison
+    UniversityDB databaseToCompare;
+    databaseToCompare.addStudent(valid_rec_1);
+    databaseToCompare.addStudent(valid_rec_2);
+    databaseToCompare.addStudent(valid_rec_3);
+    databaseToCompare.addStudent(valid_rec_4);
+
+    int records_read = sut.readFromFile(path_to_template.data());
+    auto internalStateToCompare = databaseToCompare.data();
+    auto internalStateReadToSut = sut.data();
+
+    EXPECT_EQ(records_read, 4);
+    EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
+}
+
+TEST_F(UniversityDBTest, WriteToFileShouldCorrectlyWriteDBtoFile)
+{
+    sut.addStudent(valid_rec_1);
+    sut.addStudent(valid_rec_2);
+    sut.addStudent(valid_rec_3);
+    sut.addStudent(valid_rec_4);
+    std::string path_to_write = getPathToWritingTemplateFile();
+
+    int records_written = sut.writeToFile(path_to_write.data());
+    UniversityDB sut_to_compare;
+    int records_read_back = sut_to_compare.readFromFile(path_to_write.data());
+
+    EXPECT_EQ(records_written, 4);
+    EXPECT_EQ(records_read_back, 4);
+    EXPECT_EQ(sut.data(), sut_to_compare.data());
+}
 }   // end of namespace university::ut
