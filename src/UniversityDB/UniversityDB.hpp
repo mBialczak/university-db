@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DBfileManager/DBfileManager.hpp"
 #include "PeselValidator/PeselValidator.hpp"
 #include "StudentRecord/StudentRecord.hpp"
 
@@ -12,11 +13,15 @@
 
 namespace university {
 
+class DBfileManager;
+
 class UniversityDB
 {
     using StudentIterator = std::vector<student_record::StudentRecord>::iterator;
 
   public:
+    UniversityDB();
+
     bool addStudent(const student_record::StudentRecord& record);
     bool addStudent(student_record::StudentRecord&& record);
     bool addStudent(student_record::IndexNo index,
@@ -44,12 +49,9 @@ class UniversityDB
     std::size_t size() const;
 
   private:
-    std::string parseRecordFromFile(std::ifstream& stream) const;
-    std::string readRecordPart(const std::string& fullText, const std::string& searched) const;
-    std::map<std::string, std::string> getRecordAsMap(const std::string& rawRecord) const;
-    bool tryMakeRecord(const std::map<std::string, std::string>& parts);
-
     StudentIterator findByIndex(student_record::IndexNo index);
+
+    std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
     std::vector<student_record::StudentRecord> students_;
 };   // namespace UniversityDB

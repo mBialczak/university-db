@@ -1,17 +1,20 @@
 #pragma once
 
+#include "StudentRecord/StudentRecord.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 #include <map>
 #include <optional>
 #include <string>
 
-namespace university::db_file_manager {
+namespace university {
 
-class DBFileManager
+class UniversityDB;
+
+class DBfileManager
 {
   public:
-    DBFileManager(UniversityDB& dataBase);
+    explicit DBfileManager(UniversityDB& dataBase);
     int readFile(const char* fileName) const;
     int writeToFile(const char* fileName) const;
 
@@ -25,4 +28,4 @@ class DBFileManager
     UniversityDB& data_base_;
 };
 
-}   // namespace university::db_file_manager
+}   // namespace university

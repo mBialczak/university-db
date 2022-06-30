@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include <filesystem>
 
-namespace university::db_file_manager::ut {
+namespace university::ut {
 
 namespace {
     using student_record::Gender;
@@ -21,7 +21,7 @@ class DBFileManagerTest : public Test
 
   protected:
     UniversityDB data_base_;
-    DBFileManager sut_;
+    DBfileManager sut_;
 
     StudentRecord student_1_;
     StudentRecord student_2_;
@@ -112,4 +112,4 @@ TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
     EXPECT_EQ(data_base_.data(), databaseToCompare.data());
 }
 
-}   // namespace university::db_file_manager::ut
+}   // namespace university::ut
