@@ -4,11 +4,9 @@
 #include "PeselValidator/PeselValidator.hpp"
 #include "StudentRecord/StudentRecord.hpp"
 
-#include <cstddef>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <string>
 #include <vector>
 
 namespace university {
@@ -30,22 +28,15 @@ class UniversityDB
                     const std::string& pesel,
                     const std::string& address,
                     const student_record::Gender gender);
-
     bool removeStudent(student_record::IndexNo indexNo);
-
     void sortByLastName();
     void sortByPesel();
-
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
-
     std::vector<student_record::StudentRecord>& data();
-
     std::shared_ptr<const student_record::StudentRecord> findByPesel(const std::string& pesel) const;
     std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
-
     void Display(std::ostream& stream = std::cout) const;
-
     std::size_t size() const;
 
   private:

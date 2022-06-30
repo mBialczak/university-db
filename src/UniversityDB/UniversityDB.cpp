@@ -19,13 +19,13 @@ bool UniversityDB::addStudent(student_record::IndexNo index,
                               const student_record::Gender gender)
 {
     if (pesel_validator_(pesel)) {
-        student_record::StudentRecord added { index,
-                                              firstName,
-                                              lastName,
-                                              pesel,
-                                              address,
-                                              gender };
-        students_.emplace_back(added);
+        student_record::StudentRecord student { index,
+                                                firstName,
+                                                lastName,
+                                                pesel,
+                                                address,
+                                                gender };
+        students_.emplace_back(student);
         return true;
     }
 
