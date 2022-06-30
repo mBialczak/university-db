@@ -21,7 +21,6 @@ class StudentRecord
                   const std::string& pesel,
                   const std::string& address,
                   Gender gender);
-    // getters
     std::string firstName() const;
     std::string lastName() const;
     std::string pesel() const;
@@ -41,5 +40,4 @@ class StudentRecord
 };
 
 std::ostream& operator<<(std::ostream& os, const StudentRecord& student);
-
 }   // namespace university::student_record

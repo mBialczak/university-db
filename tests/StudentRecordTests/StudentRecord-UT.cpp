@@ -29,37 +29,37 @@ StudentRecordTests::StudentRecordTests()
 {
 }
 
-TEST_F(StudentRecordTests, FirstNameShouldReturnStudentsFirstName)
+TEST_F(StudentRecordTests, firstNameShouldReturnStudentsFirstName)
 {
     EXPECT_EQ(john.firstName(), "John");
     EXPECT_EQ(sally.firstName(), "Sally");
 }
 
-TEST_F(StudentRecordTests, LastNameShouldReturnSutdentsLastName)
+TEST_F(StudentRecordTests, lastNameShouldReturnSutdentsLastName)
 {
     EXPECT_EQ(john.lastName(), "Dickens");
     EXPECT_EQ(sally.lastName(), "Smith");
 }
 
-TEST_F(StudentRecordTests, AddressShouldReturnStudentsAddres)
+TEST_F(StudentRecordTests, addressShouldReturnStudentsAddres)
 {
     EXPECT_EQ(john.address(), "England, London, Puddle of Mudd st. 37");
     EXPECT_EQ(sally.address(), "Australia, Sydney, Long Shore st. 22");
 }
 
-TEST_F(StudentRecordTests, IndexShouldReturnIndexNumber)
+TEST_F(StudentRecordTests, indexShouldReturnIndexNumber)
 {
     EXPECT_EQ(john.index(), 1ul);
     EXPECT_EQ(sally.index(), 5ul);
 }
 
-TEST_F(StudentRecordTests, GenderShouldReturnStudentsGender)
+TEST_F(StudentRecordTests, genderShouldReturnStudentsGender)
 {
     EXPECT_EQ(john.gender(), Gender::male);
     EXPECT_EQ(sally.gender(), Gender::female);
 }
 
-TEST_F(StudentRecordTests, PeselShouldReturnStudentsPesel)
+TEST_F(StudentRecordTests, peselShouldReturnStudentsPesel)
 {
     EXPECT_EQ(john.pesel(), "90090515836");
     EXPECT_EQ(sally.pesel(), "81100216357");
@@ -81,7 +81,7 @@ std::string prepPatternString(const StudentRecord& student)
     return pattern;
 }
 
-TEST_F(StudentRecordTests, OutputOperatorShouldCorretlyInsertStudentRecordToOuptutStream)
+TEST_F(StudentRecordTests, outputOperatorShouldCorretlyInsertStudentRecordToOuptutStream)
 {
     std::string pattern1 = prepPatternString(john);
     std::string pattern2 = prepPatternString(sally);
