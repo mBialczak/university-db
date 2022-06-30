@@ -54,9 +54,9 @@ int DBfileManager::readFile(const char* fileName) const
     return records_read;
 }
 
-std::map<std::string, std::string> DBfileManager::getRecordAsMap(const std::string& rawRecord) const
+DBfileManager::StringMap DBfileManager::getRecordAsMap(const std::string& rawRecord) const
 {
-    std::map<std::string, std::string> record_parts;
+    StringMap record_parts;
     record_parts["first_name"] = readRecordPart(rawRecord, "First name:");
     record_parts["last_name"] = readRecordPart(rawRecord, "Last name:");
     record_parts["index"] = readRecordPart(rawRecord, "Index number:");
@@ -92,7 +92,7 @@ std::string DBfileManager::parseRecordFromFile(std::ifstream& stream) const
     return record_text;
 }
 
-bool DBfileManager::tryMakeRecord(const std::map<std::string, std::string>& parts) const
+bool DBfileManager::tryMakeRecord(const StringMap& parts) const
 {
     // we don't want a record if any of fields would be incomplete
     for (const auto& [key, value] : parts) {
@@ -100,7 +100,6 @@ bool DBfileManager::tryMakeRecord(const std::map<std::string, std::string>& part
             return false;
         }
     }
-
     auto gender = determineGender(parts.at("gender"));
     if (!gender) {
         return false;
