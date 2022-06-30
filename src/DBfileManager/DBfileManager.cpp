@@ -100,18 +100,6 @@ bool DBFileManager::tryMakeRecord(const std::map<std::string, std::string>& part
             return false;
         }
     }
-    // TODO: remove unneeded
-    //  student_record::Gender gender
-
-    // if (parts.at("gender") == "female") {
-    //     gender = student_record::Gender::female;
-    // }
-    // else if (parts.at("gender") == "male") {
-    //     gender = student_record::Gender::male;
-    // }
-    // else {
-    //     return false;
-    // }
 
     auto gender = determineGender(parts.at("gender"));
     if (!gender) {
