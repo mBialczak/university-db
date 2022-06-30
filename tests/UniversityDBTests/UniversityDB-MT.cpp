@@ -1,11 +1,11 @@
-#include "PeselValidatorMock.hpp" // TODO: remove INU
 #include "StudentRecord/StudentRecord.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include <filesystem>
 
-namespace university::ut {
+namespace university::mt {
 
 using student_record::Gender;
 using student_record::IndexNo;
@@ -66,10 +66,9 @@ UniversityDBTest::UniversityDBTest()
                       "7b110c01745",
                       "Poland, Gdynia, ul. Towarowa 80/74",
                       Gender::female })
-
 { }
 
-TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPeselFromCompositeData)
+TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompositeData)
 {
     IndexNo johns_index { 4ul };
     std::string johns_first { "John" };
@@ -89,7 +88,7 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPeselFromCompositeData)
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
-TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPeselFromCompositeData)
+TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCompositeData)
 {
     IndexNo joans_index { 12ul };
     std::string joans_first { "Joahne" };
@@ -106,11 +105,12 @@ TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPeselFromCompositeData
                                             joans_address,
                                             joans_gender);
     auto size_after = sut.size();
+
     EXPECT_FALSE(was_student_added);
     EXPECT_EQ(size_before, size_after);
 }
 
-TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPesel)
+TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudentRecord)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -120,7 +120,7 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentWithCorrectPesel)
     EXPECT_EQ(sut.size(), 4);
 }
 
-TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPesel)
+TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromReadyStudentRecord)
 {
     sut.addStudent(invalid_rec_1);
     sut.addStudent(invalid_rec_2);
@@ -128,7 +128,7 @@ TEST_F(UniversityDBTest, ShouldNOTaddNewStudentWithInvalidPesel)
     EXPECT_EQ(sut.size(), 0);
 }
 
-TEST_F(UniversityDBTest, ShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
+TEST_F(UniversityDBTest, addStudentShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
 {
     auto size_before = sut.size();
     sut.addStudent(StudentRecord(4ul,
@@ -141,7 +141,7 @@ TEST_F(UniversityDBTest, ShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
-TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
+TEST_F(UniversityDBTest, findByPeselShouldFindStudentIfExistsInDatabase)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -154,7 +154,7 @@ TEST_F(UniversityDBTest, ShouldFindStudentBasedOnPeselIfExistsInDatabase)
     EXPECT_EQ(should_not_be_found, nullptr);
 }
 
-TEST_F(UniversityDBTest, ShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
+TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -175,7 +175,7 @@ TEST_F(UniversityDBTest, ShouldFindAllStudentsWithSameLastNameIfAnyExistInDataba
     EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
 }
 
-TEST_F(UniversityDBTest, RemoveStudentShouldFindAndRemoveStudentRecordGivenIndexNo)
+TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentRecordGivenIndexNo)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -189,7 +189,7 @@ TEST_F(UniversityDBTest, RemoveStudentShouldFindAndRemoveStudentRecordGivenIndex
     EXPECT_EQ(sut.size(), size_before_removal - 1ul);
 }
 
-TEST_F(UniversityDBTest, RemoveStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
+TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -207,7 +207,7 @@ TEST_F(UniversityDBTest, RemoveStudentShouldDoNothingIfThereIsNoStudentWithGiven
     EXPECT_EQ(sut.size(), size_before_removal);
 }
 
-TEST_F(UniversityDBTest, SortByLastNameShouldCorrectlyRearangeDataBaseRecords)
+TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -219,7 +219,7 @@ TEST_F(UniversityDBTest, SortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
 }
 
-TEST_F(UniversityDBTest, SortByPeselShouldCorrectlyRearangeDataBaseRecords)
+TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -252,7 +252,7 @@ void addStudentsToPattern(const std::vector<StudentRecord>& students, std::strin
     }
 }
 
-TEST_F(UniversityDBTest, DisplayShouldCorrectlyInsertRecordToOuptutStream)
+TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
     std::vector<StudentRecord> students { valid_rec_1,
@@ -273,7 +273,7 @@ TEST_F(UniversityDBTest, DisplayShouldCorrectlyInsertRecordToOuptutStream)
     EXPECT_EQ(pattern, display_result);
 }
 
-TEST_F(UniversityDBTest, OutputOperatorShouldCorrectlyInsertRecordToOuptutStream)
+TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
     std::vector<StudentRecord> students { valid_rec_1,
@@ -314,7 +314,7 @@ std::string getPathToWritingTemplateFile()
     return path_to_template;
 }
 
-TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
+TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 {
     std::string path_to_template = getPathToReadingTemplateFile();
     // prepare second database for comparison
@@ -332,7 +332,7 @@ TEST_F(UniversityDBTest, ReadFromFileShouldCorrectlyReadDBfromFile)
     EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
 }
 
-TEST_F(UniversityDBTest, WriteToFileShouldCorrectlyWriteDBtoFile)
+TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -348,4 +348,4 @@ TEST_F(UniversityDBTest, WriteToFileShouldCorrectlyWriteDBtoFile)
     EXPECT_EQ(records_read_back, 4);
     EXPECT_EQ(sut.data(), sut_to_compare.data());
 }
-}   // end of namespace university::ut
+}   // end of namespace university::mt

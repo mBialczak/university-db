@@ -7,7 +7,8 @@ add_library(${PROJECT_NAME}-lib
 
 target_link_libraries(${PROJECT_NAME}-lib
                       StudentRecord-lib
-                      PeselValidator-lib)
+                      PeselValidator-lib
+                      DBfileManager-lib)
 
 target_include_directories(${PROJECT_NAME}-lib
                           PRIVATE
