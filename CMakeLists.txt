@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(university-db
+project(university-db-project
        LANGUAGES CXX)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -17,6 +17,7 @@ enable_testing()
 add_subdirectory(src/StudentRecord)
 add_subdirectory(src/PeselValidator)
 add_subdirectory(src/UniversityDB)
+add_subdirectory(src/DBfileManager)
 
 # add directory with test target
 add_subdirectory(tests)

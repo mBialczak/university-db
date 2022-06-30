@@ -111,7 +111,7 @@ void UniversityDB::sortByLastName()
               });
 }
 
-const std::vector<student_record::StudentRecord>& UniversityDB::data() const
+std::vector<student_record::StudentRecord>& UniversityDB::data()
 {
     return students_;
 }
