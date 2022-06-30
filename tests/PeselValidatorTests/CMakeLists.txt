@@ -10,8 +10,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
                       PeselValidator-lib
-                      gtest_main
-                      gmock_main)
+                      gtest_main)
 
 target_compile_options(${PROJECT_NAME}
                        PRIVATE

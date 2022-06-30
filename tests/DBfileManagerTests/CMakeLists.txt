@@ -8,11 +8,9 @@ target_include_directories(${PROJECT_NAME}
                            PRIVATE
                            ${CMAKE_SOURCE_DIR}/src)
 
-# TODO: verify which libraries needed
 target_link_libraries(${PROJECT_NAME}
                       DBfileManager-lib
-                      gtest_main
-                      gmock_main)
+                      gtest_main)
 
 target_compile_options(${PROJECT_NAME}
                        PRIVATE

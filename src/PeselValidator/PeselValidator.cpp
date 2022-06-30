@@ -46,5 +46,4 @@ int PeselValidator::checkControlDigit() const
 
     return (sum % 10) == 0;
 }
-
 }   // end of namespace university::pesel_validator

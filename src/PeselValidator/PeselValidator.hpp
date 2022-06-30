@@ -12,7 +12,6 @@ class PeselValidator : public I_PeselValidator
 {
   public:
     ~PeselValidator() override = default;
-
     bool validatePesel(const std::string& pesel) override;
 
   private:
