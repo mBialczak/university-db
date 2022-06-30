@@ -57,5 +57,4 @@ PeselValidatorMock::PeselValidatorMock()
         ON_CALL(*this, validatePesel(pesel)).WillByDefault(Return(false));
     }
 }
-
 }   // namespace university::mocks
