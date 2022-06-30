@@ -34,7 +34,7 @@ class UniversityDB
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
 
-    const std::vector<student_record::StudentRecord>& data() const;
+    std::vector<student_record::StudentRecord>& data();
 
     std::shared_ptr<const student_record::StudentRecord> findByPesel(const std::string& pesel) const;
     std::vector<student_record::StudentRecord> findByLastName(const std::string& lastName) const;
