@@ -33,20 +33,21 @@ std::vector<PeselWithVerification> pesels_verified { { "90090515836", true },
 
 INSTANTIATE_TEST_SUITE_P(PeselSet,
                          PeselValidatorTest,
-                         ::testing::ValuesIn(pesels_verified));
+                         testing::ValuesIn(pesels_verified));
 
-TEST_P(PeselValidatorTest, ValidatePeselShouldCorrectlyVerifyPesels)
+TEST_P(PeselValidatorTest, validatePeselShouldCorrectlyVerifyPesels)
 {
     auto [pesel, expected_result] = GetParam();
     bool result = validator.validatePesel(pesel);
+
     EXPECT_EQ(result, expected_result);
 }
 
-TEST_P(PeselValidatorTest, OperatorShouldCorrectlyVerifyPesels)
+TEST_P(PeselValidatorTest, operatorShouldCorrectlyVerifyPesels)
 {
     auto [pesel, expected_result] = GetParam();
     bool result = validator(pesel);
+
     EXPECT_EQ(result, expected_result);
 }
-
 }   // namespace university::pesel_validator::ut
