@@ -113,13 +113,13 @@ bool DBfileManager::tryMakeRecord(const StringMap& parts) const
                                  *gender);
 }
 
-std::optional<student_record::Gender> DBfileManager::determineGender(const std::string& gender) const
+std::optional<student::Gender> DBfileManager::determineGender(const std::string& gender) const
 {
     if (gender == "female") {
-        return student_record::Gender::female;
+        return student::Gender::female;
     }
     else if (gender == "male") {
-        return student_record::Gender::male;
+        return student::Gender::male;
     }
 
     return std::nullopt;

@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace university::student_record {
+namespace university::student {
 
 using IndexNo = unsigned long;
 
@@ -40,4 +40,4 @@ class StudentRecord
 };
 
 std::ostream& operator<<(std::ostream& os, const StudentRecord& student);
-}   // namespace university::student_record
+}   // namespace university::student

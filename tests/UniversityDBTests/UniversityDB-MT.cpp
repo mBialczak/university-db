@@ -7,9 +7,9 @@
 
 namespace university::mt {
 
-using student_record::Gender;
-using student_record::IndexNo;
-using student_record::StudentRecord;
+using student::Gender;
+using student::IndexNo;
+using student::StudentRecord;
 using namespace testing;
 
 class UniversityDBTest : public Test

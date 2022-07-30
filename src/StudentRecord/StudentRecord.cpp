@@ -1,7 +1,7 @@
 #include "StudentRecord.hpp"
 
 #include <ostream>
-namespace university::student_record {
+namespace university::student {
 
 StudentRecord::StudentRecord(IndexNo indexNumber,
                              const std::string& firstName,
@@ -62,4 +62,4 @@ std::ostream& operator<<(std::ostream& os, const StudentRecord& student)
 
     return os;
 }
-}   // namespace university::student_record
+}   // namespace university::student

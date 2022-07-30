@@ -1,7 +1,7 @@
 #include "StudentRecord/StudentRecord.hpp"
 
 #include "gtest/gtest.h"
-namespace university::student_record::ut {
+namespace university::student::ut {
 
 class StudentRecordTests : public ::testing::Test
 {
@@ -96,4 +96,4 @@ TEST_F(StudentRecordTests, outputOperatorShouldCorretlyInsertStudentRecordToOupt
     EXPECT_EQ(pattern1, insertion_result1);
     EXPECT_EQ(pattern2, insertion_result2);
 }
-}   // namespace university::student_record::ut
+}   // namespace university::student::ut

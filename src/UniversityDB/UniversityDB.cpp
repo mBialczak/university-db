@@ -11,20 +11,20 @@ UniversityDB::UniversityDB()
     : file_manager_(std::make_unique<DBfileManager>(*this))
 { }
 
-bool UniversityDB::addStudent(student_record::IndexNo index,
+bool UniversityDB::addStudent(student::IndexNo index,
                               const std::string& firstName,
                               const std::string& lastName,
                               const std::string& pesel,
                               const std::string& address,
-                              const student_record::Gender gender)
+                              const student::Gender gender)
 {
     if (pesel_validator_(pesel)) {
-        student_record::StudentRecord student { index,
-                                                firstName,
-                                                lastName,
-                                                pesel,
-                                                address,
-                                                gender };
+        student::StudentRecord student { index,
+                                         firstName,
+                                         lastName,
+                                         pesel,
+                                         address,
+                                         gender };
         students_.emplace_back(student);
         return true;
     }
@@ -32,7 +32,7 @@ bool UniversityDB::addStudent(student_record::IndexNo index,
     return false;
 }
 
-bool UniversityDB::addStudent(const student_record::StudentRecord& record)
+bool UniversityDB::addStudent(const student::StudentRecord& record)
 {
     if (pesel_validator_(record.pesel())) {
         students_.emplace_back(record);
@@ -42,7 +42,7 @@ bool UniversityDB::addStudent(const student_record::StudentRecord& record)
     return false;
 }
 
-bool UniversityDB::addStudent(student_record::StudentRecord&& record)
+bool UniversityDB::addStudent(student::StudentRecord&& record)
 {
     if (pesel_validator_(record.pesel())) {
         students_.emplace_back(std::move(record));
@@ -57,7 +57,7 @@ std::size_t UniversityDB::size() const
     return students_.size();
 }
 
-std::shared_ptr<const student_record::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+std::shared_ptr<const student::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
 {
     auto result_iter = std::find_if(students_.begin(),
                                     students_.end(),
@@ -65,15 +65,15 @@ std::shared_ptr<const student_record::StudentRecord> UniversityDB::findByPesel(c
                                         return record.pesel() == pesel;
                                     });
     if (result_iter != students_.end()) {
-        return std::make_shared<const student_record::StudentRecord>(*result_iter);
+        return std::make_shared<const student::StudentRecord>(*result_iter);
     }
 
     return nullptr;
 }
 
-std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const
+std::vector<student::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const
 {
-    std::vector<student_record::StudentRecord> found_students;
+    std::vector<student::StudentRecord> found_students;
     std::copy_if(students_.begin(),
                  students_.end(),
                  std::back_inserter(found_students),
@@ -84,7 +84,7 @@ std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const st
     return found_students;
 }
 
-bool UniversityDB::removeStudent(student_record::IndexNo index)
+bool UniversityDB::removeStudent(student::IndexNo index)
 {
     auto to_be_removed = findByIndex(index);
     if (to_be_removed != students_.end()) {
@@ -95,7 +95,7 @@ bool UniversityDB::removeStudent(student_record::IndexNo index)
     return false;
 }
 
-UniversityDB::StudentIterator UniversityDB::findByIndex(student_record::IndexNo index)
+UniversityDB::StudentIterator UniversityDB::findByIndex(student::IndexNo index)
 {
     return std::find_if(students_.begin(),
                         students_.end(),
@@ -113,7 +113,7 @@ void UniversityDB::sortByLastName()
               });
 }
 
-std::vector<student_record::StudentRecord>& UniversityDB::data()
+std::vector<student::StudentRecord>& UniversityDB::data()
 {
     return students_;
 }
