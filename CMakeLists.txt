@@ -23,6 +23,7 @@ enable_testing()
 # sub-directories with project components
 add_subdirectory(src/Person)
 add_subdirectory(src/Student)
+add_subdirectory(src/Employee)
 add_subdirectory(src/PeselValidator)
 add_subdirectory(src/UniversityDB)
 add_subdirectory(src/DBfileManager)
