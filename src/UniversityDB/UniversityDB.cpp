@@ -11,7 +11,7 @@ UniversityDB::UniversityDB()
     : file_manager_(std::make_unique<DBfileManager>(*this))
 { }
 
-bool UniversityDB::addStudent(student::IndexNo index,
+bool UniversityDB::addStudent(const std::string& index,
                               const std::string& firstName,
                               const std::string& lastName,
                               const std::string& pesel,
@@ -84,7 +84,7 @@ std::vector<student::Student> UniversityDB::findByLastName(const std::string& la
     return found_students;
 }
 
-bool UniversityDB::removeStudent(student::IndexNo index)
+bool UniversityDB::removeStudent(const std::string& index)
 {
     auto to_be_removed = findByIndex(index);
     if (to_be_removed != students_.end()) {
@@ -95,7 +95,7 @@ bool UniversityDB::removeStudent(student::IndexNo index)
     return false;
 }
 
-UniversityDB::StudentIterator UniversityDB::findByIndex(student::IndexNo index)
+UniversityDB::StudentIterator UniversityDB::findByIndex(const std::string& index)
 {
     return std::find_if(students_.begin(),
                         students_.end(),
@@ -139,14 +139,9 @@ int UniversityDB::readFromFile(const char* fileName)
 
 void UniversityDB::Display(std::ostream& stream) const
 {
-    std::size_t counter = 1;
     for (const auto& student : students_) {
-        stream << "Student record "
-               << std::to_string(counter) + "\n"
-               << " ------------------\n"
-               << student
+        stream << student
                << "========================================\n";
-        ++counter;
     }
 }
 

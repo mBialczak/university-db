@@ -22,13 +22,13 @@ class UniversityDB
 
     bool addStudent(const student::Student& record);
     bool addStudent(student::Student&& record);
-    bool addStudent(student::IndexNo index,
+    bool addStudent(const std::string& index,
                     const std::string& firstName,
                     const std::string& lastName,
                     const std::string& pesel,
                     const std::string& address,
                     const person::Gender gender);
-    bool removeStudent(student::IndexNo indexNo);
+    bool removeStudent(const std::string& index);
     void sortByLastName();
     void sortByPesel();
     int readFromFile(const char* fileName);
@@ -40,7 +40,7 @@ class UniversityDB
     std::size_t size() const;
 
   private:
-    StudentIterator findByIndex(student::IndexNo index);
+    StudentIterator findByIndex(const std::string& index);
 
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;

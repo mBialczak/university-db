@@ -1,36 +1,36 @@
-Student record 1
-------------------
+STUDENT
+-------------
+Index number: 001/2020
 First name: Sally
 Last name: Smith
 PESEL: 81100216357
-Index number: 133
 Address: Poland, Opole, ul. Deszczowa 23/m.22
 Gender: female
 ========================================
-Student record 2
-------------------
+STUDENT
+-------------
+Index number: 003/2019
 First name: Joseph
 Last name: Kowalski
 PESEL: 90080517455
-Index number: 173
 Address: Poland, Laskowice, ul. Niedzielna 304A
 Gender: male
 ========================================
-Student record 3
-------------------
+STUDENT
+-------------
+Index number: 023/2020
 First name: Anna
 Last name: Zielinska
 PESEL: 90090515836
-Index number: 333
 Address: Poland, Opole, ul. Sobotnia 15A
 Gender: female
 ========================================
-Student record 4
-------------------
+STUDENT
+-------------
+Index number: 012/2018
 First name: Peter
 Last name: Pikiel
 PESEL: 67040500538
-Index number: 144
 Address: Poland, Zabrze, ul. Nieznana 1C/44
 Gender: male
 ========================================

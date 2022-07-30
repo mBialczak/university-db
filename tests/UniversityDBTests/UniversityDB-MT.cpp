@@ -30,37 +30,37 @@ class UniversityDBTest : public Test
 };
 
 UniversityDBTest::UniversityDBTest()
-    : valid_rec_1({ IndexNo(133ul),
+    : valid_rec_1({ "001/2020",
                     "Sally",
                     "Smith",
                     "81100216357",
                     "Poland, Opole, ul. Deszczowa 23/m.22",
                     Gender::female })
-    , valid_rec_2({ IndexNo { 173ul },
+    , valid_rec_2({ "003/2019",
                     "Joseph",
                     "Kowalski",
                     "90080517455",
                     "Poland, Laskowice, ul. Niedzielna 304A",
                     Gender::male })
-    , valid_rec_3({ IndexNo { 333ul },
+    , valid_rec_3({ "023/2020",
                     "Anna",
                     "Zielinska",
                     "90090515836",
                     "Poland, Opole, ul. Sobotnia 15A",
                     Gender::female })
-    , valid_rec_4({ IndexNo { 144ul },
+    , valid_rec_4({ "012/2018",
                     "Peter",
                     "Pikiel",
                     "67040500538",
                     "Poland, Zabrze, ul. Nieznana 1C/44",
                     Gender::male })
-    , invalid_rec_1({ IndexNo { 200ul },
+    , invalid_rec_1({ "032/2022",
                       "Harold",
                       "Butterhand",
                       "2535325",
                       "Poland, Waszawa, ul. Niekaczki 12/80",
                       Gender::male })
-    , invalid_rec_2({ IndexNo { 44ul },
+    , invalid_rec_2({ "003/2018",
                       "Zofia",
                       "Popularna",
                       "7b110c01745",
@@ -70,7 +70,7 @@ UniversityDBTest::UniversityDBTest()
 
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompositeData)
 {
-    IndexNo johns_index { 4ul };
+    std::string johns_index { "099/2017" };
     std::string johns_first { "John" };
     std::string johns_last { "Dickens" };
     std::string johns_pesel { "90090515836" };   // valid PESEL
@@ -90,8 +90,8 @@ TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompos
 
 TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCompositeData)
 {
-    IndexNo joans_index { 12ul };
-    std::string joans_first { "Joahne" };
+    std::string joans_index { "011/2018" };
+    std::string joans_first { "Joanne" };
     std::string joans_last { "Hopkins" };
     std::string joans_pesel { "74110101745" };   // invalid PESEL
     std::string joans_address { "Poland, Szczecin, ul. Podmokła 20/10" };
@@ -131,7 +131,7 @@ TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromRea
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
 {
     auto size_before = sut.size();
-    sut.addStudent(Student(4ul,
+    sut.addStudent(Student("004/2020",
                            "John",
                            "Dickens",
                            "90090515836",
@@ -158,7 +158,7 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
-    Student student_with_same_name { 339ul,
+    Student student_with_same_name { "001/2014",
                                      "John",
                                      valid_rec_1.lastName(),
                                      "67040500538",
@@ -196,7 +196,7 @@ TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGiven
     sut.addStudent(valid_rec_3);
     sut.addStudent(valid_rec_4);
     auto size_before_removal = sut.size();
-    IndexNo non_existing_index = valid_rec_1.index() + 5ul;
+    std::string non_existing_index { "100/1999" };
 
     bool has_removed = sut.removeStudent(non_existing_index);
 
@@ -233,22 +233,20 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 
 void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
 {
-    int counter { 1 };
     for (const auto& student : students) {
-        pattern += "Student record "
-            + std::to_string(counter) + "\n"
-            + " ------------------\n"
+        pattern += std::string("STUDENT\n")
+            // + std::to_string(counter) + "\n"
+            + "-------------\n"
+            + "Index number: " + student.index() + "\n"
             + "First name: " + student.firstName() + "\n"
             + "Last name: " + student.lastName() + "\n"
             + "PESEL: " + student.pesel() + "\n"
-            + "Index number: " + std::to_string(student.index()) + "\n"
             + "Address: " + student.address() + "\n"
             + "Gender: ";
         std::string gender = (student.gender() == Gender::male) ? "male"
                                                                 : "female";
         pattern += gender + "\n";
         pattern += "========================================\n";
-        ++counter;
     }
 }
 
