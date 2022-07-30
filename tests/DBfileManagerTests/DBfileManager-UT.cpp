@@ -1,5 +1,5 @@
 #include "DBfileManager/DBfileManager.hpp"
-#include "StudentRecord/StudentRecord.hpp"
+#include "Student/Student.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 #include "gtest/gtest.h"
@@ -8,9 +8,9 @@
 namespace university::ut {
 
 namespace {
-    using student_record::Gender;
-    using student_record::IndexNo;
-    using student_record::StudentRecord;
+    using person::Gender;
+    using student::IndexNo;
+    using student::Student;
     using namespace testing;
 }   // anonymous namespace
 
@@ -23,10 +23,10 @@ class DBFileManagerTest : public Test
     UniversityDB data_base_;
     DBfileManager sut_;
 
-    StudentRecord student_1_;
-    StudentRecord student_2_;
-    StudentRecord student_3_;
-    StudentRecord student_4_;
+    Student student_1_;
+    Student student_2_;
+    Student student_3_;
+    Student student_4_;
 };
 
 DBFileManagerTest::DBFileManagerTest()

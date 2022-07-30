@@ -1,8 +1,8 @@
-project(UniversityDB-mt
+project(Student-ut
         LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-              UniversityDB-MT.cpp)
+              Student-UT.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE
@@ -10,9 +10,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
                       Student-lib
-                      UniversityDB-lib
-                      gtest_main
-                      gmock_main)
+                      gtest_main)
 
 target_compile_options(${PROJECT_NAME}
                        PRIVATE

@@ -6,7 +6,7 @@ add_library(${PROJECT_NAME}-lib
             DBfileManager.cpp)
 
 target_link_libraries(${PROJECT_NAME}-lib
-                      StudentRecord-lib
+                      Student-lib
                       UniversityDB-lib)
 
 target_include_directories(${PROJECT_NAME}-lib

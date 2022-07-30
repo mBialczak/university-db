@@ -1,4 +1,4 @@
-#include "StudentRecord/StudentRecord.hpp"
+#include "Student/Student.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 #include "gmock/gmock.h"
@@ -7,9 +7,9 @@
 
 namespace university::mt {
 
-using student_record::Gender;
-using student_record::IndexNo;
-using student_record::StudentRecord;
+using person::Gender;
+using student::IndexNo;
+using student::Student;
 using namespace testing;
 
 class UniversityDBTest : public Test
@@ -20,13 +20,13 @@ class UniversityDBTest : public Test
   protected:
     UniversityDB sut;
     // student records with valid PESEL numbers
-    StudentRecord valid_rec_1;
-    StudentRecord valid_rec_2;
-    StudentRecord valid_rec_3;
-    StudentRecord valid_rec_4;
+    Student valid_rec_1;
+    Student valid_rec_2;
+    Student valid_rec_3;
+    Student valid_rec_4;
     // student records with invalid PESEL numbers;
-    StudentRecord invalid_rec_1;
-    StudentRecord invalid_rec_2;
+    Student invalid_rec_1;
+    Student invalid_rec_2;
 };
 
 UniversityDBTest::UniversityDBTest()
@@ -110,7 +110,7 @@ TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCom
     EXPECT_EQ(size_before, size_after);
 }
 
-TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudentRecord)
+TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudent)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -120,7 +120,7 @@ TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyS
     EXPECT_EQ(sut.size(), 4);
 }
 
-TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromReadyStudentRecord)
+TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromReadyStudent)
 {
     sut.addStudent(invalid_rec_1);
     sut.addStudent(invalid_rec_2);
@@ -131,12 +131,12 @@ TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromRea
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
 {
     auto size_before = sut.size();
-    sut.addStudent(StudentRecord(4ul,
-                                 "John",
-                                 "Dickens",
-                                 "90090515836",
-                                 "England, London, Puddle of Mudd st. 37",
-                                 Gender::male));
+    sut.addStudent(Student(4ul,
+                           "John",
+                           "Dickens",
+                           "90090515836",
+                           "England, London, Puddle of Mudd st. 37",
+                           Gender::male));
 
     EXPECT_EQ(sut.size(), size_before + 1);
 }
@@ -158,12 +158,12 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
-    StudentRecord student_with_same_name { 339ul,
-                                           "John",
-                                           valid_rec_1.lastName(),
-                                           "67040500538",
-                                           "Poland, Gdynia, ul. Towarowa 80/74",
-                                           Gender::male };
+    Student student_with_same_name { 339ul,
+                                     "John",
+                                     valid_rec_1.lastName(),
+                                     "67040500538",
+                                     "Poland, Gdynia, ul. Towarowa 80/74",
+                                     Gender::male };
     sut.addStudent(student_with_same_name);
 
     auto retrieved_students = sut.findByLastName(valid_rec_1.lastName());
@@ -175,7 +175,7 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
     EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
 }
 
-TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentRecordGivenIndexNo)
+TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
 {
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -231,7 +231,7 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
 }
 
-void addStudentsToPattern(const std::vector<StudentRecord>& students, std::string& pattern)
+void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
 {
     int counter { 1 };
     for (const auto& student : students) {
@@ -255,10 +255,10 @@ void addStudentsToPattern(const std::vector<StudentRecord>& students, std::strin
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<StudentRecord> students { valid_rec_1,
-                                          valid_rec_2,
-                                          valid_rec_3,
-                                          valid_rec_4 };
+    std::vector<Student> students { valid_rec_1,
+                                    valid_rec_2,
+                                    valid_rec_3,
+                                    valid_rec_4 };
     addStudentsToPattern(students, pattern);
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
@@ -276,10 +276,10 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<StudentRecord> students { valid_rec_1,
-                                          valid_rec_2,
-                                          valid_rec_3,
-                                          valid_rec_4 };
+    std::vector<Student> students { valid_rec_1,
+                                    valid_rec_2,
+                                    valid_rec_3,
+                                    valid_rec_4 };
     addStudentsToPattern(students, pattern);
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);

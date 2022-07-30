@@ -1,15 +1,15 @@
-project(StudentRecord-ut
+project(Person-ut
         LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-              StudentRecord-UT.cpp)
+              Person-UT.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE
                            ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(${PROJECT_NAME}
-                      StudentRecord-lib
+                      Person-lib
                       gtest_main)
 
 target_compile_options(${PROJECT_NAME}

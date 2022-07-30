@@ -1,19 +1,21 @@
-#include "StudentRecord/StudentRecord.hpp"
+#include "Student/Student.hpp"
 
 #include "gtest/gtest.h"
-namespace university::student_record::ut {
+namespace university::student::ut {
 
-class StudentRecordTests : public ::testing::Test
+using person::Gender;
+
+class StudentTests : public ::testing::Test
 {
   public:
-    StudentRecordTests();
+    StudentTests();
 
   protected:
-    StudentRecord john;
-    StudentRecord sally;
+    Student john;
+    Student sally;
 };
 
-StudentRecordTests::StudentRecordTests()
+StudentTests::StudentTests()
     : john(1ul,
            "John",
            "Dickens",
@@ -29,43 +31,13 @@ StudentRecordTests::StudentRecordTests()
 {
 }
 
-TEST_F(StudentRecordTests, firstNameShouldReturnStudentsFirstName)
-{
-    EXPECT_EQ(john.firstName(), "John");
-    EXPECT_EQ(sally.firstName(), "Sally");
-}
-
-TEST_F(StudentRecordTests, lastNameShouldReturnSutdentsLastName)
-{
-    EXPECT_EQ(john.lastName(), "Dickens");
-    EXPECT_EQ(sally.lastName(), "Smith");
-}
-
-TEST_F(StudentRecordTests, addressShouldReturnStudentsAddres)
-{
-    EXPECT_EQ(john.address(), "England, London, Puddle of Mudd st. 37");
-    EXPECT_EQ(sally.address(), "Australia, Sydney, Long Shore st. 22");
-}
-
-TEST_F(StudentRecordTests, indexShouldReturnIndexNumber)
+TEST_F(StudentTests, indexShouldReturnIndexNumber)
 {
     EXPECT_EQ(john.index(), 1ul);
     EXPECT_EQ(sally.index(), 5ul);
 }
 
-TEST_F(StudentRecordTests, genderShouldReturnStudentsGender)
-{
-    EXPECT_EQ(john.gender(), Gender::male);
-    EXPECT_EQ(sally.gender(), Gender::female);
-}
-
-TEST_F(StudentRecordTests, peselShouldReturnStudentsPesel)
-{
-    EXPECT_EQ(john.pesel(), "90090515836");
-    EXPECT_EQ(sally.pesel(), "81100216357");
-}
-
-std::string prepPatternString(const StudentRecord& student)
+std::string prepPatternString(const Student& student)
 {
     std::string pattern;
     pattern += "First name: " + student.firstName() + "\n";
@@ -81,7 +53,7 @@ std::string prepPatternString(const StudentRecord& student)
     return pattern;
 }
 
-TEST_F(StudentRecordTests, outputOperatorShouldCorretlyInsertStudentRecordToOuptutStream)
+TEST_F(StudentTests, outputOperatorShouldCorretlyInsertStudentToOuptutStream)
 {
     std::string pattern1 = prepPatternString(john);
     std::string pattern2 = prepPatternString(sally);
@@ -96,4 +68,4 @@ TEST_F(StudentRecordTests, outputOperatorShouldCorretlyInsertStudentRecordToOupt
     EXPECT_EQ(pattern1, insertion_result1);
     EXPECT_EQ(pattern2, insertion_result2);
 }
-}   // namespace university::student_record::ut
+}   // namespace university::student::ut
