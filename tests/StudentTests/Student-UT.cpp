@@ -53,7 +53,7 @@ std::string prepPatternString(const Student& student)
     return pattern;
 }
 
-TEST_F(StudentTests, outputOperatorShouldCorretlyInsertStudentToOuptutStream)
+TEST_F(StudentTests, outputOperatorShouldCorrectlyInsertStudentToOuptutStream)
 {
     std::string pattern1 = prepPatternString(john);
     std::string pattern2 = prepPatternString(sally);
