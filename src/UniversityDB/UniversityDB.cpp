@@ -16,15 +16,15 @@ bool UniversityDB::addStudent(student::IndexNo index,
                               const std::string& lastName,
                               const std::string& pesel,
                               const std::string& address,
-                              const student::Gender gender)
+                              const person::Gender gender)
 {
     if (pesel_validator_(pesel)) {
-        student::StudentRecord student { index,
-                                         firstName,
-                                         lastName,
-                                         pesel,
-                                         address,
-                                         gender };
+        student::Student student { index,
+                                   firstName,
+                                   lastName,
+                                   pesel,
+                                   address,
+                                   gender };
         students_.emplace_back(student);
         return true;
     }
@@ -32,7 +32,7 @@ bool UniversityDB::addStudent(student::IndexNo index,
     return false;
 }
 
-bool UniversityDB::addStudent(const student::StudentRecord& record)
+bool UniversityDB::addStudent(const student::Student& record)
 {
     if (pesel_validator_(record.pesel())) {
         students_.emplace_back(record);
@@ -42,7 +42,7 @@ bool UniversityDB::addStudent(const student::StudentRecord& record)
     return false;
 }
 
-bool UniversityDB::addStudent(student::StudentRecord&& record)
+bool UniversityDB::addStudent(student::Student&& record)
 {
     if (pesel_validator_(record.pesel())) {
         students_.emplace_back(std::move(record));
@@ -57,7 +57,7 @@ std::size_t UniversityDB::size() const
     return students_.size();
 }
 
-std::shared_ptr<const student::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+std::shared_ptr<const student::Student> UniversityDB::findByPesel(const std::string& pesel) const
 {
     auto result_iter = std::find_if(students_.begin(),
                                     students_.end(),
@@ -65,15 +65,15 @@ std::shared_ptr<const student::StudentRecord> UniversityDB::findByPesel(const st
                                         return record.pesel() == pesel;
                                     });
     if (result_iter != students_.end()) {
-        return std::make_shared<const student::StudentRecord>(*result_iter);
+        return std::make_shared<const student::Student>(*result_iter);
     }
 
     return nullptr;
 }
 
-std::vector<student::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const
+std::vector<student::Student> UniversityDB::findByLastName(const std::string& lastName) const
 {
-    std::vector<student::StudentRecord> found_students;
+    std::vector<student::Student> found_students;
     std::copy_if(students_.begin(),
                  students_.end(),
                  std::back_inserter(found_students),
@@ -113,7 +113,7 @@ void UniversityDB::sortByLastName()
               });
 }
 
-std::vector<student::StudentRecord>& UniversityDB::data()
+std::vector<student::Student>& UniversityDB::data()
 {
     return students_;
 }

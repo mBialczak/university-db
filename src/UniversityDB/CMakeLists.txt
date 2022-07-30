@@ -6,7 +6,7 @@ add_library(${PROJECT_NAME}-lib
             UniversityDB.cpp)
 
 target_link_libraries(${PROJECT_NAME}-lib
-                      StudentRecord-lib
+                      Student-lib
                       PeselValidator-lib
                       DBfileManager-lib)
 

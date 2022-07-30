@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StudentRecord/StudentRecord.hpp"
+#include "Student/Student.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 #include <map>
@@ -25,7 +25,7 @@ class DBfileManager
     std::string readRecordPart(const std::string& fullText, const std::string& searched) const;
     StringMap getRecordAsMap(const std::string& rawRecord) const;
     bool tryMakeRecord(const StringMap& parts) const;
-    std::optional<student::Gender> determineGender(const std::string& gender) const;
+    std::optional<person::Gender> determineGender(const std::string& gender) const;
 
     UniversityDB& data_base_;
 };
