@@ -16,13 +16,13 @@ class StudentTests : public ::testing::Test
 };
 
 StudentTests::StudentTests()
-    : john(1ul,
+    : john("001/2020",
            "John",
            "Dickens",
            "90090515836",
            "England, London, Puddle of Mudd st. 37",
            Gender::male)
-    , sally(5ul,
+    , sally("012/2021",
             "Sally",
             "Smith",
             "81100216357",
@@ -33,17 +33,19 @@ StudentTests::StudentTests()
 
 TEST_F(StudentTests, indexShouldReturnIndexNumber)
 {
-    EXPECT_EQ(john.index(), 1ul);
-    EXPECT_EQ(sally.index(), 5ul);
+    EXPECT_EQ(john.index(), "001/2020");
+    EXPECT_EQ(sally.index(), "012/2021");
 }
 
 std::string prepPatternString(const Student& student)
 {
     std::string pattern;
+    pattern += std::string("STUDENT") + "\n";
+    pattern += std::string("-------------") + "\n";
+    pattern += "Index number: " + student.index() + "\n";
     pattern += "First name: " + student.firstName() + "\n";
     pattern += "Last name: " + student.lastName() + "\n";
     pattern += "PESEL: " + student.pesel() + "\n";
-    pattern += "Index number: " + std::to_string(student.index()) + "\n";
     pattern += "Address: " + student.address() + "\n";
     pattern += "Gender: ";
     pattern += student.gender() == Gender::male ? "male"

@@ -31,25 +31,25 @@ class DBFileManagerTest : public Test
 
 DBFileManagerTest::DBFileManagerTest()
     : sut_(data_base_)
-    , student_1_({ IndexNo(133ul),
+    , student_1_({ "001/2020",
                    "Sally",
                    "Smith",
                    "81100216357",
                    "Poland, Opole, ul. Deszczowa 23/m.22",
                    Gender::female })
-    , student_2_({ IndexNo { 173ul },
+    , student_2_({ "003/2019",
                    "Joseph",
                    "Kowalski",
                    "90080517455",
                    "Poland, Laskowice, ul. Niedzielna 304A",
                    Gender::male })
-    , student_3_({ IndexNo { 333ul },
+    , student_3_({ "023/2020",
                    "Anna",
                    "Zielinska",
                    "90090515836",
                    "Poland, Opole, ul. Sobotnia 15A",
                    Gender::female })
-    , student_4_({ IndexNo { 144ul },
+    , student_4_({ "012/2018",
                    "Peter",
                    "Pikiel",
                    "67040500538",

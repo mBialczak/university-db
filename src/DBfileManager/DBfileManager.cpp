@@ -19,10 +19,7 @@ int DBfileManager::writeToFile(const char* fileName) const
     }
     int records_written { 0 };
     for (const auto& student : data_base_.data()) {
-        stream << "Student record "
-               << std::to_string(records_written + 1) + "\n"
-               << "------------------\n"
-               << student
+        stream << student
                << "========================================"
                << std::endl;
         ++records_written;
@@ -105,7 +102,7 @@ bool DBfileManager::tryMakeRecord(const StringMap& parts) const
         return false;
     }
 
-    return data_base_.addStudent(std::stoi(parts.at("index")),
+    return data_base_.addStudent(parts.at("index"),
                                  parts.at("first_name"),
                                  parts.at("last_name"),
                                  parts.at("pesel"),
