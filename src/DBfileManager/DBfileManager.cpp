@@ -19,7 +19,7 @@ int DBfileManager::writeToFile(const char* fileName) const
     }
     int records_written { 0 };
     for (const auto& student : data_base_.data()) {
-        stream << student
+        stream << *student
                << "========================================"
                << std::endl;
         ++records_written;

@@ -2,7 +2,8 @@ build/
 bin/
 .vscode/
 Testing/
-test-resources/File-writing-template.txt
+test-resources/File-writing-result-DBfileManager-test.txt
+test-resources/File-writing-result-UniversityDB-test.txt
 TODO.txt
 WYMAGANIA.txt
 Analiza-funckjonalności.txt
