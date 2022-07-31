@@ -14,6 +14,7 @@ class Employee : public person::Person
              const std::string& address,
              person::Gender gender,
              double salary);
+    std::ostream& sendToStream(std::ostream& os) const override;
     // getters
     std::string id() const;
     double salary() const;
@@ -26,6 +27,6 @@ class Employee : public person::Person
     std::string id_;
     double salary_;
 };
-
-std::ostream& operator<<(std::ostream& os, const Employee& student);
+// TODO: remove
+//  std::ostream& operator<<(std::ostream& os, const Employee& student);
 }   // namespace university::employee

@@ -32,20 +32,37 @@ void Employee::setSalary(double newSalary)
     salary_ = newSalary;
 }
 
-std::ostream& operator<<(std::ostream& os, const Employee& employee)
+std::ostream& Employee::sendToStream(std::ostream& os) const
 {
-    os << "Employee: " + employee.id() + "\n"
-       << "First name: " + employee.firstName() + "\n"
-       << "Last name: " + employee.lastName() + "\n"
-       << "PESEL: " + employee.pesel() + "\n"
-       << "Address: " + employee.address() + "\n"
+    os << "Employee: " + id_ + "\n"
+       << "First name: " + first_name_ + "\n"
+       << "Last name: " + last_name_ + "\n"
+       << "PESEL: " + pesel_ + "\n"
+       << "Address: " + address_ + "\n"
        << "Gender: ";
-    std::string gender = (employee.gender() == person::Gender::male) ? "male"
-                                                                     : "female";
+    std::string gender = (gender_ == person::Gender::male) ? "male"
+                                                           : "female";
     os << gender + "\n"
-       << "Salary: " + std::to_string(employee.salary())
+       << "Salary: " + std::to_string(salary_)
        << std::endl;
 
     return os;
 }
+
+// std::ostream& operator<<(std::ostream& os, const Employee& employee)
+// {
+//     os << "Employee: " + employee.id() + "\n"
+//        << "First name: " + employee.firstName() + "\n"
+//        << "Last name: " + employee.lastName() + "\n"
+//        << "PESEL: " + employee.pesel() + "\n"
+//        << "Address: " + employee.address() + "\n"
+//        << "Gender: ";
+//     std::string gender = (employee.gender() == person::Gender::male) ? "male"
+//                                                                      : "female";
+//     os << gender + "\n"
+//        << "Salary: " + std::to_string(employee.salary())
+//        << std::endl;
+
+//     return os;
+// }
 }   // namespace university::employee
