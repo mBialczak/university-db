@@ -171,8 +171,8 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
 
     EXPECT_EQ(should_not_be_found.size(), 0);
     EXPECT_EQ(retrieved_students.size(), 2);
-    EXPECT_EQ(retrieved_students[0].lastName(), valid_rec_1.lastName());
-    EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[0]->lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[1]->lastName(), valid_rec_1.lastName());
 }
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
@@ -215,8 +215,13 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     sut.addStudent(valid_rec_4);
 
     sut.sortByLastName();
-
-    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
+    auto sorted_people = sut.data();
+    EXPECT_EQ(sorted_people[0]->lastName(), valid_rec_2.lastName());
+    EXPECT_EQ(sorted_people[1]->lastName(), valid_rec_4.lastName());
+    EXPECT_EQ(sorted_people[2]->lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(sorted_people[3]->lastName(), valid_rec_3.lastName());
+    // TODO: remove
+    //  EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
 }
 
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
@@ -227,8 +232,13 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     sut.addStudent(valid_rec_4);
 
     sut.sortByPesel();
-
-    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
+    auto sorted_people = sut.data();
+    EXPECT_EQ(sorted_people[0]->pesel(), valid_rec_4.pesel());
+    EXPECT_EQ(sorted_people[1]->pesel(), valid_rec_1.pesel());
+    EXPECT_EQ(sorted_people[2]->pesel(), valid_rec_2.pesel());
+    EXPECT_EQ(sorted_people[3]->pesel(), valid_rec_3.pesel());
+    // TODO: remove
+    // EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
 }
 
 void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
@@ -257,7 +267,8 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
                                     valid_rec_2,
                                     valid_rec_3,
                                     valid_rec_4 };
-    addStudentsToPattern(students, pattern);
+    std::vector<UniversityDB::PersonShPtr> students
+        addStudentsToPattern(students, pattern);
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
     sut.addStudent(valid_rec_3);

@@ -15,13 +15,14 @@ class DBfileManager;
 
 class UniversityDB
 {
-    using StudentIterator = std::vector<student::Student>::iterator;
-
   public:
+    using PersonShPtr = std::shared_ptr<person::Person>;
+    using PersonIter = std::vector<PersonShPtr>::iterator;
+
     UniversityDB();
 
-    bool addStudent(const student::Student& record);
-    bool addStudent(student::Student&& record);
+    bool addStudent(const student::Student& student);
+    bool addStudent(student::Student&& student);
     bool addStudent(const std::string& index,
                     const std::string& firstName,
                     const std::string& lastName,
@@ -33,18 +34,21 @@ class UniversityDB
     void sortByPesel();
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
-    std::vector<student::Student>& data();
-    std::shared_ptr<const student::Student> findByPesel(const std::string& pesel) const;
-    std::vector<student::Student> findByLastName(const std::string& lastName) const;
+    std::vector<PersonShPtr>& data();
+    // std::shared_ptr<const student::Student> findByPesel(const std::string& pesel) const; //TODO: remove
+    UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;
+    std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;
     void Display(std::ostream& stream = std::cout) const;
     std::size_t size() const;
 
   private:
-    StudentIterator findByIndex(const std::string& index);
+    PersonIter findByIndex(const std::string& index);
+    // TODO: remove
+    // bool isStudent(const PersonShPtr& personPtr) const;
 
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
-    std::vector<student::Student> students_;
+    std::vector<PersonShPtr> records_;
 };   // namespace UniversityDB
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database);
