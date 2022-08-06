@@ -1,5 +1,8 @@
 #include "UniversityDB.hpp"
 
+#include "Employee/Employee.hpp"
+#include "Student/Student.hpp"
+
 #include <algorithm>
 #include <fstream>
 #include <regex>
@@ -8,6 +11,7 @@
 namespace university {
 
 namespace {
+    using employee::Employee;
     using person::Person;
     using student::Student;
     using PersonShPtr = UniversityDB::PersonShPtr;
@@ -17,46 +21,40 @@ UniversityDB::UniversityDB()
     : file_manager_(std::make_unique<DBfileManager>(*this))
 { }
 
-bool UniversityDB::addStudent(const std::string& index,
-                              const std::string& firstName,
-                              const std::string& lastName,
-                              const std::string& pesel,
-                              const std::string& address,
-                              const person::Gender gender)
+bool UniversityDB::add(const Student& student)
 {
-    if (pesel_validator_(pesel)) {
-        records_.emplace_back(std::make_shared<Student>(index,
-                                                        firstName,
-                                                        lastName,
-                                                        pesel,
-                                                        address,
-                                                        gender));
+    if (pesel_validator_(student.pesel())) {
+        records_.emplace_back(std::make_shared<Student>(student));
         return true;
     }
 
     return false;
 }
 
-bool UniversityDB::addStudent(const Student& student)
+bool UniversityDB::add(const Employee& employee)
 {
-    if (pesel_validator_(student.pesel())) {
-        records_.emplace_back(std::make_shared<Student>(student.index(),
-                                                        student.firstName(),
-                                                        student.lastName(),
-                                                        student.pesel(),
-                                                        student.address(),
-                                                        student.gender()));
+    if (pesel_validator_(employee.pesel())) {
+        records_.emplace_back(std::make_shared<Employee>(employee));
         return true;
     }
 
     return false;
 }
 
-bool UniversityDB::addStudent(Student&& student)
+bool UniversityDB::add(Student&& student)
 {
     if (pesel_validator_(student.pesel())) {
-        // records_.emplace_back(std::move(record));
         records_.emplace_back(std::make_shared<Student>(std::move(student)));
+        return true;
+    }
+
+    return false;
+}
+
+bool UniversityDB::add(Employee&& employee)
+{
+    if (pesel_validator_(employee.pesel())) {
+        records_.emplace_back(std::make_shared<Employee>(std::move(employee)));
         return true;
     }
 

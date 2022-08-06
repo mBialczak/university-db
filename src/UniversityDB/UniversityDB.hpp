@@ -2,7 +2,6 @@
 
 #include "DBfileManager/DBfileManager.hpp"
 #include "PeselValidator/PeselValidator.hpp"
-#include "Student/Student.hpp"
 
 #include <iostream>
 #include <map>
@@ -10,6 +9,14 @@
 #include <vector>
 
 namespace university {
+
+namespace student {
+    class Student;
+}
+
+namespace employee {
+    class Employee;
+}
 
 class DBfileManager;
 
@@ -21,14 +28,10 @@ class UniversityDB
 
     UniversityDB();
 
-    bool addStudent(const student::Student& student);
-    bool addStudent(student::Student&& student);
-    bool addStudent(const std::string& index,
-                    const std::string& firstName,
-                    const std::string& lastName,
-                    const std::string& pesel,
-                    const std::string& address,
-                    const person::Gender gender);
+    bool add(const student::Student& student);
+    bool add(const employee::Employee& employee);
+    bool add(student::Student&& student);
+    bool add(employee::Employee&& employee);
     bool removeStudent(const std::string& index);
     void sortByLastName();
     void sortByPesel();
@@ -41,6 +44,7 @@ class UniversityDB
     std::size_t size() const;
 
   private:
+    // TODO: consider making public and returning shared_ptr as additional functionality
     PersonIter findByIndex(const std::string& index);
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;

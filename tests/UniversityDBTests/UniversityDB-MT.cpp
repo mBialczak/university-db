@@ -102,103 +102,59 @@ UniversityDBTest::UniversityDBTest()
                          9700.90)
 { }
 
-TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompositeData)
+TEST_F(UniversityDBTest, addShouldAddNewStudentsAndEmployeesWithCorrectPesel)
 {
-    std::string johns_index { "099/2017" };
-    std::string johns_first { "John" };
-    std::string johns_last { "Dickens" };
-    std::string johns_pesel { "90090515836" };   // valid PESEL
-    std::string johns_address { "England, London, Puddle of Mudd st. 37" };
-    Gender johns_gender { Gender::male };
-
     auto size_before = sut.size();
-    sut.addStudent(johns_index,
-                   johns_first,
-                   johns_last,
-                   johns_pesel,
-                   johns_address,
-                   johns_gender);
+    bool adding_result_1 = sut.add(ok_student_1);
+    bool adding_result_2 = sut.add(ok_student_2);
+    bool adding_result_3 = sut.add(ok_employee_1);
+    bool adding_result_4 = sut.add(ok_employee_2);
 
-    EXPECT_EQ(sut.size(), size_before + 1);
+    EXPECT_TRUE(adding_result_1);
+    EXPECT_TRUE(adding_result_2);
+    EXPECT_TRUE(adding_result_3);
+    EXPECT_TRUE(adding_result_4);
+    EXPECT_EQ(sut.size(), size_before + 4);
 }
 
-TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCompositeData)
+TEST_F(UniversityDBTest, addShouldNOTaddNewStudentOrEmployeeWithInvalidPeselFromCompositeData)
 {
-    std::string joans_index { "011/2018" };
-    std::string joans_first { "Joanne" };
-    std::string joans_last { "Hopkins" };
-    std::string joans_pesel { "74110101745" };   // invalid PESEL
-    std::string joans_address { "Poland, Szczecin, ul. Podmokła 20/10" };
-    Gender joans_gender { Gender::female };
-
     auto size_before = sut.size();
-    bool was_student_added = sut.addStudent(joans_index,
-                                            joans_first,
-                                            joans_last,
-                                            joans_pesel,
-                                            joans_address,
-                                            joans_gender);
+
+    bool was_student_added = sut.add(invalid_student_1);
+    bool was_employee_added = sut.add(invalid_employee_1);
     auto size_after = sut.size();
 
     EXPECT_FALSE(was_student_added);
+    EXPECT_FALSE(was_employee_added);
     EXPECT_EQ(size_before, size_after);
 }
 
-TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudent)
-{
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
-
-    EXPECT_EQ(sut.size(), 4);
-}
-
-TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromReadyStudent)
-{
-    sut.addStudent(invalid_student_1);
-    sut.addStudent(invalid_student_2);
-
-    EXPECT_EQ(sut.size(), 0);
-}
-
-TEST_F(UniversityDBTest, addStudentShouldAddNewStudentUsingMoveSemanticsFromCompositeData)
-{
-    auto size_before = sut.size();
-    sut.addStudent(Student("004/2020",
-                           "John",
-                           "Dickens",
-                           "90090515836",
-                           "England, London, Puddle of Mudd st. 37",
-                           Gender::male));
-
-    EXPECT_EQ(sut.size(), size_before + 1);
-}
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, findByPeselShouldFindStudentIfExistsInDatabase)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     auto retrieved_student = sut.findByPesel(ok_student_2.pesel());
     auto should_not_be_found = sut.findByPesel("65071209862");
 
     EXPECT_EQ(*retrieved_student, ok_student_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
     Student student_with_same_name { "001/2014",
                                      "John",
                                      ok_student_1.lastName(),
                                      "67040500538",
                                      "Poland, Gdynia, ul. Towarowa 80/74",
                                      Gender::male };
-    sut.addStudent(student_with_same_name);
+    sut.add(student_with_same_name);
 
     auto retrieved_students = sut.findByLastName(ok_student_1.lastName());
     auto should_not_be_found = sut.findByLastName("Psikuta");
@@ -211,10 +167,10 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     auto size_before_removal = sut.size();
 
     bool has_removed = sut.removeStudent(ok_student_1.index());
@@ -225,10 +181,10 @@ TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
 
 TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     auto size_before_removal = sut.size();
     std::string non_existing_index { "100/1999" };
 
@@ -240,13 +196,13 @@ TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGiven
     EXPECT_FALSE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal);
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
 
     sut.sortByLastName();
     auto sorted_people = sut.data();
@@ -255,13 +211,13 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_EQ(sorted_people[2]->lastName(), ok_student_1.lastName());
     EXPECT_EQ(sorted_people[3]->lastName(), ok_student_3.lastName());
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
 
     sut.sortByPesel();
     auto sorted_people = sut.data();
@@ -289,7 +245,7 @@ void addStudentsToPattern(const std::vector<Student>& students, std::string& pat
         pattern += "========================================\n";
     }
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
@@ -298,10 +254,10 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
                                     ok_student_3,
                                     ok_student_4 };
     addStudentsToPattern(students, pattern);
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     // ostringstream used as substitution for std::cout and other streams
     std::ostringstream osstream;
 
@@ -310,7 +266,7 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 
     EXPECT_EQ(pattern, display_result);
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
@@ -319,10 +275,10 @@ TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream
                                     ok_student_3,
                                     ok_student_4 };
     addStudentsToPattern(students, pattern);
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     // ostringstream used as substitution for std::cout
     std::ostringstream osstream;
 
@@ -351,16 +307,16 @@ std::string getPathToWritingTemplateFile()
 
     return path_to_template;
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 {
     std::string path_to_template = getPathToReadingTemplateFile();
     // prepare second database for comparison
     UniversityDB databaseToCompare;
-    databaseToCompare.addStudent(ok_student_1);
-    databaseToCompare.addStudent(ok_student_2);
-    databaseToCompare.addStudent(ok_student_3);
-    databaseToCompare.addStudent(ok_student_4);
+    databaseToCompare.add(ok_student_1);
+    databaseToCompare.add(ok_student_2);
+    databaseToCompare.add(ok_student_3);
+    databaseToCompare.add(ok_student_4);
 
     int records_read = sut.readFromFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
@@ -371,13 +327,13 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
         EXPECT_EQ(*internalStateToCompare[i], *internalStateReadToSut[i]);
     }
 }
-
+// TODO: RECTIFY
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
-    sut.addStudent(ok_student_1);
-    sut.addStudent(ok_student_2);
-    sut.addStudent(ok_student_3);
-    sut.addStudent(ok_student_4);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
     std::string path_to_write = getPathToWritingTemplateFile();
 
     int records_written = sut.writeToFile(path_to_write.data());

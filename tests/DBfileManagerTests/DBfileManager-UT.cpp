@@ -82,10 +82,10 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
     std::string path_to_template = getPathToReadingTemplateFile();
     // prepare second database for comparison
     UniversityDB databaseToCompare;
-    databaseToCompare.addStudent(student_1_);
-    databaseToCompare.addStudent(student_2_);
-    databaseToCompare.addStudent(student_3_);
-    databaseToCompare.addStudent(student_4_);
+    databaseToCompare.add(student_1_);
+    databaseToCompare.add(student_2_);
+    databaseToCompare.add(student_3_);
+    databaseToCompare.add(student_4_);
 
     int records_read = sut_.readFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
@@ -100,10 +100,10 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
 
 TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
 {
-    data_base_.addStudent(student_1_);
-    data_base_.addStudent(student_2_);
-    data_base_.addStudent(student_3_);
-    data_base_.addStudent(student_4_);
+    data_base_.add(student_1_);
+    data_base_.add(student_2_);
+    data_base_.add(student_3_);
+    data_base_.add(student_4_);
     std::string path_to_write = getPathToWritingTemplateFile();
 
     int records_written = sut_.writeToFile(path_to_write.data());

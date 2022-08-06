@@ -102,12 +102,12 @@ bool DBfileManager::tryMakeRecord(const StringMap& parts) const
         return false;
     }
 
-    return data_base_.addStudent(parts.at("index"),
-                                 parts.at("first_name"),
-                                 parts.at("last_name"),
-                                 parts.at("pesel"),
-                                 parts.at("address"),
-                                 *gender);
+    return data_base_.add(student::Student(parts.at("index"),
+                                           parts.at("first_name"),
+                                           parts.at("last_name"),
+                                           parts.at("pesel"),
+                                           parts.at("address"),
+                                           *gender));
 }
 
 std::optional<person::Gender> DBfileManager::determineGender(const std::string& gender) const
