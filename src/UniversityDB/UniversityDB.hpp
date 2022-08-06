@@ -35,7 +35,6 @@ class UniversityDB
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
     std::vector<PersonShPtr>& data();
-    // std::shared_ptr<const student::Student> findByPesel(const std::string& pesel) const; //TODO: remove
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;
     void Display(std::ostream& stream = std::cout) const;
@@ -43,9 +42,6 @@ class UniversityDB
 
   private:
     PersonIter findByIndex(const std::string& index);
-    // TODO: remove
-    // bool isStudent(const PersonShPtr& personPtr) const;
-
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
     std::vector<PersonShPtr> records_;

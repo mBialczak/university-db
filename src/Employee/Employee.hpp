@@ -27,6 +27,4 @@ class Employee : public person::Person
     std::string id_;
     double salary_;
 };
-// TODO: remove
-//  std::ostream& operator<<(std::ostream& os, const Employee& student);
 }   // namespace university::employee

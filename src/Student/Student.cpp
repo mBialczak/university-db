@@ -38,23 +38,4 @@ std::ostream& Student::sendToStream(std::ostream& os) const
 
     return os;
 }
-// TODO: remove
-//  std::ostream& operator<<(std::ostream& os, const Student& student)
-//  {
-//      os << "STUDENT"
-//         << "\n"
-//         << "-------------"
-//         << "\n"
-//         << "Index number: " + student.index() + "\n"
-//         << "First name: " + student.firstName() + "\n"
-//         << "Last name: " + student.lastName() + "\n"
-//         << "PESEL: " + student.pesel() + "\n"
-//         << "Address: " + student.address() + "\n"
-//         << "Gender: ";
-//      std::string gender = (student.gender() == person::Gender::male) ? "male"
-//                                                                      : "female";
-//      os << gender << std::endl;
-
-//     return os;
-// }
 }   // namespace university::student

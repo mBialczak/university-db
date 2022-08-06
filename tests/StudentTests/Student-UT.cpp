@@ -55,16 +55,32 @@ std::string prepPatternString(const Student& student)
     return pattern;
 }
 
+TEST_F(StudentTests, sendToStreamShouldCorrectlyInsertStudentToOuptutStream)
+{
+    std::string pattern1 = prepPatternString(john);
+    std::string pattern2 = prepPatternString(sally);
+    std::ostringstream osstream;
+
+    john.sendToStream(osstream);
+    std::string insertion_result1 = osstream.str();
+    osstream.str("");
+    sally.sendToStream(osstream);
+    std::string insertion_result2 = osstream.str();
+
+    EXPECT_EQ(pattern1, insertion_result1);
+    EXPECT_EQ(pattern2, insertion_result2);
+}
+
 TEST_F(StudentTests, outputOperatorShouldCorrectlyInsertStudentToOuptutStream)
 {
     std::string pattern1 = prepPatternString(john);
     std::string pattern2 = prepPatternString(sally);
     std::ostringstream osstream;
 
-    osstream << john;
+    john.sendToStream(osstream);
     std::string insertion_result1 = osstream.str();
     osstream.str("");
-    osstream << sally;
+    sally.sendToStream(osstream);
     std::string insertion_result2 = osstream.str();
 
     EXPECT_EQ(pattern1, insertion_result1);

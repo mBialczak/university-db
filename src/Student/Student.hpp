@@ -24,6 +24,4 @@ class Student : public person::Person
   private:
     std::string index_;
 };
-// TODO: remove
-// std::ostream& operator<<(std::ostream& os, const Student& student);
 }   // namespace university::student

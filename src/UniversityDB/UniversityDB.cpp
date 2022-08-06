@@ -25,13 +25,6 @@ bool UniversityDB::addStudent(const std::string& index,
                               const person::Gender gender)
 {
     if (pesel_validator_(pesel)) {
-        // Student student { index, TODO:: REMOVE
-        //                            firstName,
-        //                            lastName,
-        //                            pesel,
-        //                            address,
-        //                            gender };
-        // records_.emplace_back(student);
         records_.emplace_back(std::make_shared<Student>(index,
                                                         firstName,
                                                         lastName,
@@ -53,7 +46,6 @@ bool UniversityDB::addStudent(const Student& student)
                                                         student.pesel(),
                                                         student.address(),
                                                         student.gender()));
-        // records_.emplace_back(student); TODO: REMOVE
         return true;
     }
 
@@ -75,9 +67,7 @@ std::size_t UniversityDB::size() const
 {
     return records_.size();
 }
-// TODO: remove
-// std::shared_ptr<const Student> UniversityDB::findByPesel(const std::string& pesel) const
-// UniversityDB manages the life of its records
+
 PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
 
 {
@@ -87,18 +77,15 @@ PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
                                         return record->pesel() == pesel;
                                     });
     if (result_iter != records_.end()) {
-        // return std::make_shared<const Student>(*result_iter); //TODO: remove
         return *result_iter;
     }
 
     return nullptr;
 }
-// TODO: remove
-// std::vector<Student> UniversityDB::findByLastName(const std::string& lastName) const
+
 std::vector<PersonShPtr> UniversityDB::findByLastName(const std::string& lastName) const
 
 {
-    // std::vector<Student> found_students; //TODO
     std::vector<PersonShPtr> found_students;
     std::copy_if(records_.begin(),
                  records_.end(),
@@ -175,12 +162,6 @@ void UniversityDB::Display(std::ostream& stream) const
                << "========================================\n";
     }
 }
-// TODO: remove
-// bool UniversityDB::isStudent(const PersonShPtr& personPtr) const
-// {
-//     using Student;
-//     std::shared_ptr<Student> maybe_student_ptr = std::dynamic_pointer_cast<Student>;
-// }
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
 {
@@ -188,5 +169,4 @@ std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
 
     return os;
 }
-
 }   // namespace university
