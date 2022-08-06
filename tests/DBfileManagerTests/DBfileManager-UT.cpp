@@ -72,7 +72,7 @@ std::string getPathToWritingTemplateFile()
     std::string current_path = std::filesystem::current_path().string();
     auto position = current_path.find("build");
     std::string path_to_template = current_path.substr(0, position);
-    path_to_template += "test-resources/File-writing-template.txt";
+    path_to_template += "test-resources/File-writing-result-DBfileManager-test.txt";
 
     return path_to_template;
 }
@@ -92,7 +92,10 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
     auto internalStateOfAssociatedDataBase = data_base_.data();
 
     EXPECT_EQ(records_read, 4);
-    EXPECT_EQ(internalStateToCompare, internalStateOfAssociatedDataBase);
+    EXPECT_EQ(records_read, 4);
+    for (std::size_t i = 0; i < internalStateToCompare.size(); ++i) {
+        EXPECT_EQ(*internalStateToCompare[i], *internalStateOfAssociatedDataBase[i]);
+    }
 }
 
 TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
@@ -109,7 +112,9 @@ TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
 
     EXPECT_EQ(records_written, 4);
     EXPECT_EQ(records_read_back, 4);
-    EXPECT_EQ(data_base_.data(), databaseToCompare.data());
+    for (std::size_t i = 0; i < data_base_.data().size(); ++i) {
+        EXPECT_EQ(*data_base_.data()[i], *databaseToCompare.data()[i]);
+    }
 }
 
 }   // namespace university::ut

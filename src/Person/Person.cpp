@@ -39,4 +39,9 @@ Gender Person::gender() const
     return gender_;
 }
 
+std::ostream& operator<<(std::ostream& os, const Person& person)
+{
+    return person.sendToStream(os);
+}
+
 }   // namespace university::person

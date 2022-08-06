@@ -171,8 +171,8 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
 
     EXPECT_EQ(should_not_be_found.size(), 0);
     EXPECT_EQ(retrieved_students.size(), 2);
-    EXPECT_EQ(retrieved_students[0].lastName(), valid_rec_1.lastName());
-    EXPECT_EQ(retrieved_students[1].lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[0]->lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[1]->lastName(), valid_rec_1.lastName());
 }
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
@@ -215,8 +215,11 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     sut.addStudent(valid_rec_4);
 
     sut.sortByLastName();
-
-    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_2, valid_rec_4, valid_rec_1, valid_rec_3));
+    auto sorted_people = sut.data();
+    EXPECT_EQ(sorted_people[0]->lastName(), valid_rec_2.lastName());
+    EXPECT_EQ(sorted_people[1]->lastName(), valid_rec_4.lastName());
+    EXPECT_EQ(sorted_people[2]->lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(sorted_people[3]->lastName(), valid_rec_3.lastName());
 }
 
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
@@ -227,8 +230,11 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     sut.addStudent(valid_rec_4);
 
     sut.sortByPesel();
-
-    EXPECT_THAT(sut.data(), ElementsAre(valid_rec_4, valid_rec_1, valid_rec_2, valid_rec_3));
+    auto sorted_people = sut.data();
+    EXPECT_EQ(sorted_people[0]->pesel(), valid_rec_4.pesel());
+    EXPECT_EQ(sorted_people[1]->pesel(), valid_rec_1.pesel());
+    EXPECT_EQ(sorted_people[2]->pesel(), valid_rec_2.pesel());
+    EXPECT_EQ(sorted_people[3]->pesel(), valid_rec_3.pesel());
 }
 
 void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
@@ -307,7 +313,7 @@ std::string getPathToWritingTemplateFile()
     std::string current_path = std::filesystem::current_path().string();
     auto position = current_path.find("build");
     std::string path_to_template = current_path.substr(0, position);
-    path_to_template += "test-resources/File-writing-template.txt";
+    path_to_template += "test-resources/File-writing-result-UniversityDB-test.txt";
 
     return path_to_template;
 }
@@ -327,7 +333,9 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
     auto internalStateReadToSut = sut.data();
 
     EXPECT_EQ(records_read, 4);
-    EXPECT_EQ(internalStateToCompare, internalStateReadToSut);
+    for (std::size_t i = 0; i < internalStateToCompare.size(); ++i) {
+        EXPECT_EQ(*internalStateToCompare[i], *internalStateReadToSut[i]);
+    }
 }
 
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
@@ -344,6 +352,8 @@ TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 
     EXPECT_EQ(records_written, 4);
     EXPECT_EQ(records_read_back, 4);
-    EXPECT_EQ(sut.data(), sut_to_compare.data());
+    for (std::size_t i = 0; i < sut.data().size(); ++i) {
+        EXPECT_EQ(*sut.data()[i], *sut_to_compare.data()[i]);
+    }
 }
 }   // end of namespace university::mt

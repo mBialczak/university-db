@@ -16,6 +16,7 @@ class Student : public person::Person
             const std::string& address,
             person::Gender gender);
 
+    std::ostream& sendToStream(std::ostream& os) const override;
     std::string index() const;
 
     bool operator==(const Student&) const = default;
@@ -23,6 +24,4 @@ class Student : public person::Person
   private:
     std::string index_;
 };
-
-std::ostream& operator<<(std::ostream& os, const Student& student);
 }   // namespace university::student

@@ -26,6 +26,7 @@ class Person
     std::string pesel() const;
     std::string address() const;
     Gender gender() const;
+    virtual std::ostream& sendToStream(std::ostream& os) const = 0;
 
     bool operator==(const Person&) const = default;
 
@@ -37,4 +38,5 @@ class Person
     Gender gender_;
 };
 
+std::ostream& operator<<(std::ostream& os, const Person& person);
 }   // namespace university::person
