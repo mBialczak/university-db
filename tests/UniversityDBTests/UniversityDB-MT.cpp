@@ -1,3 +1,4 @@
+#include "Employee/Employee.hpp"
 #include "Student/Student.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
@@ -7,6 +8,7 @@
 
 namespace university::mt {
 
+using employee::Employee;
 using person::Gender;
 using student::IndexNo;
 using student::Student;
@@ -20,52 +22,84 @@ class UniversityDBTest : public Test
   protected:
     UniversityDB sut;
     // student records with valid PESEL numbers
-    Student valid_rec_1;
-    Student valid_rec_2;
-    Student valid_rec_3;
-    Student valid_rec_4;
+    Student ok_student_1;
+    Student ok_student_2;
+    Student ok_student_3;
+    Student ok_student_4;
+    Employee ok_employee_1;
+    Employee ok_employee_2;
     // student records with invalid PESEL numbers;
-    Student invalid_rec_1;
-    Student invalid_rec_2;
+    Student invalid_student_1;
+    Student invalid_student_2;
+    Employee invalid_employee_1;
+    Employee invalid_employee_2;
 };
 
 UniversityDBTest::UniversityDBTest()
-    : valid_rec_1({ "001/2020",
-                    "Sally",
-                    "Smith",
-                    "81100216357",
-                    "Poland, Opole, ul. Deszczowa 23/m.22",
-                    Gender::female })
-    , valid_rec_2({ "003/2019",
-                    "Joseph",
-                    "Kowalski",
-                    "90080517455",
-                    "Poland, Laskowice, ul. Niedzielna 304A",
-                    Gender::male })
-    , valid_rec_3({ "023/2020",
-                    "Anna",
-                    "Zielinska",
-                    "90090515836",
-                    "Poland, Opole, ul. Sobotnia 15A",
-                    Gender::female })
-    , valid_rec_4({ "012/2018",
-                    "Peter",
-                    "Pikiel",
-                    "67040500538",
-                    "Poland, Zabrze, ul. Nieznana 1C/44",
-                    Gender::male })
-    , invalid_rec_1({ "032/2022",
-                      "Harold",
-                      "Butterhand",
-                      "2535325",
-                      "Poland, Waszawa, ul. Niekaczki 12/80",
-                      Gender::male })
-    , invalid_rec_2({ "003/2018",
-                      "Zofia",
-                      "Popularna",
-                      "7b110c01745",
-                      "Poland, Gdynia, ul. Towarowa 80/74",
-                      Gender::female })
+    : ok_student_1("001/2020",
+                   "Sally",
+                   "Smith",
+                   "81100216357",
+                   "Poland, Opole, ul. Deszczowa 23/m.22",
+                   Gender::female)
+    , ok_student_2("003/2019",
+                   "Joseph",
+                   "Kowalski",
+                   "90080517455",
+                   "Poland, Laskowice, ul. Niedzielna 304A",
+                   Gender::male)
+    , ok_student_3("023/2020",
+                   "Anna",
+                   "Zielinska",
+                   "90090515836",
+                   "Poland, Opole, ul. Sobotnia 15A",
+                   Gender::female)
+    , ok_student_4("012/2018",
+                   "Peter",
+                   "Pikiel",
+                   "67040500538",
+                   "Poland, Zabrze, ul. Nieznana 1C/44",
+                   Gender::male)
+    , ok_employee_1("Teacher:001",
+                    "Miroslaw",
+                    "Webski",
+                    "92071314764",
+                    "Poland, Lublin, ul. Cwaniaka 4D/28",
+                    Gender::male,
+                    6500.50)
+    , ok_employee_2("Management:003",
+                    "Sandra",
+                    "Tulipan",
+                    "65071209862",
+                    "Poland, Szczecin, ul. Zachodnia 33/83",
+                    Gender::female,
+                    10000.40)
+    , invalid_student_1("032/2022",
+                        "Harold",
+                        "Butterhand",
+                        "2535325",
+                        "Poland, Waszawa, ul. Niekaczki 12/80",
+                        Gender::male)
+    , invalid_student_2("003/2018",
+                        "Zofia",
+                        "Popularna",
+                        "7b110c01745",
+                        "Poland, Gdynia, ul. Towarowa 80/74",
+                        Gender::female)
+    , invalid_employee_1("Administrative:008",
+                         "Nicolas",
+                         "Sadowski",
+                         "99012723456",
+                         "Poland, Zabrze, ul. Topolowa 144",
+                         Gender::male,
+                         5300.00)
+    , invalid_employee_2("Management:012",
+                         "Anna",
+                         "Cudna",
+                         "6704050053A",
+                         "Poland, Wielkie Wody, ul. Zalana 48/30",
+                         Gender::female,
+                         9700.90)
 { }
 
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompositeData)
@@ -112,18 +146,18 @@ TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCom
 
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudent)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
 
     EXPECT_EQ(sut.size(), 4);
 }
 
 TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromReadyStudent)
 {
-    sut.addStudent(invalid_rec_1);
-    sut.addStudent(invalid_rec_2);
+    sut.addStudent(invalid_student_1);
+    sut.addStudent(invalid_student_2);
 
     EXPECT_EQ(sut.size(), 0);
 }
@@ -143,47 +177,47 @@ TEST_F(UniversityDBTest, addStudentShouldAddNewStudentUsingMoveSemanticsFromComp
 
 TEST_F(UniversityDBTest, findByPeselShouldFindStudentIfExistsInDatabase)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
-    auto retrieved_student = sut.findByPesel(valid_rec_2.pesel());
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
+    auto retrieved_student = sut.findByPesel(ok_student_2.pesel());
     auto should_not_be_found = sut.findByPesel("65071209862");
 
-    EXPECT_EQ(*retrieved_student, valid_rec_2);
+    EXPECT_EQ(*retrieved_student, ok_student_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
 
 TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
     Student student_with_same_name { "001/2014",
                                      "John",
-                                     valid_rec_1.lastName(),
+                                     ok_student_1.lastName(),
                                      "67040500538",
                                      "Poland, Gdynia, ul. Towarowa 80/74",
                                      Gender::male };
     sut.addStudent(student_with_same_name);
 
-    auto retrieved_students = sut.findByLastName(valid_rec_1.lastName());
+    auto retrieved_students = sut.findByLastName(ok_student_1.lastName());
     auto should_not_be_found = sut.findByLastName("Psikuta");
 
     EXPECT_EQ(should_not_be_found.size(), 0);
     EXPECT_EQ(retrieved_students.size(), 2);
-    EXPECT_EQ(retrieved_students[0]->lastName(), valid_rec_1.lastName());
-    EXPECT_EQ(retrieved_students[1]->lastName(), valid_rec_1.lastName());
+    EXPECT_EQ(retrieved_students[0]->lastName(), ok_student_1.lastName());
+    EXPECT_EQ(retrieved_students[1]->lastName(), ok_student_1.lastName());
 }
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
     auto size_before_removal = sut.size();
 
-    bool has_removed = sut.removeStudent(valid_rec_1.index());
+    bool has_removed = sut.removeStudent(ok_student_1.index());
 
     EXPECT_TRUE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal - 1ul);
@@ -191,50 +225,50 @@ TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
 
 TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
     auto size_before_removal = sut.size();
     std::string non_existing_index { "100/1999" };
 
     bool has_removed = sut.removeStudent(non_existing_index);
 
-    ASSERT_NE(valid_rec_2.index(), non_existing_index);
-    ASSERT_NE(valid_rec_3.index(), non_existing_index);
-    ASSERT_NE(valid_rec_4.index(), non_existing_index);
+    ASSERT_NE(ok_student_2.index(), non_existing_index);
+    ASSERT_NE(ok_student_3.index(), non_existing_index);
+    ASSERT_NE(ok_student_4.index(), non_existing_index);
     EXPECT_FALSE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal);
 }
 
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
 
     sut.sortByLastName();
     auto sorted_people = sut.data();
-    EXPECT_EQ(sorted_people[0]->lastName(), valid_rec_2.lastName());
-    EXPECT_EQ(sorted_people[1]->lastName(), valid_rec_4.lastName());
-    EXPECT_EQ(sorted_people[2]->lastName(), valid_rec_1.lastName());
-    EXPECT_EQ(sorted_people[3]->lastName(), valid_rec_3.lastName());
+    EXPECT_EQ(sorted_people[0]->lastName(), ok_student_2.lastName());
+    EXPECT_EQ(sorted_people[1]->lastName(), ok_student_4.lastName());
+    EXPECT_EQ(sorted_people[2]->lastName(), ok_student_1.lastName());
+    EXPECT_EQ(sorted_people[3]->lastName(), ok_student_3.lastName());
 }
 
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
 
     sut.sortByPesel();
     auto sorted_people = sut.data();
-    EXPECT_EQ(sorted_people[0]->pesel(), valid_rec_4.pesel());
-    EXPECT_EQ(sorted_people[1]->pesel(), valid_rec_1.pesel());
-    EXPECT_EQ(sorted_people[2]->pesel(), valid_rec_2.pesel());
-    EXPECT_EQ(sorted_people[3]->pesel(), valid_rec_3.pesel());
+    EXPECT_EQ(sorted_people[0]->pesel(), ok_student_4.pesel());
+    EXPECT_EQ(sorted_people[1]->pesel(), ok_student_1.pesel());
+    EXPECT_EQ(sorted_people[2]->pesel(), ok_student_2.pesel());
+    EXPECT_EQ(sorted_people[3]->pesel(), ok_student_3.pesel());
 }
 
 void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
@@ -259,15 +293,15 @@ void addStudentsToPattern(const std::vector<Student>& students, std::string& pat
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<Student> students { valid_rec_1,
-                                    valid_rec_2,
-                                    valid_rec_3,
-                                    valid_rec_4 };
+    std::vector<Student> students { ok_student_1,
+                                    ok_student_2,
+                                    ok_student_3,
+                                    ok_student_4 };
     addStudentsToPattern(students, pattern);
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
     // ostringstream used as substitution for std::cout and other streams
     std::ostringstream osstream;
 
@@ -280,15 +314,15 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<Student> students { valid_rec_1,
-                                    valid_rec_2,
-                                    valid_rec_3,
-                                    valid_rec_4 };
+    std::vector<Student> students { ok_student_1,
+                                    ok_student_2,
+                                    ok_student_3,
+                                    ok_student_4 };
     addStudentsToPattern(students, pattern);
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
     // ostringstream used as substitution for std::cout
     std::ostringstream osstream;
 
@@ -323,10 +357,10 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
     std::string path_to_template = getPathToReadingTemplateFile();
     // prepare second database for comparison
     UniversityDB databaseToCompare;
-    databaseToCompare.addStudent(valid_rec_1);
-    databaseToCompare.addStudent(valid_rec_2);
-    databaseToCompare.addStudent(valid_rec_3);
-    databaseToCompare.addStudent(valid_rec_4);
+    databaseToCompare.addStudent(ok_student_1);
+    databaseToCompare.addStudent(ok_student_2);
+    databaseToCompare.addStudent(ok_student_3);
+    databaseToCompare.addStudent(ok_student_4);
 
     int records_read = sut.readFromFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
@@ -340,10 +374,10 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
-    sut.addStudent(valid_rec_1);
-    sut.addStudent(valid_rec_2);
-    sut.addStudent(valid_rec_3);
-    sut.addStudent(valid_rec_4);
+    sut.addStudent(ok_student_1);
+    sut.addStudent(ok_student_2);
+    sut.addStudent(ok_student_3);
+    sut.addStudent(ok_student_4);
     std::string path_to_write = getPathToWritingTemplateFile();
 
     int records_written = sut.writeToFile(path_to_write.data());
