@@ -165,12 +165,14 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAn
     EXPECT_EQ(retrieved_students[1]->lastName(), ok_student_1.lastName());
 }
 
-TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
+TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexEvenWhenEmployeesCoexist)
 {
     sut.add(ok_student_1);
     sut.add(ok_student_2);
     sut.add(ok_student_3);
     sut.add(ok_student_4);
+    sut.add(ok_employee_1);
+    sut.add(ok_employee_2);
     auto size_before_removal = sut.size();
 
     bool has_removed = sut.removeStudent(ok_student_1.index());
@@ -179,12 +181,14 @@ TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexNo)
     EXPECT_EQ(sut.size(), size_before_removal - 1ul);
 }
 
-TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenRecord)
+TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenIndex)
 {
     sut.add(ok_student_1);
     sut.add(ok_student_2);
     sut.add(ok_student_3);
     sut.add(ok_student_4);
+    sut.add(ok_employee_1);
+    sut.add(ok_employee_2);
     auto size_before_removal = sut.size();
     std::string non_existing_index { "100/1999" };
 
@@ -196,6 +200,42 @@ TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGiven
     EXPECT_FALSE(has_removed);
     EXPECT_EQ(sut.size(), size_before_removal);
 }
+
+TEST_F(UniversityDBTest, removeEmployeeShouldFindAndRemoveEmployeeGivenIdEvenWhenStudentsCoexist)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+    auto size_before_removal = sut.size();
+
+    bool has_removed = sut.removeEmployee(ok_employee_2.id());
+
+    EXPECT_TRUE(has_removed);
+    EXPECT_EQ(sut.size(), size_before_removal - 1ul);
+}
+
+TEST_F(UniversityDBTest, removeEmployeeShouldDoNothingIfThereIsNoEmployeeWithGivenId)
+{
+    sut.add(ok_employee_1);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
+    sut.add(ok_employee_2);
+    auto size_before_removal = sut.size();
+    std::string non_existing_id { "Security:001" };
+
+    bool has_removed = sut.removeEmployee(non_existing_id);
+
+    ASSERT_NE(ok_employee_1.id(), non_existing_id);
+    ASSERT_NE(ok_employee_2.id(), non_existing_id);
+    EXPECT_FALSE(has_removed);
+    EXPECT_EQ(sut.size(), size_before_removal);
+}
+
 // TODO: RECTIFY
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {

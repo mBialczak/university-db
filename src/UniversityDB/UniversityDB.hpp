@@ -33,6 +33,7 @@ class UniversityDB
     bool add(student::Student&& student);
     bool add(employee::Employee&& employee);
     bool removeStudent(const std::string& index);
+    bool removeEmployee(const std::string& id);
     void sortByLastName();
     void sortByPesel();
     int readFromFile(const char* fileName);
@@ -46,6 +47,7 @@ class UniversityDB
   private:
     // TODO: consider making public and returning shared_ptr as additional functionality
     PersonIter findByIndex(const std::string& index);
+    PersonIter findById(const std::string& id);
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
     std::vector<PersonShPtr> records_;

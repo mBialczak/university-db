@@ -106,6 +106,17 @@ bool UniversityDB::removeStudent(const std::string& index)
     return false;
 }
 
+bool UniversityDB::removeEmployee(const std::string& id)
+{
+    auto to_be_removed = findById(id);
+    if (to_be_removed != records_.end()) {
+        records_.erase(to_be_removed);
+        return true;
+    }
+
+    return false;
+}
+
 UniversityDB::PersonIter UniversityDB::findByIndex(const std::string& index)
 {
     return std::find_if(records_.begin(),
@@ -114,6 +125,20 @@ UniversityDB::PersonIter UniversityDB::findByIndex(const std::string& index)
                             auto maybe_student_ptr = std::dynamic_pointer_cast<Student>(record);
                             if (maybe_student_ptr) {
                                 return maybe_student_ptr->index() == index;
+                            }
+
+                            return false;
+                        });
+}
+
+UniversityDB::PersonIter UniversityDB::findById(const std::string& id)
+{
+    return std::find_if(records_.begin(),
+                        records_.end(),
+                        [&id](const auto& record) {
+                            auto maybe_employee_ptr = std::dynamic_pointer_cast<Employee>(record);
+                            if (maybe_employee_ptr) {
+                                return maybe_employee_ptr->id() == id;
                             }
 
                             return false;
