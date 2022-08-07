@@ -102,7 +102,7 @@ UniversityDBTest::UniversityDBTest()
                          9700.90)
 { }
 
-TEST_F(UniversityDBTest, addShouldAddNewStudentsAndEmployeesWithCorrectPesel)
+TEST_F(UniversityDBTest, addShouldAddNewStudentsAndEmployeesWithCorrectPeselAndReturnTrue)
 {
     auto size_before = sut.size();
     bool adding_result_1 = sut.add(ok_student_1);
@@ -117,7 +117,7 @@ TEST_F(UniversityDBTest, addShouldAddNewStudentsAndEmployeesWithCorrectPesel)
     EXPECT_EQ(sut.size(), size_before + 4);
 }
 
-TEST_F(UniversityDBTest, addShouldNOTaddNewStudentOrEmployeeWithInvalidPeselFromCompositeData)
+TEST_F(UniversityDBTest, addShouldNOTaddNewStudentOrEmployeeWithInvalidPeselAndReturnFalse)
 {
     auto size_before = sut.size();
 
@@ -128,6 +128,89 @@ TEST_F(UniversityDBTest, addShouldNOTaddNewStudentOrEmployeeWithInvalidPeselFrom
     EXPECT_FALSE(was_student_added);
     EXPECT_FALSE(was_employee_added);
     EXPECT_EQ(size_before, size_after);
+}
+
+TEST_F(UniversityDBTest, addShouldNOTaddNewStudentOrEmployeeIfPeselExistsInDatabaseAndReturnFalse)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_employee_1);
+    auto size_before_adding_same_pesel = sut.size();
+    std::string same_pesel_1 = ok_student_1.pesel();
+    std::string same_pesel_2 = ok_employee_1.pesel();
+    Student student_with_same_pesel_1 { "200/2011",
+                                        "John",
+                                        "Doe",
+                                        same_pesel_1,
+                                        "USA, New York, Some street no 203",
+                                        Gender::male };
+    Employee employee_with_same_pesel_1 { "Teacher:010",
+                                          "Max",
+                                          "Golonko",
+                                          same_pesel_1,
+                                          "Poland, Opole, ul. Nieznana 14c/28",
+                                          Gender::male,
+                                          2500.0 };
+    Student student_with_same_pesel_2 { "30/2011",
+                                        "Sally",
+                                        "Doe",
+                                        same_pesel_2,
+                                        "USA, Chicago, Other Street no 203",
+                                        Gender::female };
+    Employee employee_with_same_pesel_2 { "Security:020",
+                                          "Anna",
+                                          "Strong",
+                                          same_pesel_2,
+                                          "USA, Orlando, Blue street no 203/20",
+                                          Gender::female,
+                                          7000.0 };
+
+    bool adding_result_1 = sut.add(student_with_same_pesel_1);
+    bool adding_result_2 = sut.add(employee_with_same_pesel_1);
+    bool adding_result_3 = sut.add(student_with_same_pesel_2);
+    bool adding_result_4 = sut.add(employee_with_same_pesel_2);
+
+    EXPECT_FALSE(adding_result_1);
+    EXPECT_FALSE(adding_result_2);
+    EXPECT_FALSE(adding_result_3);
+    EXPECT_FALSE(adding_result_4);
+    EXPECT_EQ(sut.size(), size_before_adding_same_pesel);
+}
+
+TEST_F(UniversityDBTest, addShouldNOTaddNewStudentIfIndexExistsInDatabaseAndReturnFalse)
+{
+    sut.add(ok_student_1);
+    auto size_before_adding_same_index = sut.size();
+    std::string same_index = ok_student_1.index();
+    Student student_with_same_index { same_index,
+                                      "John",
+                                      "Doe",
+                                      ok_student_4.pesel(),
+                                      "USA, New York, Some street no 203",
+                                      Gender::male };
+
+    bool adding_result = sut.add(student_with_same_index);
+
+    EXPECT_FALSE(adding_result);
+    EXPECT_EQ(sut.size(), size_before_adding_same_index);
+}
+
+TEST_F(UniversityDBTest, addShouldNOTaddNewEmployeeIfIdExistsInDatabaseAndReturnFalse)
+{
+    sut.add(ok_employee_1);
+    auto size_before_adding_same_id = sut.size();
+    std::string same_id = ok_employee_1.id();
+    Employee employee_with_same_id { same_id,
+                                     "Max",
+                                     "Golonko",
+                                     ok_student_4.pesel(),
+                                     "Poland, Opole, ul. Nieznana 14c/28",
+                                     Gender::male,
+                                     2500.0 };
+
+    bool adding_result = sut.add(employee_with_same_id);
+
+    EXPECT_FALSE(adding_result);
+    EXPECT_EQ(sut.size(), size_before_adding_same_id);
 }
 
 // TODO: RECTIFY
@@ -233,6 +316,38 @@ TEST_F(UniversityDBTest, removeEmployeeShouldDoNothingIfThereIsNoEmployeeWithGiv
     ASSERT_NE(ok_employee_1.id(), non_existing_id);
     ASSERT_NE(ok_employee_2.id(), non_existing_id);
     EXPECT_FALSE(has_removed);
+    EXPECT_EQ(sut.size(), size_before_removal);
+}
+
+TEST_F(UniversityDBTest, removeShouldFindAndRemovePeopleGivenPesel)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+    auto size_before_removal = sut.size();
+
+    sut.remove(ok_employee_2.pesel());
+    sut.remove(ok_student_2.pesel());
+
+    EXPECT_EQ(sut.size(), size_before_removal - 2ul);
+}
+
+TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
+{
+    sut.add(ok_employee_1);
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_student_3);
+    sut.add(ok_student_4);
+    sut.add(ok_employee_2);
+    auto size_before_removal = sut.size();
+    std::string non_existing_PESEL { "353253111" };
+
+    sut.remove(non_existing_PESEL);
+
     EXPECT_EQ(sut.size(), size_before_removal);
 }
 

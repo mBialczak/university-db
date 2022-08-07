@@ -28,12 +28,13 @@ class UniversityDB
 
     UniversityDB();
 
-    bool add(const student::Student& student);
-    bool add(const employee::Employee& employee);
-    bool add(student::Student&& student);
-    bool add(employee::Employee&& employee);
-    bool removeStudent(const std::string& index);
-    bool removeEmployee(const std::string& id);
+    bool add(const student::Student& student);   // TODO: REMOVE DONE
+    bool add(const employee::Employee& employee);   // TODO: REMOVE DONE
+    bool add(student::Student&& student);   // TODO: REMOVE DONE
+    bool add(employee::Employee&& employee);   // TODO: REMOVE DONE
+    bool removeStudent(const std::string& index);   // TODO: REMOVE DONE
+    bool removeEmployee(const std::string& id);   // TODO: REMOVE DONE
+    void remove(const std::string& pesel);   // TODO: REMOVE DONE
     void sortByLastName();
     void sortByPesel();
     int readFromFile(const char* fileName);
@@ -48,6 +49,8 @@ class UniversityDB
     // TODO: consider making public and returning shared_ptr as additional functionality
     PersonIter findByIndex(const std::string& index);
     PersonIter findById(const std::string& id);
+    bool canBeAdded(const student::Student& student);
+    bool canBeAdded(const employee::Employee& employee);
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
     std::vector<PersonShPtr> records_;

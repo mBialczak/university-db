@@ -23,7 +23,7 @@ UniversityDB::UniversityDB()
 
 bool UniversityDB::add(const Student& student)
 {
-    if (pesel_validator_(student.pesel())) {
+    if (canBeAdded(student)) {
         records_.emplace_back(std::make_shared<Student>(student));
         return true;
     }
@@ -33,7 +33,7 @@ bool UniversityDB::add(const Student& student)
 
 bool UniversityDB::add(const Employee& employee)
 {
-    if (pesel_validator_(employee.pesel())) {
+    if (canBeAdded(employee)) {
         records_.emplace_back(std::make_shared<Employee>(employee));
         return true;
     }
@@ -43,7 +43,7 @@ bool UniversityDB::add(const Employee& employee)
 
 bool UniversityDB::add(Student&& student)
 {
-    if (pesel_validator_(student.pesel())) {
+    if (canBeAdded(student)) {
         records_.emplace_back(std::make_shared<Student>(std::move(student)));
         return true;
     }
@@ -53,7 +53,7 @@ bool UniversityDB::add(Student&& student)
 
 bool UniversityDB::add(Employee&& employee)
 {
-    if (pesel_validator_(employee.pesel())) {
+    if (canBeAdded(employee)) {
         records_.emplace_back(std::make_shared<Employee>(std::move(employee)));
         return true;
     }
@@ -67,7 +67,6 @@ std::size_t UniversityDB::size() const
 }
 
 PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
-
 {
     auto result_iter = std::find_if(records_.begin(),
                                     records_.end(),
@@ -117,6 +116,16 @@ bool UniversityDB::removeEmployee(const std::string& id)
     return false;
 }
 
+void UniversityDB::remove(const std::string& pesel)
+{
+    auto removal_start = std::remove_if(records_.begin(),
+                                        records_.end(),
+                                        [&pesel](const auto& personPtr) {
+                                            return personPtr->pesel() == pesel;
+                                        });
+    records_.erase(removal_start, records_.end());
+}
+
 UniversityDB::PersonIter UniversityDB::findByIndex(const std::string& index)
 {
     return std::find_if(records_.begin(),
@@ -143,6 +152,19 @@ UniversityDB::PersonIter UniversityDB::findById(const std::string& id)
 
                             return false;
                         });
+}
+
+bool UniversityDB::canBeAdded(const student::Student& student)
+{
+    return (!findByPesel(student.pesel())
+            && findByIndex(student.index()) == records_.end()
+            && pesel_validator_(student.pesel()));
+}
+bool UniversityDB::canBeAdded(const employee::Employee& employee)
+{
+    return (!findByPesel(employee.pesel())
+            && findById(employee.id()) == records_.end()
+            && pesel_validator_(employee.pesel()));
 }
 
 void UniversityDB::sortByLastName()
