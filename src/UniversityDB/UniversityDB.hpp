@@ -14,6 +14,9 @@ namespace student {
     class Student;
 }
 
+namespace person {
+    class Person;
+}
 namespace employee {
     class Employee;
 }
@@ -38,7 +41,7 @@ class UniversityDB
     void remove(const std::string& pesel);   // TODO: REMOVE DONE
     void sortByLastName();   // TODO: DONE
     void sortByPesel();   // TODO: DONE
-    int readFromFile(const char* fileName);
+    int readFromFile(const char* fileName);   // NOTE: verified
     int writeToFile(const char* fileName) const;
     ContainerType& data();   // TODO: DONE
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE

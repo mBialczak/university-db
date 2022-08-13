@@ -21,14 +21,14 @@ class UniversityDBTest : public Test
 
   protected:
     UniversityDB sut;
-    // student records with valid PESEL numbers
+    // records with valid PESEL numbers
     Student ok_student_1;
     Student ok_student_2;
     Student ok_student_3;
     Student ok_student_4;
     Employee ok_employee_1;
     Employee ok_employee_2;
-    // student records with invalid PESEL numbers;
+    // records with invalid PESEL numbers;
     Student invalid_student_1;
     Student invalid_student_2;
     Employee invalid_employee_1;
@@ -499,14 +499,16 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
     UniversityDB databaseToCompare;
     databaseToCompare.add(ok_student_1);
     databaseToCompare.add(ok_student_2);
+    databaseToCompare.add(ok_employee_1);
     databaseToCompare.add(ok_student_3);
+    databaseToCompare.add(ok_employee_2);
     databaseToCompare.add(ok_student_4);
 
     int records_read = sut.readFromFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
     auto internalStateReadToSut = sut.data();
 
-    EXPECT_EQ(records_read, 4);
+    EXPECT_EQ(records_read, 6);
     for (std::size_t i = 0; i < internalStateToCompare.size(); ++i) {
         EXPECT_EQ(*internalStateToCompare[i], *internalStateReadToSut[i]);
     }
