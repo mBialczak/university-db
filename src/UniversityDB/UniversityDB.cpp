@@ -79,7 +79,7 @@ PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
 
     return nullptr;
 }
-
+// TODO: VERIFY
 std::vector<PersonShPtr> UniversityDB::findByLastName(const std::string& lastName) const
 
 {
@@ -172,7 +172,7 @@ void UniversityDB::sortByLastName()
     std::sort(records_.begin(),
               records_.end(),
               [](const auto& lhs, const auto& rhs) {
-                  return lhs->lastName() < rhs->lastName();
+                  return *lhs < *rhs;
               });
 }
 

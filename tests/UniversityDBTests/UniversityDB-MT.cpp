@@ -226,7 +226,7 @@ TEST_F(UniversityDBTest, findByPeselShouldFindStudentIfExistsInDatabase)
     EXPECT_EQ(*retrieved_student, ok_student_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
-// TODO: RECTIFY
+// TODO: RECTIFY maybe use operator ==??
 TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
 {
     sut.add(ok_student_1);
@@ -351,7 +351,7 @@ TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
     EXPECT_EQ(sut.size(), size_before_removal);
 }
 
-// TODO: RECTIFY
+// NOTE: verified and OK
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.add(ok_student_1);
@@ -364,17 +364,12 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     sut.sortByLastName();
     auto sorted_people = sut.data();
 
-    EXPECT_THAT(sorted_people,
-                ElementsAre(ok_student_2,
-                            ok_employee_1,
-                            ok_employee_2,
-                            ok_student_1,
-                            ok_student_4,
-                            ok_student_3));
-    // EXPECT_EQ(sorted_people[0]->lastName(), ok_student_2.lastName());
-    // EXPECT_EQ(sorted_people[1]->lastName(), ok_student_4.lastName());
-    // EXPECT_EQ(sorted_people[2]->lastName(), ok_student_1.lastName());
-    // EXPECT_EQ(sorted_people[3]->lastName(), ok_student_3.lastName());
+    EXPECT_EQ(*sorted_people[0], ok_student_2);
+    EXPECT_EQ(*sorted_people[1], ok_employee_1);
+    EXPECT_EQ(*sorted_people[2], ok_student_4);
+    EXPECT_EQ(*sorted_people[3], ok_student_1);
+    EXPECT_EQ(*sorted_people[4], ok_employee_2);
+    EXPECT_EQ(*sorted_people[5], ok_student_3);
 }
 // TODO: RECTIFY
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
