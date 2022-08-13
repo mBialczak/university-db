@@ -213,7 +213,7 @@ TEST_F(UniversityDBTest, addShouldNOTaddNewEmployeeIfIdExistsInDatabaseAndReturn
     EXPECT_EQ(sut.size(), size_before_adding_same_id);
 }
 
-// TODO: RECTIFY
+// TODO: VERIFIED and OK
 TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
 {
     sut.add(ok_student_1);
@@ -230,26 +230,40 @@ TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
     EXPECT_EQ(*retrieved_employee, ok_employee_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
-// TODO: RECTIFY maybe use operator ==??
-TEST_F(UniversityDBTest, findByLastNameShouldFindAllStudentsWithSameLastNameIfAnyExistInDatabase)
+// NOTE: VERIFIED OK
+TEST_F(UniversityDBTest, findByLastNameShouldFindAllPersonssWithSameLastNameIfAnyExistInDatabase)
 {
     sut.add(ok_student_1);
     sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_employee_2);
     Student student_with_same_name { "001/2014",
                                      "John",
                                      ok_student_1.lastName(),
                                      "67040500538",
                                      "Poland, Gdynia, ul. Towarowa 80/74",
                                      Gender::male };
+    Employee employee_with_same_name { "Teacher: 004",
+                                       "Tommy",
+                                       ok_student_1.lastName(),
+                                       ok_student_4.pesel(),
+                                       "Poland, Olsztyn, ul. Wojska Polskiego 30/13",
+                                       Gender::male,
+                                       4800.0 };
     sut.add(student_with_same_name);
+    sut.add(employee_with_same_name);
 
-    auto retrieved_students = sut.findByLastName(ok_student_1.lastName());
-    auto should_not_be_found = sut.findByLastName("Psikuta");
+    auto found_persons = sut.findByLastName(ok_student_1.lastName());
+    auto should_not_be_found = sut.findByLastName("Pikiel");
 
     EXPECT_EQ(should_not_be_found.size(), 0);
-    EXPECT_EQ(retrieved_students.size(), 2);
-    EXPECT_EQ(retrieved_students[0]->lastName(), ok_student_1.lastName());
-    EXPECT_EQ(retrieved_students[1]->lastName(), ok_student_1.lastName());
+    EXPECT_EQ(found_persons.size(), 3);
+    EXPECT_EQ(found_persons[0]->lastName(), ok_student_1.lastName());
+    EXPECT_EQ(found_persons[1]->lastName(), ok_student_1.lastName());
+    EXPECT_EQ(found_persons[2]->lastName(), ok_student_1.lastName());
+    EXPECT_NE(found_persons[0]->pesel(), found_persons[1]->pesel());
+    EXPECT_NE(found_persons[0]->pesel(), found_persons[2]->pesel());
+    EXPECT_NE(found_persons[1]->pesel(), found_persons[2]->pesel());
 }
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexEvenWhenEmployeesCoexist)

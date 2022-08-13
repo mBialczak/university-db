@@ -79,19 +79,19 @@ PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
 
     return nullptr;
 }
-// TODO: VERIFY
+
 std::vector<PersonShPtr> UniversityDB::findByLastName(const std::string& lastName) const
 
 {
-    std::vector<PersonShPtr> found_students;
+    std::vector<PersonShPtr> found_persons;
     std::copy_if(records_.begin(),
                  records_.end(),
-                 std::back_inserter(found_students),
+                 std::back_inserter(found_persons),
                  [&lastName](const auto& record) {
                      return record->lastName() == lastName;
                  });
 
-    return found_students;
+    return found_persons;
 }
 
 bool UniversityDB::removeStudent(const std::string& index)
