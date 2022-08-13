@@ -7,6 +7,7 @@ add_library(${PROJECT_NAME}-lib
 
 target_link_libraries(${PROJECT_NAME}-lib
                       Student-lib
+                      Employee-lib
                       UniversityDB-lib)
 
 target_include_directories(${PROJECT_NAME}-lib
