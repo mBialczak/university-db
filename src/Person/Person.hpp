@@ -29,6 +29,7 @@ class Person
     virtual std::ostream& sendToStream(std::ostream& os) const = 0;
 
     bool operator==(const Person&) const = default;
+    virtual bool operator<(const Person&) const;
 
   protected:
     std::string first_name_;
