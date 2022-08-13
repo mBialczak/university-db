@@ -530,4 +530,14 @@ TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
         EXPECT_EQ(*sut.data()[i], *sut_to_compare.data()[i]);
     }
 }
+
+TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+
+    EXPECT_EQ(sut.size(), 3);
+}
+
 }   // end of namespace university::mt

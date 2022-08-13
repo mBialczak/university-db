@@ -39,11 +39,11 @@ class UniversityDB
     void sortByPesel();   // TODO: DONE
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
-    std::vector<PersonShPtr>& data();   // TODO: DONE
+    std::vector<PersonShPtr>& data();
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;   // TODO: DONE
     void Display(std::ostream& stream = std::cout) const;
-    std::size_t size() const;
+    std::size_t size() const;   // TODO: DONE
 
   private:
     // TODO: consider making public and returning shared_ptr as additional functionality
