@@ -57,7 +57,9 @@ TEST_F(EmployeeTests, setSalaryShouldChangeEmployeesSalary)
 std::string prepPatternString(const Employee& employee)
 {
     std::string pattern;
-    pattern += "Employee: " + employee.id() + "\n";
+    pattern += "EMPLOYEE\n";
+    pattern += "-------------\n";
+    pattern += "Employee ID: " + employee.id() + "\n";
     pattern += "First name: " + employee.firstName() + "\n";
     pattern += "Last name: " + employee.lastName() + "\n";
     pattern += "PESEL: " + employee.pesel() + "\n";
