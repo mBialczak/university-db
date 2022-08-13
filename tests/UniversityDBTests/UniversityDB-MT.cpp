@@ -371,20 +371,26 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_EQ(*sorted_people[4], ok_employee_2);
     EXPECT_EQ(*sorted_people[5], ok_student_3);
 }
-// TODO: RECTIFY
+
+// NOTE: verified and OK
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.add(ok_student_1);
+    sut.add(ok_employee_1);
     sut.add(ok_student_2);
     sut.add(ok_student_3);
+    sut.add(ok_employee_2);
     sut.add(ok_student_4);
 
     sut.sortByPesel();
     auto sorted_people = sut.data();
-    EXPECT_EQ(sorted_people[0]->pesel(), ok_student_4.pesel());
-    EXPECT_EQ(sorted_people[1]->pesel(), ok_student_1.pesel());
-    EXPECT_EQ(sorted_people[2]->pesel(), ok_student_2.pesel());
-    EXPECT_EQ(sorted_people[3]->pesel(), ok_student_3.pesel());
+
+    EXPECT_EQ(*sorted_people[0], ok_employee_2);
+    EXPECT_EQ(*sorted_people[1], ok_student_4);
+    EXPECT_EQ(*sorted_people[2], ok_student_1);
+    EXPECT_EQ(*sorted_people[3], ok_student_2);
+    EXPECT_EQ(*sorted_people[4], ok_student_3);
+    EXPECT_EQ(*sorted_people[5], ok_employee_1);
 }
 
 void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)

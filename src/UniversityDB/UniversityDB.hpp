@@ -35,8 +35,8 @@ class UniversityDB
     bool removeStudent(const std::string& index);   // TODO: REMOVE DONE
     bool removeEmployee(const std::string& id);   // TODO: REMOVE DONE
     void remove(const std::string& pesel);   // TODO: REMOVE DONE
-    void sortByLastName();
-    void sortByPesel();
+    void sortByLastName();   // TODO: DONE
+    void sortByPesel();   // TODO: DONE
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
     std::vector<PersonShPtr>& data();
