@@ -62,14 +62,14 @@ UniversityDBTest::UniversityDBTest()
                    Gender::male)
     , ok_employee_1("Teacher:001",
                     "Miroslaw",
-                    "Webski",
+                    "Kowalski",
                     "92071314764",
                     "Poland, Lublin, ul. Cwaniaka 4D/28",
                     Gender::male,
                     6500.50)
     , ok_employee_2("Management:003",
                     "Sandra",
-                    "Tulipan",
+                    "Smith",
                     "65071209862",
                     "Poland, Szczecin, ul. Zachodnia 33/83",
                     Gender::female,
@@ -355,16 +355,26 @@ TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.add(ok_student_1);
+    sut.add(ok_employee_1);
     sut.add(ok_student_2);
     sut.add(ok_student_3);
+    sut.add(ok_employee_2);
     sut.add(ok_student_4);
 
     sut.sortByLastName();
     auto sorted_people = sut.data();
-    EXPECT_EQ(sorted_people[0]->lastName(), ok_student_2.lastName());
-    EXPECT_EQ(sorted_people[1]->lastName(), ok_student_4.lastName());
-    EXPECT_EQ(sorted_people[2]->lastName(), ok_student_1.lastName());
-    EXPECT_EQ(sorted_people[3]->lastName(), ok_student_3.lastName());
+
+    EXPECT_THAT(sorted_people,
+                ElementsAre(ok_student_2,
+                            ok_employee_1,
+                            ok_employee_2,
+                            ok_student_1,
+                            ok_student_4,
+                            ok_student_3));
+    // EXPECT_EQ(sorted_people[0]->lastName(), ok_student_2.lastName());
+    // EXPECT_EQ(sorted_people[1]->lastName(), ok_student_4.lastName());
+    // EXPECT_EQ(sorted_people[2]->lastName(), ok_student_1.lastName());
+    // EXPECT_EQ(sorted_people[3]->lastName(), ok_student_3.lastName());
 }
 // TODO: RECTIFY
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
