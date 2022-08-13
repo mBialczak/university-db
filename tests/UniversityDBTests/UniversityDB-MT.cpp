@@ -214,16 +214,20 @@ TEST_F(UniversityDBTest, addShouldNOTaddNewEmployeeIfIdExistsInDatabaseAndReturn
 }
 
 // TODO: RECTIFY
-TEST_F(UniversityDBTest, findByPeselShouldFindStudentIfExistsInDatabase)
+TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
 {
     sut.add(ok_student_1);
+    sut.add(ok_employee_1);
     sut.add(ok_student_2);
     sut.add(ok_student_3);
-    sut.add(ok_student_4);
+    sut.add(ok_employee_2);
+
     auto retrieved_student = sut.findByPesel(ok_student_2.pesel());
-    auto should_not_be_found = sut.findByPesel("65071209862");
+    auto retrieved_employee = sut.findByPesel(ok_employee_2.pesel());
+    auto should_not_be_found = sut.findByPesel(ok_student_4.pesel());
 
     EXPECT_EQ(*retrieved_student, ok_student_2);
+    EXPECT_EQ(*retrieved_employee, ok_employee_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
 // TODO: RECTIFY maybe use operator ==??

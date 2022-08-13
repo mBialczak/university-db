@@ -39,8 +39,8 @@ class UniversityDB
     void sortByPesel();   // TODO: DONE
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
-    std::vector<PersonShPtr>& data();
-    UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;
+    std::vector<PersonShPtr>& data();   // TODO: DONE
+    UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;
     void Display(std::ostream& stream = std::cout) const;
     std::size_t size() const;
