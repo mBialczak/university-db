@@ -167,4 +167,14 @@ TEST_F(PersonTests, operatorLessThanShouldSortByLastNameAndFirstNameWhenLastName
     EXPECT_THAT(people, testing::ElementsAre(john, mike, anna, sally));
 }
 
+TEST_F(PersonTests, operatorEqualShouldCompareLastNameFirstNameAndPesel)
+{
+    auto anna2 = anna;
+    auto mike2 = mike;
+
+    EXPECT_EQ(anna, anna2);
+    EXPECT_EQ(mike2, mike2);
+    EXPECT_NE(anna, mike);
+}
+
 }   // namespace university::person::ut
