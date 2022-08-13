@@ -540,4 +540,19 @@ TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
     EXPECT_EQ(sut.size(), 3);
 }
 
+TEST_F(UniversityDBTest, dataShouldReturnReferenceToInternalDataBaseContainer)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+
+    auto database_internal_container = sut.data();
+
+    const std::type_info& type_to_compare = typeid(std::vector<UniversityDB::PersonShPtr>&);
+    const std::type_info& returned_type = typeid(database_internal_container);
+
+    EXPECT_EQ(type_to_compare, returned_type);
+    EXPECT_EQ(database_internal_container.size(), 3);
+}
+
 }   // end of namespace university::mt

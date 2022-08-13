@@ -176,7 +176,7 @@ void UniversityDB::sortByLastName()
               });
 }
 
-std::vector<PersonShPtr>& UniversityDB::data()
+UniversityDB::ContainerType& UniversityDB::data()
 {
     return records_;
 }

@@ -25,6 +25,7 @@ class UniversityDB
   public:
     using PersonShPtr = std::shared_ptr<person::Person>;
     using PersonIter = std::vector<PersonShPtr>::iterator;
+    using ContainerType = std::vector<PersonShPtr>;
 
     UniversityDB();
 
@@ -39,7 +40,7 @@ class UniversityDB
     void sortByPesel();   // TODO: DONE
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
-    std::vector<PersonShPtr>& data();
+    ContainerType& data();   // TODO: DONE
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;   // TODO: DONE
     void Display(std::ostream& stream = std::cout) const;
@@ -53,7 +54,7 @@ class UniversityDB
     bool canBeAdded(const employee::Employee& employee);
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
-    std::vector<PersonShPtr> records_;
+    ContainerType records_;
 };   // namespace UniversityDB
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database);
