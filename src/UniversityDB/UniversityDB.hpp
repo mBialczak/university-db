@@ -42,11 +42,11 @@ class UniversityDB
     void sortByLastName();   // TODO: DONE
     void sortByPesel();   // TODO: DONE
     int readFromFile(const char* fileName);   // NOTE: verified
-    int writeToFile(const char* fileName) const; // NOTE: verified
+    int writeToFile(const char* fileName) const;   // NOTE: verified
     ContainerType& data();   // TODO: DONE
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;   // TODO: DONE
-    void Display(std::ostream& stream = std::cout) const;
+    void Display(std::ostream& stream = std::cout) const;   // NOTE: verified and OK
     std::size_t size() const;   // TODO: DONE
 
   private:

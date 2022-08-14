@@ -231,7 +231,7 @@ TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
     EXPECT_EQ(should_not_be_found, nullptr);
 }
 // NOTE: VERIFIED OK
-TEST_F(UniversityDBTest, findByLastNameShouldFindAllPersonssWithSameLastNameIfAnyExistInDatabase)
+TEST_F(UniversityDBTest, findByLastNameShouldFindAllPersonsWithSameLastNameIfAnyExistInDatabase)
 {
     sut.add(ok_student_1);
     sut.add(ok_student_2);
@@ -370,7 +370,7 @@ TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
 }
 
 // NOTE: verified and OK
-TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearangeDataBaseRecords)
+TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearrangeDataBaseRecords)
 {
     sut.add(ok_student_1);
     sut.add(ok_employee_1);
@@ -410,38 +410,58 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_EQ(*sorted_people[4], ok_student_3);
     EXPECT_EQ(*sorted_people[5], ok_employee_1);
 }
-
-void addStudentsToPattern(const std::vector<Student>& students, std::string& pattern)
+// NOTE: verified and OK
+void addStudentToPattern(const Student& student, std::string& pattern)
 {
-    for (const auto& student : students) {
-        pattern += std::string("STUDENT\n")
-            // + std::to_string(counter) + "\n"
-            + "-------------\n"
-            + "Index number: " + student.index() + "\n"
-            + "First name: " + student.firstName() + "\n"
-            + "Last name: " + student.lastName() + "\n"
-            + "PESEL: " + student.pesel() + "\n"
-            + "Address: " + student.address() + "\n"
-            + "Gender: ";
-        std::string gender = (student.gender() == Gender::male) ? "male"
-                                                                : "female";
-        pattern += gender + "\n";
-        pattern += "========================================\n";
-    }
+    pattern += std::string("STUDENT\n")
+        + "-------------\n"
+        + "Index number: " + student.index() + "\n"
+        + "First name: " + student.firstName() + "\n"
+        + "Last name: " + student.lastName() + "\n"
+        + "PESEL: " + student.pesel() + "\n"
+        + "Address: " + student.address() + "\n"
+        + "Gender: ";
+    std::string gender = (student.gender() == Gender::male) ? "male"
+                                                            : "female";
+    pattern += gender + "\n"
+        + "========================================\n";
 }
-// TODO: RECTIFY
+// NOTE: verified and OK
+void addEmployeeToPattern(const Employee& employee, std::string& pattern)
+{
+    pattern += std::string("EMPLOYEE\n")
+        + "-------------\n"
+        + "Employee ID: " + employee.id() + "\n"
+        + "First name: " + employee.firstName() + "\n"
+        + "Last name: " + employee.lastName() + "\n"
+        + "PESEL: " + employee.pesel() + "\n"
+        + "Address: " + employee.address() + "\n"
+        + "Gender: ";
+    std::string gender = (employee.gender() == Gender::male) ? "male"
+                                                             : "female";
+    pattern += gender + "\n"
+        + "Salary: " + std::to_string(employee.salary()) + "\n"
+        + "========================================\n";
+}
+
+// NOTE: verified and OK
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<Student> students { ok_student_1,
-                                    ok_student_2,
-                                    ok_student_3,
-                                    ok_student_4 };
-    addStudentsToPattern(students, pattern);
     sut.add(ok_student_1);
     sut.add(ok_student_2);
+    sut.add(ok_employee_1);
     sut.add(ok_student_3);
+    sut.add(ok_employee_2);
     sut.add(ok_student_4);
+
+    addStudentToPattern(ok_student_1, pattern);
+    addStudentToPattern(ok_student_2, pattern);
+    addEmployeeToPattern(ok_employee_1, pattern);
+    addStudentToPattern(ok_student_3, pattern);
+    addEmployeeToPattern(ok_employee_2, pattern);
+    addStudentToPattern(ok_student_4, pattern);
+
     // ostringstream used as substitution for std::cout and other streams
     std::ostringstream osstream;
 
@@ -450,20 +470,25 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 
     EXPECT_EQ(pattern, display_result);
 }
-// TODO: RECTIFY
+// NOTE: verified and OK
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
-    std::vector<Student> students { ok_student_1,
-                                    ok_student_2,
-                                    ok_student_3,
-                                    ok_student_4 };
-    addStudentsToPattern(students, pattern);
     sut.add(ok_student_1);
     sut.add(ok_student_2);
+    sut.add(ok_employee_1);
     sut.add(ok_student_3);
+    sut.add(ok_employee_2);
     sut.add(ok_student_4);
-    // ostringstream used as substitution for std::cout
+
+    addStudentToPattern(ok_student_1, pattern);
+    addStudentToPattern(ok_student_2, pattern);
+    addEmployeeToPattern(ok_employee_1, pattern);
+    addStudentToPattern(ok_student_3, pattern);
+    addEmployeeToPattern(ok_employee_2, pattern);
+    addStudentToPattern(ok_student_4, pattern);
+
+    // ostringstream used as substitution for std::cout and other streams
     std::ostringstream osstream;
 
     osstream << sut;

@@ -202,8 +202,8 @@ int UniversityDB::readFromFile(const char* fileName)
 
 void UniversityDB::Display(std::ostream& stream) const
 {
-    for (const auto& student : records_) {
-        stream << *student
+    for (const auto& record : records_) {
+        stream << *record
                << "========================================\n";
     }
 }
