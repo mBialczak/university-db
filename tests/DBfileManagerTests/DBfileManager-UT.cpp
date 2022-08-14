@@ -94,7 +94,7 @@ std::string getPathToWritingTemplateFile()
 
     return path_to_template;
 }
-// NOTE: verified and OK
+
 TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
 {
     std::string path_to_template = getPathToReadingTemplateFile();
@@ -116,7 +116,7 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
         EXPECT_EQ(*internalStateToCompare[i], *internalStateOfAssociatedDataBase[i]);
     }
 }
-// NOTE: verified
+
 TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
 {
     data_base_.add(student_1);

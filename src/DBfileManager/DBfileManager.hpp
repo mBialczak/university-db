@@ -1,7 +1,5 @@
 #pragma once
 
-#include "UniversityDB/UniversityDB.hpp"
-
 #include <map>
 #include <optional>
 #include <string>
@@ -21,17 +19,17 @@ class DBfileManager
 
   public:
     explicit DBfileManager(UniversityDB& dataBase);
-    int readFile(const char* fileName) const; // NOTE: verified
-    int writeToFile(const char* fileName) const; // NOTE: verified
+    int readFile(const char* fileName) const;
+    int writeToFile(const char* fileName) const;
 
   private:
-    std::string parseRecordFromFile(std::ifstream& stream) const;   // NOTE: verified
-    std::string readRecordPart(const std::string& fullText, const std::string& searched) const;   // NOTE: verified
-    StringMap getRecordAsMap(const std::string& rawRecord) const;   // NOTE: verified
-    bool tryMakeRecord(const StringMap& parts) const;   // NOTE: verified
-    std::optional<person::Gender> determineGender(const std::string& gender) const;   // NOTE: verified
-    bool tryAddStudent(const StringMap& parts, person::Gender gender) const;   // NOTE: verified
-    bool tryAddEmployee(const StringMap& parts, person::Gender gender) const;   // NOTE: verified
+    std::string parseRecordFromFile(std::ifstream& stream) const;
+    std::string readRecordPart(const std::string& fullText, const std::string& searched) const;
+    StringMap getRecordAsMap(const std::string& rawRecord) const;
+    bool tryMakeRecord(const StringMap& parts) const;
+    std::optional<person::Gender> determineGender(const std::string& gender) const;
+    bool tryAddStudent(const StringMap& parts, person::Gender gender) const;
+    bool tryAddEmployee(const StringMap& parts, person::Gender gender) const;
 
     UniversityDB& data_base_;
 };

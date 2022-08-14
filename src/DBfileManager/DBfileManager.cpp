@@ -2,6 +2,7 @@
 
 #include "Employee/Employee.hpp"
 #include "Student/Student.hpp"
+#include "UniversityDB/UniversityDB.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -76,8 +77,8 @@ std::string DBfileManager::readRecordPart(const std::string& fullText, const std
     // find line with searched text
     while (getline(stream, line) && !std::regex_search(line, to_find)) {
     }
-    auto pos = line.find(": ");
 
+    auto pos = line.find(": ");
     if (pos != std::string::npos) {
         return line.substr(pos + 2);
     }
@@ -111,7 +112,7 @@ bool DBfileManager::tryMakeRecord(const StringMap& parts) const
         return tryAddEmployee(parts, *maybe_gender);
     }
 
-    return false;   // unable to determine person type
+    return false;
 }
 
 std::optional<person::Gender> DBfileManager::determineGender(const std::string& gender) const
