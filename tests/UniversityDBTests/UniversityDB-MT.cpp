@@ -20,6 +20,8 @@ class UniversityDBTest : public Test
     UniversityDBTest();
 
   protected:
+    void addAllPeopleToDataBase();
+
     UniversityDB sut;
     // people with valid PESEL numbers
     Student ok_student_1;
@@ -101,6 +103,16 @@ UniversityDBTest::UniversityDBTest()
                          Gender::female,
                          9700.90)
 { }
+
+void UniversityDBTest::addAllPeopleToDataBase()
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+}
 
 TEST_F(UniversityDBTest, addShouldAddNewStudentsAndEmployeesWithCorrectPeselAndReturnTrue)
 {
@@ -267,12 +279,7 @@ TEST_F(UniversityDBTest, findByLastNameShouldFindAllPersonsWithSameLastNameIfAny
 
 TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexEvenWhenEmployeesCoexist)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_student_4);
-    sut.add(ok_employee_1);
-    sut.add(ok_employee_2);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
 
     bool has_removed = sut.removeStudent(ok_student_1.index());
@@ -283,12 +290,7 @@ TEST_F(UniversityDBTest, removeStudentShouldFindAndRemoveStudentGivenIndexEvenWh
 
 TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGivenIndex)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_student_4);
-    sut.add(ok_employee_1);
-    sut.add(ok_employee_2);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
     std::string non_existing_index { "100/1999" };
 
@@ -303,12 +305,7 @@ TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGiven
 
 TEST_F(UniversityDBTest, removeEmployeeShouldFindAndRemoveEmployeeGivenIdEvenWhenStudentsCoexist)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
 
     bool has_removed = sut.removeEmployee(ok_employee_2.id());
@@ -319,12 +316,7 @@ TEST_F(UniversityDBTest, removeEmployeeShouldFindAndRemoveEmployeeGivenIdEvenWhe
 
 TEST_F(UniversityDBTest, removeEmployeeShouldDoNothingIfThereIsNoEmployeeWithGivenId)
 {
-    sut.add(ok_employee_1);
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_student_4);
-    sut.add(ok_employee_2);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
     std::string non_existing_id { "Security:001" };
 
@@ -338,12 +330,7 @@ TEST_F(UniversityDBTest, removeEmployeeShouldDoNothingIfThereIsNoEmployeeWithGiv
 
 TEST_F(UniversityDBTest, removeShouldFindAndRemovePeopleGivenPesel)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
 
     sut.remove(ok_employee_2.pesel());
@@ -354,12 +341,7 @@ TEST_F(UniversityDBTest, removeShouldFindAndRemovePeopleGivenPesel)
 
 TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
 {
-    sut.add(ok_employee_1);
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_student_4);
-    sut.add(ok_employee_2);
+    addAllPeopleToDataBase();
     auto size_before_removal = sut.size();
     std::string non_existing_PESEL { "353253111" };
 
@@ -370,13 +352,7 @@ TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
 
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearrangeDataBaseRecords)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
-
+    addAllPeopleToDataBase();
     sut.sortByLastName();
     auto sorted_people = sut.data();
 
@@ -390,13 +366,7 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearrangeDataBaseRecords)
 
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_2);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
-
+    addAllPeopleToDataBase();
     sut.sortByPesel();
     auto sorted_people = sut.data();
 
@@ -443,14 +413,8 @@ void addEmployeeToPattern(const Employee& employee, std::string& pattern)
 
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
+    addAllPeopleToDataBase();
     std::string pattern;
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
-
     addStudentToPattern(ok_student_1, pattern);
     addStudentToPattern(ok_student_2, pattern);
     addEmployeeToPattern(ok_employee_1, pattern);
@@ -469,14 +433,8 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
+    addAllPeopleToDataBase();
     std::string pattern;
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
-
     addStudentToPattern(ok_student_1, pattern);
     addStudentToPattern(ok_student_2, pattern);
     addEmployeeToPattern(ok_employee_1, pattern);
@@ -537,12 +495,7 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
+    addAllPeopleToDataBase();
     std::string path_to_write = getPathToWritingTemplateFile();
 
     int records_written = sut.writeToFile(path_to_write.data());
@@ -558,37 +511,26 @@ TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 
 TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
+    addAllPeopleToDataBase();
 
-    EXPECT_EQ(sut.size(), 3);
+    EXPECT_EQ(sut.size(), 6);
 }
 
 TEST_F(UniversityDBTest, dataShouldReturnReferenceToInternalDataBaseContainer)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-
+    addAllPeopleToDataBase();
     auto database_internal_container = sut.data();
 
     const std::type_info& type_to_compare = typeid(std::vector<UniversityDB::PersonShPtr>&);
     const std::type_info& returned_type = typeid(database_internal_container);
 
     EXPECT_EQ(type_to_compare, returned_type);
-    EXPECT_EQ(database_internal_container.size(), 3);
+    EXPECT_EQ(database_internal_container.size(), 6);
 }
 
-// TODO:
 TEST_F(UniversityDBTest, changeSalaryShouldFindCorrectEmployeeByPeselAndModifySalary)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
+    addAllPeopleToDataBase();
     double salary_before_change = ok_employee_2.salary();
 
     bool has_changed = sut.changeSalary(ok_employee_2.pesel(), 13000.0);
@@ -603,13 +545,7 @@ TEST_F(UniversityDBTest, changeSalaryShouldFindCorrectEmployeeByPeselAndModifySa
 
 TEST_F(UniversityDBTest, changeSalaryShouldNotModifyOtherRecordsThanRequested)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
-
+    addAllPeopleToDataBase();
     bool has_searched_changed = sut.changeSalary(ok_employee_2.pesel(), 13000.0);
 
     auto employee_1_ptr_after = std::dynamic_pointer_cast<Employee>(sut.findByPesel(ok_employee_1.pesel()));
@@ -622,12 +558,7 @@ TEST_F(UniversityDBTest, changeSalaryShouldNotModifyOtherRecordsThanRequested)
 
 TEST_F(UniversityDBTest, changeSalaryShouldNotModifySalaryIfNegativeSalaryPassed)
 {
-    sut.add(ok_student_1);
-    sut.add(ok_student_2);
-    sut.add(ok_employee_1);
-    sut.add(ok_student_3);
-    sut.add(ok_employee_2);
-    sut.add(ok_student_4);
+    addAllPeopleToDataBase();
     double salary_before_change = ok_employee_2.salary();
 
     bool has_changed = sut.changeSalary(ok_employee_2.pesel(), -1000.0);

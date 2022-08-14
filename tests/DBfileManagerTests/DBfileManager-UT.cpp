@@ -22,6 +22,8 @@ class DBFileManagerTest : public Test
     DBFileManagerTest();
 
   protected:
+    void addAllPeopleToDataBase(UniversityDB& baseToFill) const;
+
     UniversityDB data_base_;
     DBfileManager sut_;
 
@@ -75,6 +77,16 @@ DBFileManagerTest::DBFileManagerTest()
                  10000.40)
 { }
 
+void DBFileManagerTest::addAllPeopleToDataBase(UniversityDB& baseToFill) const
+{
+    baseToFill.add(student_1);
+    baseToFill.add(student_2);
+    baseToFill.add(employee_1);
+    baseToFill.add(student_3);
+    baseToFill.add(employee_2);
+    baseToFill.add(student_4);
+}
+
 std::string getPathToReadingTemplateFile()
 {
     std::string current_path = std::filesystem::current_path().string();
@@ -100,12 +112,7 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
     std::string path_to_template = getPathToReadingTemplateFile();
     // prepare second database for comparison
     UniversityDB databaseToCompare;
-    databaseToCompare.add(student_1);
-    databaseToCompare.add(student_2);
-    databaseToCompare.add(employee_1);
-    databaseToCompare.add(student_3);
-    databaseToCompare.add(employee_2);
-    databaseToCompare.add(student_4);
+    addAllPeopleToDataBase(databaseToCompare);
 
     int records_read = sut_.readFile(path_to_template.data());
     auto internalStateToCompare = databaseToCompare.data();
@@ -119,12 +126,7 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
 
 TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
 {
-    data_base_.add(student_1);
-    data_base_.add(student_2);
-    data_base_.add(employee_1);
-    data_base_.add(student_3);
-    data_base_.add(employee_2);
-    data_base_.add(student_4);
+    addAllPeopleToDataBase(data_base_);
     std::string path_to_write = getPathToWritingTemplateFile();
 
     int records_written = sut_.writeToFile(path_to_write.data());
