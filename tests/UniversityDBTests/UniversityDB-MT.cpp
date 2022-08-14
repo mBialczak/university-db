@@ -21,14 +21,14 @@ class UniversityDBTest : public Test
 
   protected:
     UniversityDB sut;
-    // records with valid PESEL numbers
+    // people with valid PESEL numbers
     Student ok_student_1;
     Student ok_student_2;
     Student ok_student_3;
     Student ok_student_4;
     Employee ok_employee_1;
     Employee ok_employee_2;
-    // records with invalid PESEL numbers;
+    // people with invalid PESEL numbers;
     Student invalid_student_1;
     Student invalid_student_2;
     Employee invalid_employee_1;
@@ -213,7 +213,6 @@ TEST_F(UniversityDBTest, addShouldNOTaddNewEmployeeIfIdExistsInDatabaseAndReturn
     EXPECT_EQ(sut.size(), size_before_adding_same_id);
 }
 
-// TODO: VERIFIED and OK
 TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
 {
     sut.add(ok_student_1);
@@ -230,7 +229,7 @@ TEST_F(UniversityDBTest, findByPeselShouldFindPersonIfExistsInDatabase)
     EXPECT_EQ(*retrieved_employee, ok_employee_2);
     EXPECT_EQ(should_not_be_found, nullptr);
 }
-// NOTE: VERIFIED OK
+
 TEST_F(UniversityDBTest, findByLastNameShouldFindAllPersonsWithSameLastNameIfAnyExistInDatabase)
 {
     sut.add(ok_student_1);
@@ -369,7 +368,6 @@ TEST_F(UniversityDBTest, removeShouldDoNothingIfThereIsNoPersonWithGivenPesel)
     EXPECT_EQ(sut.size(), size_before_removal);
 }
 
-// NOTE: verified and OK
 TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearrangeDataBaseRecords)
 {
     sut.add(ok_student_1);
@@ -390,7 +388,6 @@ TEST_F(UniversityDBTest, sortByLastNameShouldCorrectlyRearrangeDataBaseRecords)
     EXPECT_EQ(*sorted_people[5], ok_student_3);
 }
 
-// NOTE: verified and OK
 TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
 {
     sut.add(ok_student_1);
@@ -410,7 +407,7 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_EQ(*sorted_people[4], ok_student_3);
     EXPECT_EQ(*sorted_people[5], ok_employee_1);
 }
-// NOTE: verified and OK
+
 void addStudentToPattern(const Student& student, std::string& pattern)
 {
     pattern += std::string("STUDENT\n")
@@ -426,7 +423,7 @@ void addStudentToPattern(const Student& student, std::string& pattern)
     pattern += gender + "\n"
         + "========================================\n";
 }
-// NOTE: verified and OK
+
 void addEmployeeToPattern(const Employee& employee, std::string& pattern)
 {
     pattern += std::string("EMPLOYEE\n")
@@ -444,7 +441,6 @@ void addEmployeeToPattern(const Employee& employee, std::string& pattern)
         + "========================================\n";
 }
 
-// NOTE: verified and OK
 TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
@@ -470,7 +466,7 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
 
     EXPECT_EQ(pattern, display_result);
 }
-// NOTE: verified and OK
+
 TEST_F(UniversityDBTest, outputOperatorShouldCorrectlyInsertRecordToOuptutStream)
 {
     std::string pattern;
@@ -516,7 +512,7 @@ std::string getPathToWritingTemplateFile()
 
     return path_to_template;
 }
-// NOTE: verified and OK
+
 TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 {
     std::string path_to_template = getPathToReadingTemplateFile();
@@ -538,7 +534,7 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
         EXPECT_EQ(*internalStateToCompare[i], *internalStateReadToSut[i]);
     }
 }
-// NOTE: verified
+
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
     sut.add(ok_student_1);
@@ -559,7 +555,7 @@ TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
         EXPECT_EQ(*sut.data()[i], *sut_to_compare.data()[i]);
     }
 }
-// NOTE: verified
+
 TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
 {
     sut.add(ok_student_1);
@@ -568,7 +564,7 @@ TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
 
     EXPECT_EQ(sut.size(), 3);
 }
-// NOTE: verified
+
 TEST_F(UniversityDBTest, dataShouldReturnReferenceToInternalDataBaseContainer)
 {
     sut.add(ok_student_1);

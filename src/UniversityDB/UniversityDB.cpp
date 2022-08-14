@@ -73,6 +73,7 @@ PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
                                     [&pesel](const auto& record) {
                                         return record->pesel() == pesel;
                                     });
+
     if (result_iter != records_.end()) {
         return *result_iter;
     }
@@ -123,6 +124,7 @@ void UniversityDB::remove(const std::string& pesel)
                                         [&pesel](const auto& personPtr) {
                                             return personPtr->pesel() == pesel;
                                         });
+
     records_.erase(removal_start, records_.end());
 }
 
@@ -214,4 +216,5 @@ std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
 
     return os;
 }
+
 }   // namespace university

@@ -21,8 +21,6 @@ namespace employee {
     class Employee;
 }
 
-class DBfileManager;
-
 class UniversityDB
 {
   public:
@@ -32,25 +30,24 @@ class UniversityDB
 
     UniversityDB();
 
-    bool add(const student::Student& student);   // TODO: REMOVE DONE
-    bool add(const employee::Employee& employee);   // TODO: REMOVE DONE
-    bool add(student::Student&& student);   // TODO: REMOVE DONE
-    bool add(employee::Employee&& employee);   // TODO: REMOVE DONE
-    bool removeStudent(const std::string& index);   // TODO: REMOVE DONE
-    bool removeEmployee(const std::string& id);   // TODO: REMOVE DONE
-    void remove(const std::string& pesel);   // TODO: REMOVE DONE
-    void sortByLastName();   // TODO: DONE
-    void sortByPesel();   // TODO: DONE
-    int readFromFile(const char* fileName);   // NOTE: verified
-    int writeToFile(const char* fileName) const;   // NOTE: verified
-    ContainerType& data();   // TODO: DONE
-    UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;   // TODO: DONE
-    std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;   // TODO: DONE
-    void Display(std::ostream& stream = std::cout) const;   // NOTE: verified and OK
-    std::size_t size() const;   // TODO: DONE
+    bool add(const student::Student& student);
+    bool add(const employee::Employee& employee);
+    bool add(student::Student&& student);
+    bool add(employee::Employee&& employee);
+    bool removeStudent(const std::string& index);
+    bool removeEmployee(const std::string& id);
+    void remove(const std::string& pesel);
+    void sortByLastName();
+    void sortByPesel();
+    int readFromFile(const char* fileName);
+    int writeToFile(const char* fileName) const;
+    ContainerType& data();
+    UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;
+    std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;
+    void Display(std::ostream& stream = std::cout) const;
+    std::size_t size() const;
 
   private:
-    // TODO: consider making public and returning shared_ptr as additional functionality
     PersonIter findByIndex(const std::string& index);
     PersonIter findById(const std::string& id);
     bool canBeAdded(const student::Student& student);
@@ -58,7 +55,7 @@ class UniversityDB
     std::unique_ptr<DBfileManager> file_manager_;
     pesel_validator::PeselValidator pesel_validator_;
     ContainerType records_;
-};   // namespace UniversityDB
+};   // class UniversityDB
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database);
 }   // namespace university
