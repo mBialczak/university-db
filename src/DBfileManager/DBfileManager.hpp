@@ -22,7 +22,7 @@ class DBfileManager
   public:
     explicit DBfileManager(UniversityDB& dataBase);
     int readFile(const char* fileName) const; // NOTE: verified
-    int writeToFile(const char* fileName) const;
+    int writeToFile(const char* fileName) const; // NOTE: verified
 
   private:
     std::string parseRecordFromFile(std::ifstream& stream) const;   // NOTE: verified

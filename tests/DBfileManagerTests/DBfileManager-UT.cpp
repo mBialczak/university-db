@@ -116,12 +116,14 @@ TEST_F(DBFileManagerTest, readFileShouldCorrectlyReadDBfromFile)
         EXPECT_EQ(*internalStateToCompare[i], *internalStateOfAssociatedDataBase[i]);
     }
 }
-
+// NOTE: verified
 TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
 {
     data_base_.add(student_1);
     data_base_.add(student_2);
+    data_base_.add(employee_1);
     data_base_.add(student_3);
+    data_base_.add(employee_2);
     data_base_.add(student_4);
     std::string path_to_write = getPathToWritingTemplateFile();
 
@@ -129,8 +131,8 @@ TEST_F(DBFileManagerTest, writeToFileShouldCorrectlyWriteDBtoFile)
     UniversityDB databaseToCompare;
     int records_read_back = databaseToCompare.readFromFile(path_to_write.data());
 
-    EXPECT_EQ(records_written, 4);
-    EXPECT_EQ(records_read_back, 4);
+    EXPECT_EQ(records_written, 6);
+    EXPECT_EQ(records_read_back, 6);
     for (std::size_t i = 0; i < data_base_.data().size(); ++i) {
         EXPECT_EQ(*data_base_.data()[i], *databaseToCompare.data()[i]);
     }

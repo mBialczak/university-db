@@ -16,16 +16,15 @@ DBfileManager::DBfileManager(UniversityDB& dataBase)
 
 int DBfileManager::writeToFile(const char* fileName) const
 {
-    std::ofstream stream(fileName);
-    if (!stream) {
-        return 0;
-    }
     int records_written { 0 };
-    for (const auto& student : data_base_.data()) {
-        stream << *student
-               << "========================================"
-               << std::endl;
-        ++records_written;
+    std::ofstream stream(fileName);
+    if (stream) {
+        for (const auto& record : data_base_.data()) {
+            stream << *record
+                   << "========================================"
+                   << std::endl;
+            ++records_written;
+        }
     }
 
     return records_written;

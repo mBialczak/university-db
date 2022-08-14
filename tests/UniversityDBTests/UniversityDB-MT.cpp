@@ -491,7 +491,7 @@ std::string getPathToWritingTemplateFile()
 
     return path_to_template;
 }
-// TODO: RECTIFY
+// NOTE: verified and OK
 TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
 {
     std::string path_to_template = getPathToReadingTemplateFile();
@@ -513,12 +513,14 @@ TEST_F(UniversityDBTest, readFromFileShouldCorrectlyReadDatabaseFromFile)
         EXPECT_EQ(*internalStateToCompare[i], *internalStateReadToSut[i]);
     }
 }
-// TODO: RECTIFY
+// NOTE: verified
 TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
 {
     sut.add(ok_student_1);
     sut.add(ok_student_2);
+    sut.add(ok_employee_1);
     sut.add(ok_student_3);
+    sut.add(ok_employee_2);
     sut.add(ok_student_4);
     std::string path_to_write = getPathToWritingTemplateFile();
 
@@ -526,13 +528,13 @@ TEST_F(UniversityDBTest, writeToFileShouldCorrectlyWriteDatabaseToFile)
     UniversityDB sut_to_compare;
     int records_read_back = sut_to_compare.readFromFile(path_to_write.data());
 
-    EXPECT_EQ(records_written, 4);
-    EXPECT_EQ(records_read_back, 4);
+    EXPECT_EQ(records_written, 6);
+    EXPECT_EQ(records_read_back, 6);
     for (std::size_t i = 0; i < sut.data().size(); ++i) {
         EXPECT_EQ(*sut.data()[i], *sut_to_compare.data()[i]);
     }
 }
-
+// NOTE: verified
 TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
 {
     sut.add(ok_student_1);
@@ -541,7 +543,7 @@ TEST_F(UniversityDBTest, sizeShouldReturnDataBaseSize)
 
     EXPECT_EQ(sut.size(), 3);
 }
-
+// NOTE: verified
 TEST_F(UniversityDBTest, dataShouldReturnReferenceToInternalDataBaseContainer)
 {
     sut.add(ok_student_1);
