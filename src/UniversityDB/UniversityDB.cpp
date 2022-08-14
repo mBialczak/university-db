@@ -202,7 +202,23 @@ int UniversityDB::readFromFile(const char* fileName)
     return file_manager_->readFile(fileName);
 }
 
-void UniversityDB::Display(std::ostream& stream) const
+bool UniversityDB::changeSalary(const std::string& pesel, double newSalary)
+{
+    auto person_ptr = findByPesel(pesel);
+    if (!person_ptr || newSalary <= 0) {
+        return false;
+    }
+
+    auto employee_ptr = std::dynamic_pointer_cast<Employee>(person_ptr);
+    if (employee_ptr) {
+        employee_ptr->setSalary(newSalary);
+        return true;
+    }
+
+    return false;
+}
+
+void UniversityDB::display(std::ostream& stream) const
 {
     for (const auto& record : records_) {
         stream << *record
@@ -212,7 +228,7 @@ void UniversityDB::Display(std::ostream& stream) const
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
 {
-    database.Display(os);
+    database.display(os);
 
     return os;
 }

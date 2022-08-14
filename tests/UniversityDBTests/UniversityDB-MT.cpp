@@ -461,7 +461,7 @@ TEST_F(UniversityDBTest, displayShouldCorrectlyInsertRecordToOuptutStream)
     // ostringstream used as substitution for std::cout and other streams
     std::ostringstream osstream;
 
-    sut.Display(osstream);
+    sut.display(osstream);
     std::string display_result = osstream.str();
 
     EXPECT_EQ(pattern, display_result);
@@ -578,6 +578,65 @@ TEST_F(UniversityDBTest, dataShouldReturnReferenceToInternalDataBaseContainer)
 
     EXPECT_EQ(type_to_compare, returned_type);
     EXPECT_EQ(database_internal_container.size(), 3);
+}
+
+// TODO:
+TEST_F(UniversityDBTest, changeSalaryShouldFindCorrectEmployeeByPeselAndModifySalary)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+    double salary_before_change = ok_employee_2.salary();
+
+    bool has_changed = sut.changeSalary(ok_employee_2.pesel(), 13000.0);
+    auto person_ptr = sut.findByPesel(ok_employee_2.pesel());
+    auto employee_ptr = std::dynamic_pointer_cast<Employee>(person_ptr);
+    double salary_after_change = employee_ptr->salary();
+
+    EXPECT_TRUE(has_changed);
+    EXPECT_NE(salary_before_change, salary_after_change);
+    EXPECT_EQ(salary_after_change, 13000.0);
+}
+
+TEST_F(UniversityDBTest, changeSalaryShouldNotModifyOtherRecordsThanRequested)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+
+    bool has_searched_changed = sut.changeSalary(ok_employee_2.pesel(), 13000.0);
+
+    auto employee_1_ptr_after = std::dynamic_pointer_cast<Employee>(sut.findByPesel(ok_employee_1.pesel()));
+    auto employee_2_ptr_after = std::dynamic_pointer_cast<Employee>(sut.findByPesel(ok_employee_2.pesel()));
+
+    ASSERT_TRUE(has_searched_changed);
+    EXPECT_NE(ok_employee_2.salary(), employee_2_ptr_after->salary());
+    EXPECT_EQ(ok_employee_1.salary(), employee_1_ptr_after->salary());
+}
+
+TEST_F(UniversityDBTest, changeSalaryShouldNotModifySalaryIfNegativeSalaryPassed)
+{
+    sut.add(ok_student_1);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_student_3);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_4);
+    double salary_before_change = ok_employee_2.salary();
+
+    bool has_changed = sut.changeSalary(ok_employee_2.pesel(), -1000.0);
+    auto person_ptr = sut.findByPesel(ok_employee_2.pesel());
+    auto employee_ptr = std::dynamic_pointer_cast<Employee>(person_ptr);
+    double salary_after_change = employee_ptr->salary();
+
+    EXPECT_FALSE(has_changed);
+    EXPECT_EQ(salary_before_change, salary_after_change);
 }
 
 }   // end of namespace university::mt

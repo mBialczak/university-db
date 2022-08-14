@@ -44,7 +44,8 @@ class UniversityDB
     ContainerType& data();
     UniversityDB::PersonShPtr findByPesel(const std::string& pesel) const;
     std::vector<PersonShPtr> findByLastName(const std::string& lastName) const;
-    void Display(std::ostream& stream = std::cout) const;
+    bool changeSalary(const std::string& pesel, double newSalary);
+    void display(std::ostream& stream = std::cout) const;
     std::size_t size() const;
 
   private:
