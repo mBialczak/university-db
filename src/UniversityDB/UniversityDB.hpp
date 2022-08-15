@@ -39,6 +39,7 @@ class UniversityDB
     void remove(const std::string& pesel);
     void sortByLastName();
     void sortByPesel();
+    void sortBySalary();
     int readFromFile(const char* fileName);
     int writeToFile(const char* fileName) const;
     ContainerType& data();

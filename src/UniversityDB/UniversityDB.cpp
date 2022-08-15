@@ -192,6 +192,33 @@ void UniversityDB::sortByPesel()
               });
 }
 
+// sorts records by salary in descending order
+void UniversityDB::sortBySalary()
+{
+    std::sort(records_.begin(),
+              records_.end(),
+              [](const auto& lhs, const auto& rhs) {
+                  auto lhs_ptr = std::dynamic_pointer_cast<Employee>(lhs);
+                  auto rhs_ptr = std::dynamic_pointer_cast<Employee>(rhs);
+                  // both are employees
+                  if (lhs_ptr && rhs_ptr) {
+                      return lhs_ptr->salary() > rhs_ptr->salary();
+                  }
+                  // not employee vs. employee
+                  else if (!lhs_ptr && rhs_ptr) {
+                      return false;
+                  }
+                  // employee vs. not employee
+                  else if (lhs_ptr && !rhs_ptr) {
+                      return true;
+                  }
+                  // both not employees order doesn't matter
+                  else {
+                      return false;
+                  }
+              });
+}
+
 int UniversityDB::writeToFile(const char* fileName) const
 {
     return file_manager_->writeToFile(fileName);

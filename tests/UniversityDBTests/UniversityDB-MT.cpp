@@ -378,6 +378,43 @@ TEST_F(UniversityDBTest, sortByPeselShouldCorrectlyRearangeDataBaseRecords)
     EXPECT_EQ(*sorted_people[5], ok_employee_1);
 }
 
+TEST_F(UniversityDBTest, sortBySalaryShouldSortInDescedningOrder)
+{
+    Employee ok_employee_3 { "Dean: 001",
+                             "Gregory",
+                             "Hope",
+                             ok_student_3.pesel(),
+                             ok_student_3.address(),
+                             Gender::male,
+                             30000.0 };
+    Employee ok_employee_4 { "Security: 002",
+                             "John",
+                             "Rambo",
+                             ok_student_4.pesel(),
+                             ok_student_4.address(),
+                             Gender::female,
+                             3800.0 };
+    sut.add(ok_student_1);
+    sut.add(ok_employee_2);
+    sut.add(ok_student_2);
+    sut.add(ok_employee_1);
+    sut.add(ok_employee_4);
+    sut.add(ok_employee_3);
+
+    sut.sortBySalary();
+    auto sorted_internal_container = sut.data();
+
+    EXPECT_EQ(*sorted_internal_container[0], ok_employee_3);
+    EXPECT_EQ(*sorted_internal_container[1], ok_employee_2);
+    EXPECT_EQ(*sorted_internal_container[2], ok_employee_1);
+    EXPECT_EQ(*sorted_internal_container[3], ok_employee_4);
+    // checking last two elements
+    auto student_ptr1 = std::dynamic_pointer_cast<Student>(sorted_internal_container[4]);
+    auto student_ptr2 = std::dynamic_pointer_cast<Student>(sorted_internal_container[5]);
+    EXPECT_NE(student_ptr1, nullptr);
+    EXPECT_NE(student_ptr2, nullptr);
+}
+
 void addStudentToPattern(const Student& student, std::string& pattern)
 {
     pattern += std::string("STUDENT\n")
