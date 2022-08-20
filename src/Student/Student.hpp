@@ -19,8 +19,6 @@ class Student : public person::Person
     std::ostream& sendToStream(std::ostream& os) const override;
     std::string index() const;
 
-    bool operator==(const Student&) const = default;
-
   private:
     std::string index_;
 };

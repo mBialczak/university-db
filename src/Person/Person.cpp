@@ -34,6 +34,25 @@ std::string Person::address() const
     return address_;
 }
 
+bool Person::operator==(const Person& other) const
+{
+    return (last_name_ == other.last_name_
+            && first_name_ == other.first_name_
+            && pesel_ == other.pesel_);
+}
+
+bool Person::operator<(const Person& other) const
+{
+    if (last_name_ < other.last_name_) {
+        return true;
+    }
+    else if (last_name_ == other.last_name_) {
+        return first_name_ < other.first_name_;
+    }
+
+    return false;
+}
+
 Gender Person::gender() const
 {
     return gender_;

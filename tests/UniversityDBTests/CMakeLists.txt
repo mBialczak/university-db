@@ -10,6 +10,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
                       Student-lib
+                      Employee-lib
                       UniversityDB-lib
                       gtest_main
                       gmock_main)

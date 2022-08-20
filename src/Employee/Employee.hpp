@@ -21,8 +21,6 @@ class Employee : public person::Person
     // setters
     void setSalary(double newSalary);
 
-    bool operator==(const Employee&) const = default;
-
   private:
     std::string id_;
     double salary_;

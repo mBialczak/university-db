@@ -5,6 +5,7 @@
 
 #include "Person/Person.hpp"
 
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include <ostream>
 namespace university::person::ut {
@@ -49,6 +50,8 @@ class PersonTests : public ::testing::Test
   protected:
     PersonDummy john;
     PersonDummy sally;
+    PersonDummy mike;
+    PersonDummy anna;
 };
 
 PersonTests::PersonTests()
@@ -62,6 +65,16 @@ PersonTests::PersonTests()
             "81100216357",
             "Australia, Sydney, Long Shore st. 22",
             Gender::female)
+    , mike("Mike",
+           "Dickens",
+           "90080517455",
+           "Australia, Sydney, Long Shore st. 22",
+           Gender::male)
+    , anna("Anna",
+           "Smith",
+           "67040500538",
+           "Australia, Sydney, Long Shore st. 22",
+           Gender::female)
 {
 }
 
@@ -143,8 +156,25 @@ TEST_F(PersonTests, outputOperatorShouldCorrectlyInsertPersonToOuptutStream)
     EXPECT_EQ(pattern1, insertion_result1);
     EXPECT_EQ(pattern2, insertion_result2);
 }
-// TEST_F(PersonTests, sendToStreamShouldSendPersonToOutputStram)
-// {
-// }
+
+TEST_F(PersonTests, operatorLessThanShouldSortByLastNameAndFirstNameWhenLastNameSame)
+{
+    // start unsorted
+    std::vector<PersonDummy> people { sally, mike, john, anna };
+
+    std::sort(people.begin(), people.end());
+
+    EXPECT_THAT(people, testing::ElementsAre(john, mike, anna, sally));
+}
+
+TEST_F(PersonTests, operatorEqualShouldCompareLastNameFirstNameAndPesel)
+{
+    auto anna2 = anna;
+    auto mike2 = mike;
+
+    EXPECT_EQ(anna, anna2);
+    EXPECT_EQ(mike2, mike2);
+    EXPECT_NE(anna, mike);
+}
 
 }   // namespace university::person::ut

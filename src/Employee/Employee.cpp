@@ -34,7 +34,11 @@ void Employee::setSalary(double newSalary)
 
 std::ostream& Employee::sendToStream(std::ostream& os) const
 {
-    os << "Employee: " + id_ + "\n"
+    os << "EMPLOYEE"
+       << "\n"
+       << "-------------"
+       << "\n"
+       << "Employee ID: " + id_ + "\n"
        << "First name: " + first_name_ + "\n"
        << "Last name: " + last_name_ + "\n"
        << "PESEL: " + pesel_ + "\n"
