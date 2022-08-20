@@ -5,13 +5,12 @@
 // TODO: REMOVE
 // #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include <filesystem>
 
-namespace data_generator::ut {
+namespace university::data_generator::tests {
 // TODO: VERIFY
 //  using employee::Employee;
 //  using person::Gender;
 //  using student::IndexNo;
 //  using student::Student;
 //  using namespace testing;
-}   // namespace data_generator::ut
+}   // namespace university::data_generator::tests
