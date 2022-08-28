@@ -2,7 +2,7 @@ project(DBdataGenerator-ut
        LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-               DBdataGenearotor-UT.cpp)
+               DBdataGenerator-UT.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE

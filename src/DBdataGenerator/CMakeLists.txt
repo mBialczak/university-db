@@ -3,7 +3,9 @@ project(DBdataGenerator
 
 add_library(${PROJECT_NAME}-lib
             STATIC
-            DBdataGenerator.cpp)
+            DBdataGenerator.cpp
+            DBdataGenerator_names.cpp
+            DBdataGenerator_addresses.cpp)
 
 target_link_libraries(${PROJECT_NAME}-lib
                       Student-lib
