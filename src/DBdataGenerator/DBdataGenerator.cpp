@@ -1,17 +1,21 @@
 #include "DBdataGenerator.hpp"
 // TODO: VERIFY all headers
+#include "Employee/Employee.hpp"
 #include "Student/Student.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
 namespace university::data_generator {
 
 namespace {
+    using university::employee::Employee;
     using university::person::Gender;
     using university::pesel_validator::PeselValidator;
     using university::student::Student;
 
     constexpr unsigned MIN_YEAR { 0 };
     constexpr unsigned MAX_YEAR { 99 };
+    constexpr double SALARY_MIN { 1000.0 };
+    constexpr double SALARY_MAX { 15000.0 };
 }   // namespace
 
 DBdataGenerator::DBdataGenerator(UniversityDB& dataBaseToFill)
@@ -31,6 +35,17 @@ void DBdataGenerator::addStudents(unsigned numberOfStudents) const
     }
 }
 
+void DBdataGenerator::addEmployees(unsigned numberOfEmployees) const
+{
+    unsigned actually_added { 0 };
+    while (actually_added < numberOfEmployees) {
+        bool was_added = database_.add(generateEmployee());
+        if (was_added) {
+            ++actually_added;
+        }
+    }
+}
+
 student::Student DBdataGenerator::generateStudent() const
 {
     std::string index = generateIndex();
@@ -43,9 +58,29 @@ student::Student DBdataGenerator::generateStudent() const
     return Student { index, firstName, lastName, pesel, address, gender };
 }
 
-long unsigned DBdataGenerator::randomNumber(uint_fast64_t from, uint_fast64_t to) const
+employee::Employee DBdataGenerator::generateEmployee() const
+{
+    std::string id = generateId();
+    Gender gender = generateGender();
+    std::string firstName = generateFirstName(gender);
+    std::string lastName = generateLastName();
+    std::string pesel = generatePesel();
+    std::string address = generateAddress();
+    double salary = generateSalary();
+
+    return Employee { id, firstName, lastName, pesel, address, gender, salary };
+}
+
+long unsigned DBdataGenerator::randomInt(uint_fast64_t from, uint_fast64_t to) const
 {
     std::uniform_int_distribution<uint_fast64_t> distrib(from, to);
+
+    return distrib(generator_);
+}
+
+double DBdataGenerator::randomDouble(double from, double to) const
+{
+    std::uniform_real_distribution<> distrib(from, to);
 
     return distrib(generator_);
 }
@@ -53,15 +88,26 @@ long unsigned DBdataGenerator::randomNumber(uint_fast64_t from, uint_fast64_t to
 std::string DBdataGenerator::generateIndex() const
 {
     std::string result;
-    long unsigned sequential_part = randomNumber(1, 500);
-    long unsigned year_part = randomNumber(2016, 2026);
+    long unsigned sequential_part = randomInt(1, 500);
+    long unsigned year_part = randomInt(2016, 2026);
 
     return std::to_string(sequential_part) + "/" + std::to_string(year_part);
 }
 
+std::string DBdataGenerator::generateId() const
+{
+    std::string result;
+    long unsigned department_number = randomInt(0, departments.size() - 1);
+    std::string department_part = departments.at(department_number);
+
+    std::string sequential_part = std::to_string(randomInt(1, 100));
+    addZerosIfTooShort(sequential_part, 3);
+    return department_part + ":" + sequential_part;
+}
+
 Gender DBdataGenerator::generateGender() const
 {
-    bool should_be_male = static_cast<bool>(randomNumber(0, 1));
+    bool should_be_male = static_cast<bool>(randomInt(0, 1));
 
     return should_be_male ? Gender::male
                           : Gender::female;
@@ -70,35 +116,35 @@ Gender DBdataGenerator::generateGender() const
 std::string DBdataGenerator::generateFirstName(Gender gender) const
 {
     if (gender == Gender::male) {
-        long unsigned male_name_number = randomNumber(0, maleFirstNames.size() - 1);
+        long unsigned male_name_number = randomInt(0, maleFirstNames.size() - 1);
         return maleFirstNames.at(male_name_number);
     }
 
-    long unsigned female_name_number = randomNumber(0, femaleFirstNames.size() - 1);
+    long unsigned female_name_number = randomInt(0, femaleFirstNames.size() - 1);
 
     return femaleFirstNames.at(female_name_number);
 }
 
 std::string DBdataGenerator::generateLastName() const
 {
-    long unsigned last_name_number = randomNumber(0, lastNames.size() - 1);
+    long unsigned last_name_number = randomInt(0, lastNames.size() - 1);
 
     return lastNames.at(last_name_number);
 }
 
 std::string DBdataGenerator::generatePesel() const
 {
-    std::string year_part = std::to_string(randomNumber(MIN_YEAR, MAX_YEAR));
+    std::string year_part = std::to_string(randomInt(MIN_YEAR, MAX_YEAR));
     addZerosIfTooShort(year_part);
 
-    long unsigned month = randomNumber(1, 12);
+    long unsigned month = randomInt(1, 12);
     std::string month_part = std::to_string(month);
     addZerosIfTooShort(month_part);
 
     std::string day_part = generateDayForMonth(month);
     addZerosIfTooShort(day_part);
 
-    std::string four_digits = std::to_string(randomNumber(1, 9999));
+    std::string four_digits = std::to_string(randomInt(1, 9999));
     addZerosIfTooShort(four_digits, 4);
 
     std::string ten_first_digits = year_part + month_part + day_part + four_digits;
@@ -112,7 +158,7 @@ std::string DBdataGenerator::generateDayForMonth(long unsigned month) const
     switch (month) {
         case 2:
             // since we only generate fake pesel numbers we ignore leap year possibility
-            return std::to_string(randomNumber(1, 28));
+            return std::to_string(randomInt(1, 28));
         case 1:
             [[fallthrough]];
         case 3:
@@ -126,9 +172,9 @@ std::string DBdataGenerator::generateDayForMonth(long unsigned month) const
         case 10:
             [[fallthrough]];
         case 12:
-            return std::to_string(randomNumber(1, 31));
+            return std::to_string(randomInt(1, 31));
         default:   // for 4, 6, 9, 11
-            return std::to_string(randomNumber(1, 30));
+            return std::to_string(randomInt(1, 30));
     }
 }
 
@@ -157,15 +203,20 @@ std::string DBdataGenerator::generateControlDigit(const std::string& tenFirstDig
 std::string DBdataGenerator::generateAddress() const
 {
     std::string address { "Polska, " };
-    std::string postal_code = std::to_string(randomNumber(1, 99));
+    std::string postal_code = std::to_string(randomInt(1, 99));
     addZerosIfTooShort(postal_code);
     address += postal_code + " ";
-    address += cities.at(randomNumber(0, cities.size() - 1)) + ", ul.";
-    address += streets.at(randomNumber(0, streets.size() - 1)) + " ";
-    address += std::to_string(randomNumber(1, 200)) + "/";
-    address += std::to_string(randomNumber(1, 70));
+    address += cities.at(randomInt(0, cities.size() - 1)) + ", ul.";
+    address += streets.at(randomInt(0, streets.size() - 1)) + " ";
+    address += std::to_string(randomInt(1, 200)) + "/";
+    address += std::to_string(randomInt(1, 70));
 
     return address;
+}
+
+double DBdataGenerator::generateSalary() const
+{
+    return randomDouble(SALARY_MIN, SALARY_MAX);
 }
 
 }   // namespace university::data_generator
