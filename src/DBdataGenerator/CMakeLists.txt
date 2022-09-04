@@ -1,14 +1,19 @@
-project(DBfileManager
+project(DBdataGenerator
         LANGUAGES CXX)
 
 add_library(${PROJECT_NAME}-lib
             STATIC
-            DBfileManager.cpp)
+            DBdataGenerator.cpp
+            DBdataGenerator_departments.cpp
+            DBdataGenerator_addresses.cpp
+            DBdataGenerator_names.cpp)
 
 target_link_libraries(${PROJECT_NAME}-lib
                       Student-lib
                       Employee-lib
-                      UniversityDB-lib)
+                      PeselValidator-lib
+                      UniversityDB-lib
+                      )
 
 target_include_directories(${PROJECT_NAME}-lib
                           PRIVATE

@@ -1,9 +1,9 @@
-project(StudentRecord
+project(Person
         LANGUAGES CXX)
 
 add_library(${PROJECT_NAME}-lib
             STATIC
-            StudentRecord.cpp)
+            Person.cpp)
 
 target_compile_options(${PROJECT_NAME}-lib
                        PRIVATE

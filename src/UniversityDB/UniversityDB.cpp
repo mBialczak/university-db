@@ -1,5 +1,8 @@
 #include "UniversityDB.hpp"
 
+#include "Employee/Employee.hpp"
+#include "Student/Student.hpp"
+
 #include <algorithm>
 #include <fstream>
 #include <regex>
@@ -7,45 +10,51 @@
 
 namespace university {
 
+namespace {
+    using employee::Employee;
+    using person::Person;
+    using student::Student;
+    using PersonShPtr = UniversityDB::PersonShPtr;
+}   // namespace
+
 UniversityDB::UniversityDB()
     : file_manager_(std::make_unique<DBfileManager>(*this))
 { }
 
-bool UniversityDB::addStudent(student_record::IndexNo index,
-                              const std::string& firstName,
-                              const std::string& lastName,
-                              const std::string& pesel,
-                              const std::string& address,
-                              const student_record::Gender gender)
+bool UniversityDB::add(const Student& student)
 {
-    if (pesel_validator_(pesel)) {
-        student_record::StudentRecord student { index,
-                                                firstName,
-                                                lastName,
-                                                pesel,
-                                                address,
-                                                gender };
-        students_.emplace_back(student);
+    if (canBeAdded(student)) {
+        records_.emplace_back(std::make_shared<Student>(student));
         return true;
     }
 
     return false;
 }
 
-bool UniversityDB::addStudent(const student_record::StudentRecord& record)
+bool UniversityDB::add(const Employee& employee)
 {
-    if (pesel_validator_(record.pesel())) {
-        students_.emplace_back(record);
+    if (canBeAdded(employee)) {
+        records_.emplace_back(std::make_shared<Employee>(employee));
         return true;
     }
 
     return false;
 }
 
-bool UniversityDB::addStudent(student_record::StudentRecord&& record)
+bool UniversityDB::add(Student&& student)
 {
-    if (pesel_validator_(record.pesel())) {
-        students_.emplace_back(std::move(record));
+    if (canBeAdded(student)) {
+        records_.emplace_back(std::make_shared<Student>(std::move(student)));
+        return true;
+    }
+
+    return false;
+}
+
+bool UniversityDB::add(Employee&& employee)
+{
+    if (canBeAdded(employee)) {
+        records_.emplace_back(std::make_shared<Employee>(std::move(employee)));
         return true;
     }
 
@@ -54,76 +63,159 @@ bool UniversityDB::addStudent(student_record::StudentRecord&& record)
 
 std::size_t UniversityDB::size() const
 {
-    return students_.size();
+    return records_.size();
 }
 
-std::shared_ptr<const student_record::StudentRecord> UniversityDB::findByPesel(const std::string& pesel) const
+PersonShPtr UniversityDB::findByPesel(const std::string& pesel) const
 {
-    auto result_iter = std::find_if(students_.begin(),
-                                    students_.end(),
+    auto result_iter = std::find_if(records_.begin(),
+                                    records_.end(),
                                     [&pesel](const auto& record) {
-                                        return record.pesel() == pesel;
+                                        return record->pesel() == pesel;
                                     });
-    if (result_iter != students_.end()) {
-        return std::make_shared<const student_record::StudentRecord>(*result_iter);
+
+    if (result_iter != records_.end()) {
+        return *result_iter;
     }
 
     return nullptr;
 }
 
-std::vector<student_record::StudentRecord> UniversityDB::findByLastName(const std::string& lastName) const
+std::vector<PersonShPtr> UniversityDB::findByLastName(const std::string& lastName) const
+
 {
-    std::vector<student_record::StudentRecord> found_students;
-    std::copy_if(students_.begin(),
-                 students_.end(),
-                 std::back_inserter(found_students),
+    std::vector<PersonShPtr> found_persons;
+    std::copy_if(records_.begin(),
+                 records_.end(),
+                 std::back_inserter(found_persons),
                  [&lastName](const auto& record) {
-                     return record.lastName() == lastName;
+                     return record->lastName() == lastName;
                  });
 
-    return found_students;
+    return found_persons;
 }
 
-bool UniversityDB::removeStudent(student_record::IndexNo index)
+bool UniversityDB::removeStudent(const std::string& index)
 {
     auto to_be_removed = findByIndex(index);
-    if (to_be_removed != students_.end()) {
-        students_.erase(to_be_removed);
+    if (to_be_removed != records_.end()) {
+        records_.erase(to_be_removed);
         return true;
     }
 
     return false;
 }
 
-UniversityDB::StudentIterator UniversityDB::findByIndex(student_record::IndexNo index)
+bool UniversityDB::removeEmployee(const std::string& id)
 {
-    return std::find_if(students_.begin(),
-                        students_.end(),
+    auto to_be_removed = findById(id);
+    if (to_be_removed != records_.end()) {
+        records_.erase(to_be_removed);
+        return true;
+    }
+
+    return false;
+}
+
+void UniversityDB::remove(const std::string& pesel)
+{
+    auto removal_start = std::remove_if(records_.begin(),
+                                        records_.end(),
+                                        [&pesel](const auto& personPtr) {
+                                            return personPtr->pesel() == pesel;
+                                        });
+
+    records_.erase(removal_start, records_.end());
+}
+
+UniversityDB::PersonIter UniversityDB::findByIndex(const std::string& index)
+{
+    return std::find_if(records_.begin(),
+                        records_.end(),
                         [&index](const auto& record) {
-                            return record.index() == index;
+                            auto maybe_student_ptr = std::dynamic_pointer_cast<Student>(record);
+                            if (maybe_student_ptr) {
+                                return maybe_student_ptr->index() == index;
+                            }
+
+                            return false;
                         });
+}
+
+UniversityDB::PersonIter UniversityDB::findById(const std::string& id)
+{
+    return std::find_if(records_.begin(),
+                        records_.end(),
+                        [&id](const auto& record) {
+                            auto maybe_employee_ptr = std::dynamic_pointer_cast<Employee>(record);
+                            if (maybe_employee_ptr) {
+                                return maybe_employee_ptr->id() == id;
+                            }
+
+                            return false;
+                        });
+}
+
+bool UniversityDB::canBeAdded(const student::Student& student)
+{
+    return (!findByPesel(student.pesel())
+            && findByIndex(student.index()) == records_.end()
+            && pesel_validator_(student.pesel()));
+}
+bool UniversityDB::canBeAdded(const employee::Employee& employee)
+{
+    return (!findByPesel(employee.pesel())
+            && findById(employee.id()) == records_.end()
+            && pesel_validator_(employee.pesel()));
 }
 
 void UniversityDB::sortByLastName()
 {
-    std::sort(students_.begin(),
-              students_.end(),
+    std::sort(records_.begin(),
+              records_.end(),
               [](const auto& lhs, const auto& rhs) {
-                  return lhs.lastName() < rhs.lastName();
+                  return *lhs < *rhs;
               });
 }
 
-std::vector<student_record::StudentRecord>& UniversityDB::data()
+UniversityDB::ContainerType& UniversityDB::data()
 {
-    return students_;
+    return records_;
 }
 
 void UniversityDB::sortByPesel()
 {
-    std::sort(students_.begin(),
-              students_.end(),
+    std::sort(records_.begin(),
+              records_.end(),
               [](const auto& lhs, const auto& rhs) {
-                  return lhs.pesel() < rhs.pesel();
+                  return lhs->pesel() < rhs->pesel();
+              });
+}
+
+// sorts records by salary in descending order
+void UniversityDB::sortBySalary()
+{
+    std::sort(records_.begin(),
+              records_.end(),
+              [](const auto& lhs, const auto& rhs) {
+                  auto lhs_ptr = std::dynamic_pointer_cast<Employee>(lhs);
+                  auto rhs_ptr = std::dynamic_pointer_cast<Employee>(rhs);
+                  // both are employees
+                  if (lhs_ptr && rhs_ptr) {
+                      return lhs_ptr->salary() > rhs_ptr->salary();
+                  }
+                  // not employee vs. employee
+                  else if (!lhs_ptr && rhs_ptr) {
+                      return false;
+                  }
+                  // employee vs. not employee
+                  else if (lhs_ptr && !rhs_ptr) {
+                      return true;
+                  }
+                  // both not employees order doesn't matter
+                  else {
+                      return false;
+                  }
               });
 }
 
@@ -137,23 +229,35 @@ int UniversityDB::readFromFile(const char* fileName)
     return file_manager_->readFile(fileName);
 }
 
-void UniversityDB::Display(std::ostream& stream) const
+bool UniversityDB::changeSalary(const std::string& pesel, double newSalary)
 {
-    std::size_t counter = 1;
-    for (const auto& student : students_) {
-        stream << "Student record "
-               << std::to_string(counter) + "\n"
-               << " ------------------\n"
-               << student
+    auto person_ptr = findByPesel(pesel);
+    if (!person_ptr || newSalary <= 0) {
+        return false;
+    }
+
+    auto employee_ptr = std::dynamic_pointer_cast<Employee>(person_ptr);
+    if (employee_ptr) {
+        employee_ptr->setSalary(newSalary);
+        return true;
+    }
+
+    return false;
+}
+
+void UniversityDB::display(std::ostream& stream) const
+{
+    for (const auto& record : records_) {
+        stream << *record
                << "========================================\n";
-        ++counter;
     }
 }
 
 std::ostream& operator<<(std::ostream& os, const UniversityDB& database)
 {
-    database.Display(os);
+    database.display(os);
 
     return os;
 }
+
 }   // namespace university

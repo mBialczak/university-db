@@ -1,17 +1,15 @@
-project(UniversityDB-mt
+project(Person-ut
         LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
-              UniversityDB-MT.cpp)
+              Person-UT.cpp)
 
 target_include_directories(${PROJECT_NAME}
                            PRIVATE
                            ${CMAKE_SOURCE_DIR}/src)
 
 target_link_libraries(${PROJECT_NAME}
-                      Student-lib
-                      Employee-lib
-                      UniversityDB-lib
+                      Person-lib
                       gtest_main
                       gmock_main)
 

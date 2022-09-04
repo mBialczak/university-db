@@ -1,8 +1,5 @@
 #pragma once
 
-#include "StudentRecord/StudentRecord.hpp"
-#include "UniversityDB/UniversityDB.hpp"
-
 #include <map>
 #include <optional>
 #include <string>
@@ -10,6 +7,11 @@
 namespace university {
 
 class UniversityDB;
+
+namespace person {
+    class Person;
+    enum class Gender;
+}   // namespace person
 
 class DBfileManager
 {
@@ -25,7 +27,9 @@ class DBfileManager
     std::string readRecordPart(const std::string& fullText, const std::string& searched) const;
     StringMap getRecordAsMap(const std::string& rawRecord) const;
     bool tryMakeRecord(const StringMap& parts) const;
-    std::optional<student_record::Gender> determineGender(const std::string& gender) const;
+    std::optional<person::Gender> determineGender(const std::string& gender) const;
+    bool tryAddStudent(const StringMap& parts, person::Gender gender) const;
+    bool tryAddEmployee(const StringMap& parts, person::Gender gender) const;
 
     UniversityDB& data_base_;
 };

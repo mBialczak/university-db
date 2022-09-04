@@ -14,7 +14,10 @@ FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
 # subdirectories with tests
+add_subdirectory(PersonTests)
 add_subdirectory(PeselValidatorTests)
-add_subdirectory(StudentRecordTests)
+add_subdirectory(StudentTests)
+add_subdirectory(EmployeeTests)
 add_subdirectory(UniversityDBTests)
 add_subdirectory(DBfileManagerTests)
+add_subdirectory(DBdataGeneratorTests)
