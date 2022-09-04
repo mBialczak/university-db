@@ -1,4 +1,3 @@
-// TODO: VERIFY
 #include "DBdataGenerator/DBdataGenerator.hpp"
 #include "UniversityDB/UniversityDB.hpp"
 
