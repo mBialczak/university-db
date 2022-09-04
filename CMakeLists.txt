@@ -27,6 +27,7 @@ add_subdirectory(src/Employee)
 add_subdirectory(src/PeselValidator)
 add_subdirectory(src/UniversityDB)
 add_subdirectory(src/DBfileManager)
+add_subdirectory(src/DBdataGenerator)
 
 # add directory with test target
 add_subdirectory(tests)
