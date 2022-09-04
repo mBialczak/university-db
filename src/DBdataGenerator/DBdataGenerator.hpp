@@ -2,8 +2,6 @@
 
 #include "PeselValidator/PeselValidator.hpp"
 
-// TODO: VERIFY all headers
-#include <memory>
 #include <random>
 #include <vector>
 
@@ -14,11 +12,12 @@ class UniversityDB;
 namespace student {
     class Student;
 }
-// TODO: VERIFY
+
 namespace person {
     class Person;
     enum class Gender;
 }   // namespace person
+
 namespace employee {
     class Employee;
 }
