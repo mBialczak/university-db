@@ -16,6 +16,14 @@ target_compile_options(${PROJECT_NAME}
                        -Wconversion
                        -Werror)
 
+target_include_directories(${PROJECT_NAME}
+                           PRIVATE
+                           ${CMAKE_SOURCE_DIR}/src)
+
+target_link_libraries(${PROJECT_NAME}
+                      DBdataGenerator-lib
+                      UniversityDB-lib)
+
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 enable_testing()
