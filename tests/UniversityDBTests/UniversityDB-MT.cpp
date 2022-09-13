@@ -112,11 +112,13 @@ TEST_F(UniversityDBTest, addStudentShouldNOTaddNewStudentWithInvalidPeselFromCom
 
 TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromReadyStudentRecord)
 {
+    auto size_before_adding = sut.size();
     sut.addStudent(valid_rec_1);
     sut.addStudent(valid_rec_2);
     sut.addStudent(valid_rec_3);
     sut.addStudent(valid_rec_4);
 
+    EXPECT_EQ(size_before_adding, 0);
     EXPECT_EQ(sut.size(), 4);
 }
 
