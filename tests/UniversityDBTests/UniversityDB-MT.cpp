@@ -202,6 +202,7 @@ TEST_F(UniversityDBTest, removeStudentShouldDoNothingIfThereIsNoStudentWithGiven
 
     bool has_removed = sut.removeStudent(non_existing_index);
 
+    ASSERT_NE(valid_rec_1.index(), non_existing_index);
     ASSERT_NE(valid_rec_2.index(), non_existing_index);
     ASSERT_NE(valid_rec_3.index(), non_existing_index);
     ASSERT_NE(valid_rec_4.index(), non_existing_index);
