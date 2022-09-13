@@ -31,9 +31,12 @@ namespace data_generator {
     {
       public:
         DBdataGenerator(UniversityDB& dataBaseToFill);
-
+        virtual ~DBdataGenerator() = default;
         void addStudents(unsigned numberOfStudents) const;
         void addEmployees(unsigned numberOfEmployees) const;
+
+      protected:
+        mutable std::mt19937_64 generator_;
 
       private:
         student::Student generateStudent() const;
@@ -59,7 +62,6 @@ namespace data_generator {
         const static std::vector<std::string> streets;
         const static std::vector<std::string> departments;
         UniversityDB& database_;
-        mutable std::mt19937_64 generator_;
         pesel_validator::PeselValidator pesel_validator_;
     };
 

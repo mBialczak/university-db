@@ -11,9 +11,23 @@ namespace university::data_generator::tests {
 using employee::Employee;
 using person::Gender;
 using student::Student;
+using university::data_generator::DBdataGenerator;
 using university::person::Person;
 using university::pesel_validator::PeselValidator;
 using namespace testing;
+
+// NOTE: the only purpose of providing teetable class is to force-set
+//       the seed of random-number generator member of DBdataGenerator
+//       in order to provide stable testing
+class DBdataGeneratorTestable : public DBdataGenerator
+{
+  public:
+    DBdataGeneratorTestable(UniversityDB& dataBaseToFill)
+        : DBdataGenerator(dataBaseToFill)
+    {
+        generator_.seed(1);
+    }
+};
 
 class DBdataGeneratorShould : public Test
 {
@@ -24,7 +38,7 @@ class DBdataGeneratorShould : public Test
 
   protected:
     university::UniversityDB database_;
-    university::data_generator::DBdataGenerator sut;
+    DBdataGeneratorTestable sut;
 };
 
 TEST_F(DBdataGeneratorShould, generateStudentsWithNotEmptyIndexNo)
@@ -72,10 +86,14 @@ TEST_F(DBdataGeneratorShould, generatedStudentsShouldHaveReasonablyDifferentFirs
         ASSERT_TRUE(student);
         generatedFirstNames.insert(student->firstName());
     }
-    // due to randomness of generated first names and reasonably constrained set of
-    // possible names it is hard to predict, how many different names there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated names set at reasonably low value
+    //      (the available range of different names is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different names each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedFirstNames.size(), 40);
 }
 
@@ -99,10 +117,14 @@ TEST_F(DBdataGeneratorShould, generatedStudentsShouldHaveReasonablyDifferentLast
         ASSERT_TRUE(student);
         generatedLastNames.insert(student->lastName());
     }
-    // due to randomness of generated  names and reasonably constrained set of
-    // possible names it is hard to predict, how many different names there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated names set at reasonably low value
+    //      (the available range of different names is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different names each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedLastNames.size(), 60);
 }
 
@@ -152,10 +174,14 @@ TEST_F(DBdataGeneratorShould, generatedStudentsShouldHaveReasonablyDifferentAddr
         ASSERT_TRUE(student);
         generatedAddresses.insert(student->address());
     }
-    // due to randomness of generated addresses and reasonably constrained set of
-    // possible addresses it is hard to predict, how many different addresses there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated addresses set at reasonably low value
+    //      (the available range of different addresses is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different address each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedAddresses.size(), 75);
 }
 
@@ -174,9 +200,14 @@ TEST_F(DBdataGeneratorShould, generatedStudentsShouldHaveReasonablyDifferentGend
             generatedGenders[Gender::male] += 1;
         }
     }
-    // due to randomness of generated genders it is hard to predict, how many male of females
-    // there should be in the generated database not causing the test to fail randomly.
-    // The expected count of each needs to be reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated genders set at reasonably low value
+    //      (the available range of different gender is just 2 and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different gender each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedGenders[Gender::female], 25);
     EXPECT_GE(generatedGenders[Gender::male], 25);
 }
@@ -226,10 +257,14 @@ TEST_F(DBdataGeneratorShould, generatedEmployeesShouldHaveReasonablyDifferentFir
         ASSERT_TRUE(employee);
         generatedFirstNames.insert(employee->firstName());
     }
-    // due to randomness of generated first names and reasonably constrained set of
-    // possible names it is hard to predict, how many different names there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated names set at reasonably low value
+    //      (the available range of different names is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different name each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedFirstNames.size(), 40);
 }
 
@@ -253,10 +288,14 @@ TEST_F(DBdataGeneratorShould, generatedEmployeesShouldHaveReasonablyDifferentLas
         ASSERT_TRUE(employee);
         generatedLastNames.insert(employee->lastName());
     }
-    // due to randomness of generated  names and reasonably constrained set of
-    // possible names it is hard to predict, how many different names there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated names set at reasonably low value
+    //      (the available range of different names is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different name each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedLastNames.size(), 60);
 }
 
@@ -306,10 +345,14 @@ TEST_F(DBdataGeneratorShould, generatedEmployeesShouldHaveReasonablyDifferentAdd
         ASSERT_TRUE(employee);
         generatedAddresses.insert(employee->address());
     }
-    // due to randomness of generated addresses and reasonably constrained set of
-    // possible addresses it is hard to predict, how many different addresses there should be
-    // in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated addresses set at reasonably low value
+    //      (the available range of different addresses is constrained, and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different address each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedAddresses.size(), 75);
 }
 
@@ -328,9 +371,14 @@ TEST_F(DBdataGeneratorShould, generatedEmployeesShouldHaveReasonablyDifferentGen
             generatedGenders[Gender::male] += 1;
         }
     }
-    // due to randomness of generated genders it is hard to predict, how many male of females
-    // there should be in the generated database not causing the test to fail randomly.
-    // The expected count of each needs to be reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated genders set at reasonably low value
+    //      (the available range of different gender is just 2 and we do not intend
+    //      to test the quality of random generator but the fact, that SUT tries to pick
+    //      different gender each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedGenders[Gender::female], 25);
     EXPECT_GE(generatedGenders[Gender::male], 25);
 }
@@ -356,9 +404,15 @@ TEST_F(DBdataGeneratorShould, generatedEmployeesShouldHaveReasonablyDifferentSal
         ASSERT_TRUE(employee);
         generatedSalaries.insert(employee->salary());
     }
-    // due to randomness of generated salaries, it is hard to predict, how many different salaries
-    // there should be in the given set not causing the test to fail randomly. The expected set-size of
-    // generated names need to reasonably low then.
+    // due to usage of random number generator internally in DBdataGenerator, the
+    // stability of tests is ensured by:
+    //   1. setting the hard-coded seed in DBdataGeneratorTestable
+    //   2. keeping the  expected size of generated genders set at reasonably low value
+    //      (although the available range of different salaries is not very much constrained,
+    //       but it is still possible to generate two equal random doubles). Note that we
+    //       do not intend to test the quality of random generator but the fact, that SUT tries
+    //      to pick different salary each time).
+    // The chosen value was tested with --gtest_repeat=1000 not causing the test to break
     EXPECT_GE(generatedSalaries.size(), 95);
 }
 

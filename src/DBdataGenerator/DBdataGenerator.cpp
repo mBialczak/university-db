@@ -19,8 +19,8 @@ namespace {
 }   // namespace
 
 DBdataGenerator::DBdataGenerator(UniversityDB& dataBaseToFill)
-    : database_(dataBaseToFill)
-    , generator_(std::random_device {}())
+    : generator_(std::random_device {}())
+    , database_(dataBaseToFill)
 {
 }
 
