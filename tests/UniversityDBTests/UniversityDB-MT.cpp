@@ -78,13 +78,13 @@ TEST_F(UniversityDBTest, addStudentShouldAddNewStudentWithCorrectPeselFromCompos
     Gender johns_gender { Gender::male };
 
     auto size_before = sut.size();
-    sut.addStudent(johns_index,
-                   johns_first,
-                   johns_last,
-                   johns_pesel,
-                   johns_address,
-                   johns_gender);
-
+    bool was_added = sut.addStudent(johns_index,
+                                    johns_first,
+                                    johns_last,
+                                    johns_pesel,
+                                    johns_address,
+                                    johns_gender);
+    EXPECT_TRUE(was_added);
     EXPECT_EQ(sut.size(), size_before + 1);
 }
 
